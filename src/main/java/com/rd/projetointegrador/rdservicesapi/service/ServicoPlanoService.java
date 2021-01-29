@@ -52,12 +52,12 @@ public class ServicoPlanoService {
         servicoPlanoEntity.setDsServico(servico.getDsServico());
 
         servicoPlanoEntity = repository.save(servicoPlanoEntity);
-        return "Alteração realizado com sucesso";
+        return "Alteração realizada com sucesso";
     }
 
     public String excluirServicoPlano(BigInteger idServicoPlano){
         repository.deleteById(idServicoPlano);
-        return "Exclusão de serviço realizado com sucesso";
+        return "Exclusão de serviço realizada com sucesso";
 
     }
 

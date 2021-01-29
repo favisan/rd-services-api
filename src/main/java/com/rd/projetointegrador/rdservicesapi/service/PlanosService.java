@@ -58,12 +58,12 @@ public class PlanosService {
         planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
 
         planoEntity = repository.save(planoEntity);
-        return "Alteração realizado com sucesso";
+        return "Alteração realizada com sucesso";
     }
 
     public String excluirPlano(BigInteger idPlano){
         repository.deleteById(idPlano);
-        return "Exclusão de plano realizado com sucesso";
+        return "Exclusão de plano realizada com sucesso";
 
     }
 
