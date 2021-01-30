@@ -37,7 +37,7 @@ public class PlanosService {
         planosEntity.setNmPlano(plano.getNmPlano());
         planosEntity.setDsPlano(plano.getDsPlano());
         planosEntity.setVlPlano(plano.getVlPlano());
-       planosEntity.setIdServicoPlano(plano.getIdServicoPlano());
+        planosEntity.setIdServicoPlano(plano.getIdServicoPlano());
 
         repository.save(planosEntity);
 
