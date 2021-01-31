@@ -6,6 +6,7 @@ import com.rd.projetointegrador.rdservicesapi.entity.LembreteEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LembreteIntervaloEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteIntervaloRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,9 @@ import java.util.Optional;
 @Service
 public class LembreteService {
 
-    @Autowired
-    private LembreteRepository repository;
-    @Autowired
-    private LembreteIntervaloRepository lirepository;
+    @Autowired private LembreteRepository repository;
+    @Autowired private LembreteIntervaloRepository lirepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     public Lembrete getLembrete(BigInteger idLembrete) {
         System.out.println("IdLembrete: " + idLembrete);
@@ -90,18 +90,23 @@ public class LembreteService {
         Optional<LembreteIntervaloEntity> optional = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
         LembreteIntervaloEntity liEntity = optional.get();
 
-        lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
-        lembreteEntity.setLembreteIntervalo(liEntity);
-        lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
-        lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
-        lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
-        lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
-        lembreteEntity.setHrHora(lembrete.getHrHora());
-        lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
+        BigInteger idPaciente = lembrete.getIdPaciente();
+        if(usuarioRepository.existsById(idPaciente)) {
+            lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
+            lembreteEntity.setLembreteIntervalo(liEntity);
+            lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
+            lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
+            lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
+            lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
+            lembreteEntity.setHrHora(lembrete.getHrHora());
+            lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
 
-        repository.save(lembreteEntity);
+            repository.save(lembreteEntity);
 
-        return "Lembrete cadastrado com sucesso";
+            return "Lembrete cadastrado com sucesso";
+        }
+
+            return null;
 
     }
 
@@ -111,7 +116,17 @@ public class LembreteService {
         Optional<LembreteEntity> optional = repository.findById(idLembrete);
         LembreteEntity lembreteEntity = optional.get();
 
-        //TODO: atributos na entity
+        Optional<LembreteIntervaloEntity> optional2 = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
+        LembreteIntervaloEntity liEntity = optional2.get();
+
+        lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
+        lembreteEntity.setLembreteIntervalo(liEntity);
+        lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
+        lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
+        lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
+        lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
+        lembreteEntity.setHrHora(lembrete.getHrHora());
+        lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
 
         lembreteEntity = repository.save(lembreteEntity);
         return "Alteração realizada com sucesso";
