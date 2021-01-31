@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 
 @Entity
-@Data
 @Table(name="TB_PLANOS")
+@Data
     public class PlanosEntity implements Serializable {
 
         @Id
@@ -36,8 +36,8 @@ import java.util.List;
 
         @ManyToMany(cascade = CascadeType.ALL)
         @JoinTable(name = "TB_PLANOS_SERVPLANOS",
-            joinColumns = @JoinColumn(name = "ID_PLANO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_SERVICO_PLANO"))
+                joinColumns = @JoinColumn(name = "ID_PLANO"),
+                inverseJoinColumns = @JoinColumn(name = "ID_SERVICO_PLANO"))
         private List<ServicoPlanoEntity> servicos;
 
 }

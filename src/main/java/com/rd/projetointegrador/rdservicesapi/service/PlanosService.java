@@ -1,13 +1,17 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
+import com.rd.projetointegrador.rdservicesapi.dto.ServicoPlano;
 import com.rd.projetointegrador.rdservicesapi.entity.PlanosEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.ServicoPlanoEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.PlanosRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.ServicoPlanoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +20,8 @@ public class PlanosService {
 
     @Autowired
     private PlanosRepository repository;
+    @Autowired
+    private ServicoPlanoRepository servRepository;
 
     public PlanosEntity getPlano(BigInteger idPlano) {
         System.out.println("IdPlano: " + idPlano);
@@ -55,7 +61,18 @@ public class PlanosService {
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
-        planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
+        //planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
+
+        List<ServicoPlanoEntity> listaServPlano = new ArrayList<>();
+        for(ServicoPlano servico : plano.getServicos()){
+
+            BigInteger idServicoPlano = servico.getIdServicoPlano();
+            Optional<ServicoPlanoEntity> optional = servRepository.findById(idServicoPlano);
+            ServicoPlanoEntity servPlanoEntity = optional.get();
+            listaServPlano.add(servPlanoEntity);
+        }
+
+        planoEntity.setServicos(listaServPlano);
 
         planoEntity = repository.save(planoEntity);
         return "Alteração realizada com sucesso";

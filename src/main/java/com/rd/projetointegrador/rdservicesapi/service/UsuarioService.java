@@ -17,6 +17,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    //TODO: O retorno precisa ser a DTO e não a Entity
     public UsuarioEntity getUsuario(BigInteger idUsuario) {
         System.out.println("IdUsuario: " + idUsuario);
         Optional<UsuarioEntity> optional = repository.findById(idUsuario);
@@ -24,6 +25,7 @@ public class UsuarioService {
 
     }
 
+    //TODO: O retorno precisa ser a DTO e não a Entity
     public List<UsuarioEntity> getUsuarios() {
         return repository.findAll();
 
@@ -35,6 +37,9 @@ public class UsuarioService {
         return repository.findByNrCpf(nrCpf);
     }
 
+    //TODO: usar as entitdades das outras tabelas ao invés de biginteger
+    //TODO: usar getById para procurar o registro nas tabelas dicionário
+    //TODO: inserir entity encontrada na usuarioEntity
     @Transactional
     public String cadastrarUsuario(Usuario usuario){
 
@@ -58,6 +63,10 @@ public class UsuarioService {
 
     }
 
+
+    //TODO: usar as entitdades das outras tabelas ao invés de biginteger
+    //TODO: usar getById para procurar o registro nas tabelas dicionário
+    //TODO: inserir entity encontrada na usuarioEntity
     @Transactional
     public String alterarUsuario(Usuario usuario, BigInteger idUsuario){
 
