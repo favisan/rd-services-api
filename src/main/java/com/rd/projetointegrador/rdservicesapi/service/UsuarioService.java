@@ -1,8 +1,8 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,12 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private GeneroRepository generoRepository;
+
+    @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
 
     //TODO: O retorno precisa ser a DTO e não a Entity
     public UsuarioEntity getUsuario(BigInteger idUsuario) {
@@ -37,7 +43,7 @@ public class UsuarioService {
         return repository.findByNrCpf(nrCpf);
     }
 
-    //TODO: usar as entitdades das outras tabelas ao invés de biginteger
+    //TODO: usar as entitdades das outras tabelas ao invés de biginteger ok
     //TODO: usar getById para procurar o registro nas tabelas dicionário
     //TODO: inserir entity encontrada na usuarioEntity
     @Transactional
@@ -45,10 +51,15 @@ public class UsuarioService {
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
-        usuarioEntity.setIdGenero(usuario.getIdGenero());
+        GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
+        usuarioEntity.setGenero(genero);
+
         usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
         usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
-        usuarioEntity.setIdTipoUsuario(usuario.getIdTipoUsuario());
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
+        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+
         usuarioEntity.setNmUsuario(usuario.getNmUsuario());
         usuarioEntity.setDtNascimento(usuario.getDtNascimento());
         usuarioEntity.setNrCpf(usuario.getNrCpf());
@@ -64,7 +75,7 @@ public class UsuarioService {
     }
 
 
-    //TODO: usar as entitdades das outras tabelas ao invés de biginteger
+    //TODO: usar as entitdades das outras tabelas ao invés de biginteger OK
     //TODO: usar getById para procurar o registro nas tabelas dicionário
     //TODO: inserir entity encontrada na usuarioEntity
     @Transactional
@@ -72,10 +83,15 @@ public class UsuarioService {
 
         UsuarioEntity usuarioEntity = getUsuario(idUsuario);
 
-        usuarioEntity.setIdGenero(usuario.getIdGenero());
+        GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
+        usuarioEntity.setGenero(genero);
+
         usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
         usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
-        usuarioEntity.setIdTipoUsuario(usuario.getIdTipoUsuario());
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
+        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+
         usuarioEntity.setNmUsuario(usuario.getNmUsuario());
         usuarioEntity.setDtNascimento(usuario.getDtNascimento());
         usuarioEntity.setNrCpf(usuario.getNrCpf());
@@ -92,6 +108,5 @@ public class UsuarioService {
         return "Exclusão de usuário realizada com sucesso";
 
     }
-
 
 }

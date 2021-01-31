@@ -12,6 +12,7 @@ import javax.websocket.server.PathParam;
 import java.math.BigInteger;
 import java.util.List;
 
+
 @RestController
 public class UsuarioController {
     @Autowired
@@ -26,7 +27,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario")
-    public ResponseEntity getUsuarios(@PathParam("id") Long id){
+    public ResponseEntity getUsuarios(@PathParam("idUsuario") BigInteger idUsuario){
         List<UsuarioEntity> usuarios = service.getUsuarios();
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
@@ -53,4 +54,3 @@ public class UsuarioController {
         }
     }
 }
-

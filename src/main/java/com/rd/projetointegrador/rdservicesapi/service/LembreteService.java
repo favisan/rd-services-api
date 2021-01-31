@@ -5,12 +5,14 @@ import com.rd.projetointegrador.rdservicesapi.entity.LembreteEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class LembreteService {
     @Autowired
     private LembreteRepository repository;

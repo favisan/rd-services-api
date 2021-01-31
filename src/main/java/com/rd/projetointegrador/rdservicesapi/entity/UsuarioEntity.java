@@ -23,8 +23,9 @@ public class UsuarioEntity implements Serializable {
     @Column (name= "ID_USUARIO")
     BigInteger idUsuario;
 
-    @Column(name="ID_GENERO")
-    BigInteger idGenero;
+    @ManyToOne
+    @JoinColumn(name = "ID_GENERO")
+    private GeneroEntity genero;
 
     @Column(name="ID_ESP_MED")
     BigInteger idEspMedica;
@@ -32,8 +33,9 @@ public class UsuarioEntity implements Serializable {
     @Column(name= "ID_UF_CRM")
     BigInteger idUfCrm;
 
-    @Column(name="ID_TIPO_USUARIO")
-    BigInteger idTipoUsuario;
+    @ManyToOne
+    @JoinColumn(name = "ID_TIPO_USUARIO")
+    private TipoUsuarioEntity tipoUsuario;
 
     @Column(name="NM_USUARIO")
     String nmUsuario;
