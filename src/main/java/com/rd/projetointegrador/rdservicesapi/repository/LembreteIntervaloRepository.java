@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;
 
-public interface LembreteServicoRepository extends JpaRepository<LembreteIntervaloEntity, BigInteger> {
+public interface LembreteIntervaloRepository extends JpaRepository<LembreteIntervaloEntity, BigInteger> {
 }

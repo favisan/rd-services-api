@@ -37,8 +37,8 @@ public class UsuarioEntity implements Serializable {
     @JoinColumn(name = "ID_TIPO_USUARIO")
     private TipoUsuarioEntity tipoUsuario;
 
-    @Column(name="NM_USUARIO")
-    String nmUsuario;
+    @Column(name="NM_NOME")
+    String nmNome;
 
     @Column(name="DT_NASCIMENTO")
     Date dtNascimento;

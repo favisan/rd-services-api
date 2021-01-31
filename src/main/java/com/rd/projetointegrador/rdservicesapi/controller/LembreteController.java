@@ -28,7 +28,7 @@ public class LembreteController {
 
     @GetMapping("/lembrete") //Busca de todos os Lembretes
     public ResponseEntity getLembretes(@PathParam("idLembrete") BigInteger idLembrete) {
-        List<LembreteEntity> Lembretes = service.getLembretes(idLembrete);
+        List<Lembrete> Lembretes = service.getLembretes(idLembrete);
         return ResponseEntity.status(HttpStatus.OK).body(Lembretes);
     }
 

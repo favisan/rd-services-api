@@ -14,13 +14,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class Lembrete {
     private BigInteger idLembrete;
-    private UsuarioEntity paciente;
-    //private LembreteIntervaloEntity lembreteIntervalo;
-    private String lembreteIntervalo;
+    private BigInteger idPaciente;
+    private LembreteIntervalo lembreteIntervalo;
     private String nmTitulo;
     private String dsLembrete;
     private Date dtLembrete;
     private Date dtCriacao;
     private Date hrHora;
     private Integer nrRepeticao;
+
+    //private UsuarioEntity paciente;
+    //private String lembreteIntervalo;
 }
