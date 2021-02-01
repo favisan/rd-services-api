@@ -35,21 +35,6 @@ public class ReceituarioEntity {
     @JoinColumn(name="ID_TIPO_RECEITA")
     private TipoReceitaEntity tipoReceita;
 
-    @Column(name="ID_VIA_ADM")
-    private BigInteger idViaAdm;
-
-    @Column(name="ID_FORMA_FARMAC")
-    private BigInteger idFormaFarmac;
-
-    @Column(name="VL_QUANTIDADE")
-    private Integer vlQuantidade;
-
-    @Column(name="VL_CONCENTRACAO")
-    private Float vlConcentracao;
-
-    @Column(name="DS_ORIENTACOES")
-    private String ds;
-
     @Column(name="DT_EMISSAO")
     private Date dtEmissao;
 
@@ -57,10 +42,10 @@ public class ReceituarioEntity {
     private String dsEndImgAssMed;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "TB_RECEITUARIO_MEDICACAO",
+    @JoinTable(name = "TB_RECEITUARIO_PRESCRICAO",
             joinColumns = @JoinColumn(name = "ID_RECEITUARIO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_MEDICACAO")
+            inverseJoinColumns = @JoinColumn(name = "ID_PRESCRICAO")
     )
-    private List<MedicacaoEntity> medicamentos;
+    private List<PrescricaoEntity> prescricoes;
 
 }

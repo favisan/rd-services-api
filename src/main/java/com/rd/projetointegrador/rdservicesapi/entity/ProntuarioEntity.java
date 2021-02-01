@@ -16,7 +16,7 @@ public class ProntuarioEntity {
     private BigInteger idProntuario;
 
     @Column(name="DS_SUBJETIVO")
-    private String ds;
+    private String dsSubjetivo;
 
     @Column(name="DS_OBJETIVO")
     private String dsObjetivo;

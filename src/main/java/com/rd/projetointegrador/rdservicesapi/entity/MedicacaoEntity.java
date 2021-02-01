@@ -18,7 +18,4 @@ public class MedicacaoEntity {
     @Column(name="DS_MEDICACAO")
     private String dsMedicacao;
 
-//    @ManyToMany(mappedBy = "medicamentos")
-//    private List<ReceituarioEntity> receituarios;
-
 }

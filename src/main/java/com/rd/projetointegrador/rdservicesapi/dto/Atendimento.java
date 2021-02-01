@@ -9,11 +9,11 @@ public class Atendimento {
 
     private BigInteger idAtendimento;
 
-//    private UsuarioEntity paciente;
+//    private Usuario paciente;
 
-//    private UsuarioEntity medico;
+//    private Usuario medico;
 
-    private ProntuarioEntity prontuario;
+    private Prontuario prontuario;
 
     private Float vlPeso;
 

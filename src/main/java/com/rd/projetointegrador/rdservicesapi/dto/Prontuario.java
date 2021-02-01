@@ -8,7 +8,7 @@ public class Prontuario {
 
     private BigInteger idProntuario;
 
-    private String ds;
+    private String dsSubjetivo;
 
     private String dsObjetivo;
 
@@ -18,6 +18,6 @@ public class Prontuario {
 
     private String dsObservacoes;
 
-    private AtendimentoEntity atendimento;
+    private Atendimento atendimento;
 
 }

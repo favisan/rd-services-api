@@ -19,7 +19,7 @@ public class AtendimentoEntity {
 //    @ManyToOne
 //    @JoinColumn(name="ID_PACIENTE")
 //    private UsuarioEntity paciente;
-//
+
 //    @ManyToOne
 //    @JoinColumn(name="ID_MEDICO")
 //    private UsuarioEntity medico;
