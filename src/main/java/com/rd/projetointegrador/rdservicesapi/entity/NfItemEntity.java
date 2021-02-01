@@ -3,6 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,11 +12,12 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "TB_NF_ITEM")
 @Data
+@NoArgsConstructor
 
 public class NfItemEntity implements Serializable  {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_NF")
     private BigInteger idNf;
 
