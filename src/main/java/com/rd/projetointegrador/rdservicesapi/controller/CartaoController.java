@@ -27,7 +27,7 @@ public class CartaoController {
         return ResponseEntity.status(HttpStatus.OK).body(cartoes);
     }
 
-    @GetMapping("/cartao/{idCartao}")
+    @GetMapping ("/cartao/{idCartao}")
     public ResponseEntity getCartao(@PathVariable("idCartao") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getCartao(idCartao));
@@ -39,9 +39,9 @@ public class CartaoController {
     public ResponseEntity cadastrarCartao(@RequestBody Cartao cartao) {
         return ResponseEntity.status(HttpStatus.OK).body(service.cadastrarCartao(cartao));
     }
-/*
+
     @PutMapping("/cartao/{idCartao}") //ALTERAÇÕES
-    public ResponseEntity alterarCartao(@RequestBody Cartao cartao, @PathVariable("id") BigInteger idCartao) {
+    public ResponseEntity alterarCartao(@RequestBody Cartao cartao, @PathVariable("idCartao") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK).body(service.alterarCartao(cartao, idCartao));
     }
 
@@ -49,6 +49,6 @@ public class CartaoController {
     public ResponseEntity excluirCartao(@PathVariable("id") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK).body(service.excluirCartao(idCartao));
     }
-*/
+
 
 }

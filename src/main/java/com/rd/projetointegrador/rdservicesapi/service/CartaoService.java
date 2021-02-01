@@ -64,7 +64,7 @@ public class CartaoService {
         return "Cartao Cadastrado com sucesso";
 
     }
-/*
+
     @Transactional
     public String alterarCartao(Cartao cartao, BigInteger idCartao) {
 
@@ -74,8 +74,6 @@ public class CartaoService {
 
         BigInteger usuarioId = cartao.getIdUsuario();
         UsuarioEntity usuarioEntity = usuarioRepository.findById(usuarioId).get();
-
-
         cartaoEntity.setNrCartao(cartao.getNrCartao());
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
         cartaoEntity.setDtValidade(cartao.getDtValidade());
@@ -93,6 +91,6 @@ public class CartaoService {
 
     }
 
-*/
+
 
 }
