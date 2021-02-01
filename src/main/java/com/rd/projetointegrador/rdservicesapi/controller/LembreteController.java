@@ -28,13 +28,17 @@ public class LembreteController {
 
     @GetMapping("/lembrete") //Busca de todos os Lembretes
     public ResponseEntity getLembretes(@PathParam("idLembrete") BigInteger idLembrete) {
-        List<LembreteEntity> Lembretes = service.getLembretes(idLembrete);
+        List<Lembrete> Lembretes = service.getLembretes(idLembrete);
         return ResponseEntity.status(HttpStatus.OK).body(Lembretes);
     }
 
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete
     public ResponseEntity cadastrarLembrete(@RequestBody Lembrete Lembrete) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarLembrete(Lembrete));
+        String retorno = service.cadastrarLembrete(Lembrete);
+        if (retorno == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar Lembrete.");
+        }
+            return ResponseEntity.status(HttpStatus.CREATED).body(retorno);
 
     }
 

@@ -23,10 +23,15 @@ public class LembreteEntity implements Serializable {
     @Column(name="ID_LEMBRETE")
     private BigInteger idLembrete;
 
-    @JoinColumn (name="ID_PACIENTE")
-    private UsuarioEntity paciente;
+//    @ManyToOne
+//    @JoinColumn (name="ID_PACIENTE")
+//    private UsuarioEntity paciente;
 
-    @JoinColumn (name="ID_PACIENTE")
+    @Column(name="ID_PACIENTE")
+    private BigInteger idPaciente;
+
+    @ManyToOne
+    @JoinColumn (name="ID_LEMBRETE_INTERVALO")
     private LembreteIntervaloEntity lembreteIntervalo;
 
     @Column(name="NM_TITULO")

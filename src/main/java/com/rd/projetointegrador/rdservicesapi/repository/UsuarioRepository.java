@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, BigInteger> {
 
-    List<UsuarioEntity> findByNmUsuario(String nmUsuario);
+    List<UsuarioEntity> findByNmNome(String nmNome);
 
     List<UsuarioEntity> findByNrCpf(String nrCpf);
 }

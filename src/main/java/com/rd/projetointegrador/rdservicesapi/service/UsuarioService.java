@@ -37,7 +37,7 @@ public class UsuarioService {
 
     }
     public List<UsuarioEntity> consultarPorNome(String nmUsuario) {
-        return repository.findByNmUsuario(nmUsuario);
+        return repository.findByNmNome(nmUsuario);
     }
     public List<UsuarioEntity> consultarPorCpf(String nrCpf){
         return repository.findByNrCpf(nrCpf);
@@ -60,7 +60,7 @@ public class UsuarioService {
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
         usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
 
-        usuarioEntity.setNmUsuario(usuario.getNmUsuario());
+        usuarioEntity.setNmNome(usuario.getNmUsuario());
         usuarioEntity.setDtNascimento(usuario.getDtNascimento());
         usuarioEntity.setNrCpf(usuario.getNrCpf());
         usuarioEntity.setNrCrm(usuario.getNrCrm());
@@ -92,7 +92,7 @@ public class UsuarioService {
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
         usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
 
-        usuarioEntity.setNmUsuario(usuario.getNmUsuario());
+        usuarioEntity.setNmNome(usuario.getNmUsuario());
         usuarioEntity.setDtNascimento(usuario.getDtNascimento());
         usuarioEntity.setNrCpf(usuario.getNrCpf());
         usuarioEntity.setNrCrm(usuario.getNrCrm());
