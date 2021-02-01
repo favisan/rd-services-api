@@ -24,7 +24,7 @@ public class CartaoEntity implements  Serializable{
     private BigInteger idCartao;
 
     @ManyToOne
-    @JoinColumn(name = "ID_USUARIO")
+    @JoinColumn(name = "ID_USUARIO")// FK TB USUÁRIO
     private UsuarioEntity idUsuario;
 
     @Column(name ="NR_CARTAO")
@@ -40,6 +40,4 @@ public class CartaoEntity implements  Serializable{
     private Date dtEmissao;
 
 
-    @Column (name ="ID_PACIENTE")//FK TB_USUARIO. ID_USUARIO COM TIPO CLIENTE
-    private BigInteger IdPaciente;
 }

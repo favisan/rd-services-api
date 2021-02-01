@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -18,5 +19,5 @@ public class Cartao {
     private String codSeguranca;
     private Date dtValidade;
     private Date dtEmissao;
-    private BigInteger IdPaciente;
+
 }
