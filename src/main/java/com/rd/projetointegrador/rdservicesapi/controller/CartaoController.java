@@ -27,25 +27,45 @@ public class CartaoController {
         return ResponseEntity.status(HttpStatus.OK).body(cartoes);
     }
 
+<<<<<<< HEAD
     @GetMapping("/cartao/{idCartao}")
+=======
+    @GetMapping ("/cartao/{idCartao}")
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
     public ResponseEntity getCartao(@PathVariable("idCartao") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getCartao(idCartao));
     }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
     @PostMapping("/cartao") //CADASTRO
     public ResponseEntity cadastrarCartao(@RequestBody Cartao cartao) {
         return ResponseEntity.status(HttpStatus.OK).body(service.cadastrarCartao(cartao));
     }
+<<<<<<< HEAD
 /*
     @PutMapping("/cartao/{idCartao}") //ALTERAÇÕES
     public ResponseEntity alterarCartao(@RequestBody Cartao cartao, @PathVariable("id") BigInteger idCartao) {
+=======
+
+    @PutMapping("/cartao/{idCartao}") //ALTERAÇÕES
+    public ResponseEntity alterarCartao(@RequestBody Cartao cartao, @PathVariable("idCartao") BigInteger idCartao) {
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
         return ResponseEntity.status(HttpStatus.OK).body(service.alterarCartao(cartao, idCartao));
     }
     @DeleteMapping("/cartao/{id}") //DELETAR
     public ResponseEntity excluirCartao(@PathVariable("id") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK).body(service.excluirCartao(idCartao));
     }
+<<<<<<< HEAD
 */
 }
+=======
+
+
+}
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887

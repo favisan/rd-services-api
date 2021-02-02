@@ -82,6 +82,11 @@ public class CartaoService {
         repository.deleteById(idCartao);
         return "Exclusão do cartão realizada com sucesso";
     }
+<<<<<<< HEAD
 */
+=======
+
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
+
 
 }
