@@ -18,5 +18,5 @@ public class Cartao {
     private String codSeguranca;
     private Date dtValidade;
     private Date dtEmissao;
-    private BigInteger IdPaciente;
+    private BigInteger idPaciente;
 }
