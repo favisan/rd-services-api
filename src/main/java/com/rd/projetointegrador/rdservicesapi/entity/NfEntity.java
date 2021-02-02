@@ -2,10 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.format.DateTimeFormatter;
 
@@ -15,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class NfEntity {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //na tb nao esta como auto incremento
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_NF", nullable = false)
     private BigInteger idNf;
 

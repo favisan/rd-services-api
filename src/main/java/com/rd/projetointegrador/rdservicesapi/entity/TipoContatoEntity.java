@@ -1,9 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
@@ -11,7 +8,7 @@ import java.math.BigInteger;
 public class TipoContatoEntity {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //na tb nao esta como auto incremento
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_TIPO_CONTATO")
     private BigInteger idTipoContato;
 
