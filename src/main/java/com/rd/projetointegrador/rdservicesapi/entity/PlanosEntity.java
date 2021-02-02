@@ -3,6 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,6 +36,7 @@ import java.util.List;
         private BigInteger idServicoPlano;
 
         @ManyToMany(cascade = CascadeType.ALL)
+        @Cascade(value=org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
         @JoinTable(name = "TB_PLANOS_SERVPLANOS",
                 joinColumns = @JoinColumn(name = "ID_PLANO"),
                 inverseJoinColumns = @JoinColumn(name = "ID_SERVICO_PLANO"))

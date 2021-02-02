@@ -18,21 +18,47 @@ import java.util.Optional;
 @Service
 public class PlanosService {
 
-    @Autowired
-    private PlanosRepository repository;
-    @Autowired
-    private ServicoPlanoRepository servRepository;
+    @Autowired private PlanosRepository repository;
+    @Autowired private ServicoPlanoRepository servRepository;
 
     public PlanosEntity getPlano(BigInteger idPlano) {
         System.out.println("IdPlano: " + idPlano);
         Optional<PlanosEntity> optional = repository.findById(idPlano);
         return optional.get();
-
     }
 
-    public List<PlanosEntity> getPlanos(BigInteger idPlano) {
+    public List<PlanosEntity> getPlanos() {
         return repository.findAll();
+    }
 
+    public List<Planos> getPlanosDTO() {
+        List<PlanosEntity> planosEntities = getPlanos();
+
+        //lista
+        List<Planos> planos = new ArrayList<>();
+
+        //DTO conversões
+        for(PlanosEntity planoEntity: planosEntities) {
+            Planos plano = new Planos();
+            plano.setIdPlano(planoEntity.getIdPlano());
+            plano.setDsPlano(planoEntity.getDsPlano());
+            plano.setVlPlano(planoEntity.getVlPlano());
+            plano.setNmPlano(planoEntity.getNmPlano());
+
+            List<ServicoPlano> servsPlano = new ArrayList<>();
+            for(ServicoPlanoEntity servPlanoEntity: planoEntity.getServicos()){
+                ServicoPlano servPlano = new ServicoPlano();
+                servPlano.setIdServicoPlano(servPlanoEntity.getIdServicoPlano());
+                servPlano.setDsServico(servPlano.getDsServico());
+
+                servsPlano.add(servPlano);
+            }
+
+            plano.setServicos(servsPlano);
+            planos.add(plano);
+        }
+
+        return planos;
     }
 
     @Transactional
