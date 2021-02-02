@@ -73,11 +73,11 @@ public class SolicExameService {
         return "Cadastro realizado com sucesso!";
     }
 
-    public List<SolicExame> buscarUsuarioId(BigInteger idPaciente) {
+    public List<SolicExame> buscarUsuarioId(BigInteger idProntuario) {
 
 
-      UsuarioEntity user = usuarioRepository.findById(idPaciente).get();
-      List<SolicExameEntity> solicitacoes = repository.findByPaciente(user);
+      ProntuarioEntity prontuario = prontuarioRepository.findById(idProntuario).get();
+      List<SolicExameEntity> solicitacoes = repository.findByProntuario(prontuario);
 
         List<SolicExame> lista = new ArrayList<>();
 
