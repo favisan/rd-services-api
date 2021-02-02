@@ -26,6 +26,7 @@ public class UsuarioController {
 
     }
 
+
     @GetMapping("/usuario")
     public ResponseEntity getUsuarios(@PathParam("idUsuario") BigInteger idUsuario){
         List<UsuarioEntity> usuarios = service.getUsuarios();

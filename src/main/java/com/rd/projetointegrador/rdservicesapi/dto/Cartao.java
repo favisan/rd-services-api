@@ -19,5 +19,9 @@ public class Cartao {
     private String codSeguranca;
     private Date dtValidade;
     private Date dtEmissao;
+<<<<<<< HEAD
+    private BigInteger idPaciente;
+=======
 
+>>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
 }

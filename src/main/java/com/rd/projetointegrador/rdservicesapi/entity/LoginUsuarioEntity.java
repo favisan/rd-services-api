@@ -26,4 +26,8 @@ public class LoginUsuarioEntity {
 
     @Column(name="DS_SENHA")
     private String dsSenha;
+
+    @Column(name="DS_EMAIL")
+    private String dsEmail;
+
 }
