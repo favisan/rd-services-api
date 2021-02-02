@@ -16,11 +16,7 @@ import java.math.BigInteger;
 public class LoginUsuarioEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_ACESSO")
-    private BigInteger idAcesso;
-
-   @ManyToOne
+   @OneToOne
    @JoinColumn (name="ID_USUARIO")
    private UsuarioEntity usuario;
 

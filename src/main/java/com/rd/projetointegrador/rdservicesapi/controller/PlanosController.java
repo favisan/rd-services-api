@@ -16,8 +16,7 @@ import java.util.List;
 @RestController
 public class PlanosController {
 
-    @Autowired
-    PlanosService service;
+    @Autowired PlanosService service;
 
     @GetMapping("/planos/{idPlano}") // BUSCA POR ID
     public ResponseEntity getPlano(@PathVariable("idPlano") BigInteger idPlano) {
@@ -27,8 +26,8 @@ public class PlanosController {
     }
 
     @GetMapping("/planos") //Busca de todos os Planos
-    public ResponseEntity getPlanos(@PathParam("idPlano") BigInteger idPlano) {
-        List<PlanosEntity> planos = service.getPlanos(idPlano);
+    public ResponseEntity getPlanos() {
+        List<PlanosEntity> planos = service.getPlanos();
         return ResponseEntity.status(HttpStatus.OK).body(planos);
     }
 

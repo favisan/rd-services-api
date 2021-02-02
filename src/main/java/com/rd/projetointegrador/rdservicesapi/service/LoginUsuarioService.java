@@ -22,13 +22,13 @@ public class LoginUsuarioService {
     private UsuarioRepository usuarioRepository;
 
 
-    public LoginUsuarioEntity getAcesso(BigInteger idAcesso) {
-        System.out.println("IdAcesso: " + idAcesso);
-        Optional<LoginUsuarioEntity> optional = repository.findById(idAcesso);
+    public LoginUsuarioEntity getAcesso(BigInteger idUsuario) {
+        System.out.println("IdAcesso: " + idUsuario);
+        Optional<LoginUsuarioEntity> optional = repository.findById(idUsuario);
         return optional.get();
 
     }
-    public List<LoginUsuarioEntity> getAcessos(BigInteger idAcesso) {
+    public List<LoginUsuarioEntity> getAcessos() {
         return repository.findAll();
 
     }
@@ -54,8 +54,9 @@ public class LoginUsuarioService {
     }
 
     @Transactional
-    public String alterarAcesso(LoginUsuario login, BigInteger idAcesso){
+    public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
 
+        //TODO
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
 
         loginUsuarioEntity.setDsEmail(login.getDsEmail());
@@ -69,8 +70,8 @@ public class LoginUsuarioService {
     }
 
     //Confirmar se haverá ou não exclusão de acessos ou apenas bloqueios
-    public String excluirAcesso(BigInteger idAcesso){
-        repository.deleteById(idAcesso);
+    public String excluirAcesso(BigInteger idUsuario){
+        repository.deleteById(idUsuario);
         return "Exclusão de login realizada com sucesso";
 
     }

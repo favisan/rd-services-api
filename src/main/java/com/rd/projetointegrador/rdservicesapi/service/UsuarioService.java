@@ -8,30 +8,80 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository repository;
+    //repositories
+    @Autowired private UsuarioRepository repository;
+    @Autowired private GeneroRepository generoRepository;
+    @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
 
-    @Autowired
-    private GeneroRepository generoRepository;
+    //MÉTODO: conversão de DTO para Entity
+    public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
 
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+        GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
+        usuarioEntity.setGenero(genero);
 
-    //TODO: O retorno precisa ser a DTO e não a Entity
+        //TODO: objeto Esp Medica
+        usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
+
+        //TODO: objeto Uf
+        usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
+        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+
+        usuarioEntity.setNmNome(usuario.getNmUsuario());
+        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
+        usuarioEntity.setNrCpf(usuario.getNrCpf());
+        usuarioEntity.setNrCrm(usuario.getNrCrm());
+        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+
+        return usuarioEntity;
+    }
+
+    //MÉTODO: conversão de Entity para DTO
+    public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
+
+        usuario.setIdUsuario(usuarioEntity.getIdUsuario());
+        usuario.setIdGenero(usuarioEntity.getGenero().getIdGenero());
+        usuario.setIdEspMedica(usuarioEntity.getIdEspMedica());
+        usuario.setIdUfCrm(usuarioEntity.getIdUfCrm());
+        usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
+        usuario.setNmUsuario(usuarioEntity.getNmNome());
+        usuario.setDtNascimento(usuarioEntity.getDtNascimento());
+        usuario.setNrCpf(usuarioEntity.getNrCpf());
+        usuario.setNrCrm(usuarioEntity.getNrCrm());
+        usuario.setDsEndImg(usuarioEntity.getDsEndImg());
+
+        return usuario;
+    }
+
+    //MÉTODO: conversão ListaDTO para ListaEntity
+    public List<UsuarioEntity> conversaoUsuariosEntity(List<Usuario> usuarios, List<UsuarioEntity> usuariosEntity) {
+
+        for(Usuario usuario: usuarios) {
+            UsuarioEntity usuarioEntity = new UsuarioEntity();
+            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+
+            usuariosEntity.add(usuarioEntity);
+        }
+
+        return usuariosEntity;
+    }
+
+    //MÉTODO: conversão listaEntity para ListaDTO
+
+    //MÉTODOS RETORNANDO A ENTITY
     public UsuarioEntity getUsuario(BigInteger idUsuario) {
         System.out.println("IdUsuario: " + idUsuario);
         Optional<UsuarioEntity> optional = repository.findById(idUsuario);
         return optional.get();
-
     }
-
-    //TODO: O retorno precisa ser a DTO e não a Entity
     public List<UsuarioEntity> getUsuarios() {
         return repository.findAll();
 
@@ -43,60 +93,30 @@ public class UsuarioService {
         return repository.findByNrCpf(nrCpf);
     }
 
-    //TODO: usar as entitdades das outras tabelas ao invés de biginteger ok
-    //TODO: usar getById para procurar o registro nas tabelas dicionário
-    //TODO: inserir entity encontrada na usuarioEntity
+    //MÉTODOS RETORNANDO A DTO
+//    public Usuario getUsuarioDTO() {
+//
+//    }
+//    public List<Usuario> getUsuariosDTO() {
+//
+//    }
+
     @Transactional
     public String cadastrarUsuario(Usuario usuario){
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
-        GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
-        usuarioEntity.setGenero(genero);
-
-        usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
-        usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
-
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
-        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
-
-        usuarioEntity.setNmNome(usuario.getNmUsuario());
-        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
-        usuarioEntity.setNrCpf(usuario.getNrCpf());
-        usuarioEntity.setNrCrm(usuario.getNrCrm());
-        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
-
+        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
         repository.save(usuarioEntity);
 
-        System.out.println(usuario.getIdUsuario() + " . " + usuario.getIdGenero() + " . " +usuario.getIdEspMedica() + " . " + usuario.getIdUfCrm()+ " . " + usuario.getIdTipoUsuario()+ " . " + usuario.getDtNascimento()+ " . " + usuario.getNrCpf()+ " . " + usuario.getNrCrm()+ " . " + usuario.getDsEndImg());
-
         return "Usuário cadastrado com sucesso";
-
     }
 
-
-    //TODO: usar as entitdades das outras tabelas ao invés de biginteger OK
-    //TODO: usar getById para procurar o registro nas tabelas dicionário
-    //TODO: inserir entity encontrada na usuarioEntity
     @Transactional
     public String alterarUsuario(Usuario usuario, BigInteger idUsuario){
 
         UsuarioEntity usuarioEntity = getUsuario(idUsuario);
-
-        GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
-        usuarioEntity.setGenero(genero);
-
-        usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
-        usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
-
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
-        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
-
-        usuarioEntity.setNmNome(usuario.getNmUsuario());
-        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
-        usuarioEntity.setNrCpf(usuario.getNrCpf());
-        usuarioEntity.setNrCrm(usuario.getNrCrm());
-        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
 
         usuarioEntity = repository.save(usuarioEntity);
         return "Alteração realizada com sucesso";

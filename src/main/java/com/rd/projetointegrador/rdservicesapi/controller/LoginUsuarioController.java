@@ -18,16 +18,16 @@ public class LoginUsuarioController {
     @Autowired
     LoginUsuarioService service;
 
-    @GetMapping("/login/{idAcesso}") // BUSCA POR ID
-    public ResponseEntity getAcesso(@PathVariable("idAcesso") BigInteger idAcesso) {
+    @GetMapping("/login/{idUsuario}") // BUSCA POR ID
+    public ResponseEntity getAcesso(@PathVariable("idUsuario") BigInteger idUsuario) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getAcesso(idAcesso));
+                .body(service.getAcesso(idUsuario));
 
     }
 
     @GetMapping("/login") //Busca de todos os logins
-    public ResponseEntity getAcessos(@PathParam("idAcesso") BigInteger idAcesso) {
-        List<LoginUsuarioEntity> acessos = service.getAcessos(idAcesso);
+    public ResponseEntity getAcessos() {
+        List<LoginUsuarioEntity> acessos = service.getAcessos();
         return ResponseEntity.status(HttpStatus.OK).body(acessos);
     }
 
@@ -37,18 +37,18 @@ public class LoginUsuarioController {
 
     }
 
-    @PutMapping("/login/{idAcesso}") // Alterar Login
-    public ResponseEntity alterarAcesso(@RequestBody LoginUsuario login, @PathVariable("idAcesso") BigInteger idAcesso) {
-        String retorno = service.alterarAcesso(login, idAcesso);
+    @PutMapping("/login/{idUsuario}") // Alterar Login
+    public ResponseEntity alterarAcesso(@RequestBody LoginUsuario login, @PathVariable("idUsuario") BigInteger idUsuario) {
+        String retorno = service.alterarAcesso(login, idUsuario);
         return ResponseEntity.ok().body(retorno);
 
     }
 
     //Confirmar se haverá ou não exclusão de acesso
-    @DeleteMapping("/login/{idAcesso}") //Excluir Login
-    public ResponseEntity excluirAcesso(@PathVariable("idAcesso") BigInteger idAcesso) {
+    @DeleteMapping("/login/{idUsuario}") //Excluir Login
+    public ResponseEntity excluirAcesso(@PathVariable("idUsuario") BigInteger idUsuario) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.excluirAcesso(idAcesso));
+            return ResponseEntity.status(HttpStatus.OK).body(service.excluirAcesso(idUsuario));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir login");
         }

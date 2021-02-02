@@ -27,8 +27,8 @@ public class ServicoPlanoController {
     }
 
     @GetMapping("/servicoPlano") //Busca de todos os Servicos
-    public ResponseEntity getServicosPlano(@PathParam("idServicoPlano") BigInteger idServicoPlano) {
-        List<ServicoPlanoEntity> servicos = service.getServicosPlano(idServicoPlano);
+    public ResponseEntity getServicosPlano() {
+        List<ServicoPlanoEntity> servicos = service.getServicosPlano();
         return ResponseEntity.status(HttpStatus.OK).body(servicos);
     }
 
