@@ -1,7 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Prescricao;
-import com.rd.projetointegrador.rdservicesapi.dto.Receituario;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.ProntuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.ReceituarioRepository;
@@ -9,6 +8,7 @@ import com.rd.projetointegrador.rdservicesapi.repository.TipoReceitaRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -33,6 +33,72 @@ public class ReceituarioService {
 
         ReceituarioEntity receituario = receituarioRepository.findById(idReceituario).get();
         return receituario;
+
+    }
+
+    public List<Receituario> listarReceituarioPorIdProntuario(BigInteger idProntuario){
+
+        ProntuarioEntity prontuarioEntity= prontuarioRepository.findById(idProntuario).get();
+        List <ReceituarioEntity> receituariosEntity = receituarioRepository.findByProntuario(prontuarioEntity);
+
+        List<Receituario> receituarios = new ArrayList<>();
+
+        for(ReceituarioEntity receituarioEntity : receituariosEntity) {
+            Receituario receituario = new Receituario();
+            receituario.setIdReceituario(receituarioEntity.getIdReceituario());
+
+            Usuario paciente = new Usuario();
+            paciente.setIdUsuario(receituarioEntity.getPaciente().getIdUsuario());
+            paciente.setNome(receituarioEntity.getPaciente().getNome());
+
+            receituario.setPaciente(paciente);
+
+            Prontuario prontuario = new Prontuario();
+            prontuario.setIdProntuario(receituarioEntity.getProntuario().getIdProntuario());
+            prontuario.setDsSubjetivo(receituarioEntity.getProntuario().getDsSubjetivo());
+            prontuario.setDsObjetivo(receituarioEntity.getProntuario().getDsObjetivo());
+            prontuario.setDsAvaliacao(receituarioEntity.getProntuario().getDsAvaliacao());
+            prontuario.setDsPlano(receituarioEntity.getProntuario().getDsPlano());
+            prontuario.setDsObservacoes(receituarioEntity.getProntuario().getDsObservacoes());
+
+            receituario.setProntuario(prontuario);
+
+            Usuario medico = new Usuario();
+            medico.setIdUsuario(receituarioEntity.getMedico().getIdUsuario());
+            medico.setNome(receituarioEntity.getMedico().getNome());
+
+            receituario.setMedico(medico);
+
+            TipoReceita tipoReceita = new TipoReceita();
+            tipoReceita.setIdTipoReceita(receituarioEntity.getTipoReceita().getIdTipoReceita());
+            tipoReceita.setDsTipoReceita(receituarioEntity.getTipoReceita().getDsTipoReceita());
+
+            receituario.setTipoReceita(tipoReceita);
+
+            receituario.setDtEmissao(receituarioEntity.getDtEmissao());
+            receituario.setDsEndImgAssMed(receituarioEntity.getDsEndImgAssMed());
+
+            List<Prescricao> prescricoes = new ArrayList<>();
+
+            for (PrescricaoEntity prescricaoEntity : receituarioEntity.getPrescricoes()) {
+                Prescricao prescricao = new Prescricao();
+                prescricao.setIdPrescricao(prescricaoEntity.getIdPrescricao());
+                prescricao.setIdMedicacao(prescricaoEntity.getIdMedicacao());
+                prescricao.setIdFormaFarmac(prescricaoEntity.getIdFormaFarmac());
+                prescricao.setIdViaAdm(prescricaoEntity.getIdViaAdm());
+                prescricao.setVlQuantidade(prescricaoEntity.getVlQuantidade());
+                prescricao.setVlConcentracao(prescricaoEntity.getVlConcentracao());
+                prescricao.setDsOrientacoes(prescricaoEntity.getDsOrientacoes());
+
+                prescricoes.add(prescricao);
+            }
+
+            receituario.setPrescricoes(prescricoes);
+
+            receituarios.add(receituario);
+        }
+
+        return receituarios;
 
     }
 
