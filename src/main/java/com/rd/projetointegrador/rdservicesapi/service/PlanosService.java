@@ -20,6 +20,52 @@ public class PlanosService {
 
     @Autowired private PlanosRepository repository;
     @Autowired private ServicoPlanoRepository servRepository;
+    @Autowired private ServicoPlanoService servPlanService;
+
+    //EntityToDto
+    public Planos conversaoPlanoDTO(PlanosEntity planoEntity, Planos plano) {
+        plano.setIdPlano(planoEntity.getIdPlano());
+        plano.setNmPlano(planoEntity.getNmPlano());
+        plano.setDsPlano(planoEntity.getDsPlano());
+        plano.setVlPlano(planoEntity.getVlPlano());
+
+        return plano;
+    }
+
+    // DtoToEntity
+    public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
+        planoEntity.setIdPlano(plano.getIdPlano());
+        planoEntity.setNmPlano(plano.getNmPlano());
+        planoEntity.setDsPlano(plano.getDsPlano());
+        planoEntity.setVlPlano(plano.getVlPlano());
+
+        return planoEntity;
+    }
+
+    public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos) {
+
+        for (PlanosEntity planoEntity : planosEntities) {
+            Planos plano = new Planos();
+            plano.setIdPlano(planoEntity.getIdPlano());
+            plano.setDsPlano(planoEntity.getDsPlano());
+            plano.setVlPlano(planoEntity.getVlPlano());
+            plano.setNmPlano(planoEntity.getNmPlano());
+
+            List<ServicoPlano> servsPlanoDTO = servPlanService.servicosPlanoDTO(planoEntity.getServicos());
+
+            for (ServicoPlanoEntity servPlanoEntity : planoEntity.getServicos()) {
+                ServicoPlano servPlano = new ServicoPlano();
+                servPlano.setIdServicoPlano(servPlanoEntity.getIdServicoPlano());
+                servPlano.setDsServico(servPlano.getDsServico());
+
+                servsPlanoDTO.add(servPlano);
+            }
+
+            plano.setServicos(servsPlanoDTO);
+            planos.add(plano);
+        }
+        return planos;
+    }
 
     public PlanosEntity getPlano(BigInteger idPlano) {
         System.out.println("IdPlano: " + idPlano);
@@ -30,36 +76,13 @@ public class PlanosService {
     public List<PlanosEntity> getPlanos() {
         return repository.findAll();
     }
+        public List<Planos> getPlanosDTO() {
+            List<PlanosEntity> planosEntities = getPlanos();
+            List<Planos> planos = new ArrayList<>();
+            planos = conversaoPlanosDTO(planosEntities, planos);
 
-    public List<Planos> getPlanosDTO() {
-        List<PlanosEntity> planosEntities = getPlanos();
-
-        //lista
-        List<Planos> planos = new ArrayList<>();
-
-        //DTO conversões
-        for(PlanosEntity planoEntity: planosEntities) {
-            Planos plano = new Planos();
-            plano.setIdPlano(planoEntity.getIdPlano());
-            plano.setDsPlano(planoEntity.getDsPlano());
-            plano.setVlPlano(planoEntity.getVlPlano());
-            plano.setNmPlano(planoEntity.getNmPlano());
-
-            List<ServicoPlano> servsPlano = new ArrayList<>();
-            for(ServicoPlanoEntity servPlanoEntity: planoEntity.getServicos()){
-                ServicoPlano servPlano = new ServicoPlano();
-                servPlano.setIdServicoPlano(servPlanoEntity.getIdServicoPlano());
-                servPlano.setDsServico(servPlano.getDsServico());
-
-                servsPlano.add(servPlano);
-            }
-
-            plano.setServicos(servsPlano);
-            planos.add(plano);
+            return planos;
         }
-
-        return planos;
-    }
 
     @Transactional
     public String cadastrarPlano(Planos plano){
