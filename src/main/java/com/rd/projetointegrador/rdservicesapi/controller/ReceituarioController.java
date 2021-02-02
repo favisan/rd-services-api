@@ -17,15 +17,11 @@ public class ReceituarioController {
 
     @GetMapping("/receituario/{idReceituario}")
     public ResponseEntity exibirReceituarioById(@PathVariable("idReceituario") BigInteger idReceituario) {
-
         return ResponseEntity.status(HttpStatus.OK).body(receituarioService.exibirReceituarioPorId(idReceituario));
-
     }
 
     @PostMapping("/receituario")
     public ResponseEntity inserirReceituario(@RequestBody Receituario receituario) {
-
         return ResponseEntity.status(HttpStatus.CREATED).body(receituarioService.inserirReceituario(receituario));
-
     }
 }

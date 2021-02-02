@@ -4,7 +4,6 @@ import com.rd.projetointegrador.rdservicesapi.entity.TipoExameEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.TipoExameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

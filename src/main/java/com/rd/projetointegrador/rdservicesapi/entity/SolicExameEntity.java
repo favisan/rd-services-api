@@ -1,9 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;

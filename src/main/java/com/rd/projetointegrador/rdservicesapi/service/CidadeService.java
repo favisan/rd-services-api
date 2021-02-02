@@ -5,9 +5,9 @@ import com.rd.projetointegrador.rdservicesapi.dto.Uf;
 import com.rd.projetointegrador.rdservicesapi.entity.CidadeEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UfEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.CidadeRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.UfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,9 @@ public class CidadeService {
 
     @Autowired
     private CidadeRepository repository;
+
+    @Autowired
+    private UfRepository ufRepository;
 
     public Cidade buscarCidadeId(BigInteger id) {
         System.out.println("ID: " + id);
@@ -63,53 +66,20 @@ public class CidadeService {
         return cidades;
     }
 
+    public List<Cidade> buscarCidadePorUf(BigInteger idUf) {
 
-    public String cadastrarCidade(Cidade cidade) {
-        CidadeEntity entity = new CidadeEntity();
-        entity.setDsCidade(cidade.getDsCidade());
-        entity.setCdCidadeIbge(cidade.getCdCidadeIbge());
+        UfEntity ufEntity = ufRepository.findById(idUf).get();
+        List<CidadeEntity> cidades = repository.findByIdUf(ufEntity);
 
-        UfEntity ufEntity = new UfEntity();
-        Uf uf = cidade.getUf();
-        ufEntity.setIdUf(uf.getIdUf());
-        ufEntity.setDsUf(uf.getDsUf());
+        List<Cidade> cidade = new ArrayList<>();
 
-        entity.setIdUf(ufEntity);
+        for (CidadeEntity cid : cidades) {
+            Cidade c = new Cidade();
+            c.setIdCidade(cid.getIdCidade());
+            c.setDsCidade(cid.getDsCidade());
 
-        repository.save(entity);
-
-        return "Cadastro realizado com sucesso!";
+            cidade.add(c);
+        }
+        return cidade;
     }
-
-
-    public String alterarCidade(Cidade cidade, BigInteger id) {
-        CidadeEntity entity = repository.findById(id).get();
-        entity.setDsCidade(cidade.getDsCidade());
-        entity.setCdCidadeIbge(cidade.getCdCidadeIbge());
-
-        UfEntity ufEntity = new UfEntity();
-        Uf uf = cidade.getUf();
-
-        ufEntity.setIdUf(uf.getIdUf());
-        ufEntity.setDsUf(uf.getDsUf());
-
-        entity.setIdUf(ufEntity);
-
-        repository.save(entity);
-
-        return "Alteração realizada com sucesso!";
-    }
-
-
-    public String excluirCidade(BigInteger id) {
-        System.out.println("ID: " + id);
-        repository.deleteById(id);
-        return "Exclusão do ID " + id + " realizada com sucesso!";
-    }
-
-
-    public List<CidadeEntity> consultarPorNome(String dsCidade) {
-        return repository.findByDsCidade(dsCidade);
-    }
-
 }
