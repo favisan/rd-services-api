@@ -24,6 +24,17 @@ public class GeneroService {
         return genero;
 
     }
+
+    //ListEntityToListDto
+    public List<Genero> conversaoGenerosDTO(List<GeneroEntity> generosEntities, List<Genero> generos){
+        for(GeneroEntity generoEntity : generosEntities){
+            Genero genero = new Genero();
+            genero= conversaoGeneroDTO(generoEntity,genero);
+            generos.add(genero);
+        }
+        return generos;
+    }
+
     //DtoToEntity
     public GeneroEntity conversaoGeneroEntity(Genero genero, GeneroEntity generoEntity) {
         generoEntity.setIdGenero(genero.getIdGenero());
@@ -31,6 +42,15 @@ public class GeneroService {
 
         return generoEntity;
 
+    }
+    //ListDtoToListEntity
+    public List<GeneroEntity> conversaoGenerosEntities(List<Genero> generos,List<GeneroEntity> generosEntities){
+      for(Genero genero : generos){
+          GeneroEntity generoEntity= new GeneroEntity();
+          generoEntity= conversaoGeneroEntity(genero,generoEntity);
+          generosEntities.add(generoEntity);
+      }
+        return generosEntities;
     }
 
     public GeneroEntity getGenero(BigInteger idGenero) {

@@ -1,7 +1,9 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.Genero;
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.dto.ServicoPlano;
+import com.rd.projetointegrador.rdservicesapi.entity.GeneroEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.PlanosEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.ServicoPlanoEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.PlanosRepository;
@@ -31,6 +33,15 @@ public class PlanosService {
 
         return plano;
     }
+    //ListEntityToListDTO
+    public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos){
+        for(PlanosEntity planoEntity : planosEntities){
+            Planos plano = new Planos();
+            plano = conversaoPlanoDTO(planoEntity,plano);
+            planos.add(plano);
+        }
+        return planos;
+    }
 
     // DtoToEntity
     public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
@@ -41,8 +52,19 @@ public class PlanosService {
 
         return planoEntity;
     }
+    //ListDTOToListEntity
+    public List<PlanosEntity> conversaoPlanosEntity( List<Planos> planos, List<PlanosEntity> planosEntities){
+        for(Planos plano : planos){
+            PlanosEntity planoEntity = new PlanosEntity();
+            planoEntity = conversaoPlanoEntity(plano,planoEntity);
+            planosEntities.add(planoEntity);
+        }
+        return planosEntities;
+    }
 
-    public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos) {
+
+
+    /*public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos) {
 
         for (PlanosEntity planoEntity : planosEntities) {
             Planos plano = new Planos();
@@ -51,7 +73,7 @@ public class PlanosService {
             plano.setVlPlano(planoEntity.getVlPlano());
             plano.setNmPlano(planoEntity.getNmPlano());
 
-            List<ServicoPlano> servsPlanoDTO = servPlanService.servicosPlanoDTO(planoEntity.getServicos());
+            List<ServicoPlano> servsPlanoDTO = new ArrayList<>();
 
             for (ServicoPlanoEntity servPlanoEntity : planoEntity.getServicos()) {
                 ServicoPlano servPlano = new ServicoPlano();
@@ -66,7 +88,7 @@ public class PlanosService {
         }
         return planos;
     }
-
+*/
     public PlanosEntity getPlano(BigInteger idPlano) {
         System.out.println("IdPlano: " + idPlano);
         Optional<PlanosEntity> optional = repository.findById(idPlano);
