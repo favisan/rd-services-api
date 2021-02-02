@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public class ContatoEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name="ID_CONTATO")
     private BigInteger idContato;
 
