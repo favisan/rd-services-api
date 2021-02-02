@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="TB_RECEITUARIO")
 @Data
+@NoArgsConstructor
 public class ReceituarioEntity {
 
     @Id
@@ -17,9 +19,9 @@ public class ReceituarioEntity {
     @Column(name="ID_RECEITUARIO")
     private BigInteger idReceituario;
 
-//    @ManyToOne
-//    @JoinColumn(name="ID_PACIENTE")
-//    private UsuarioEntity paciente;
+    @ManyToOne
+    @JoinColumn(name="ID_PACIENTE")
+    private UsuarioEntity paciente;
 
     //receitas de tipos diferentes não podem ser feitas no mesmo receituario
     // logo um prontuário pode gerar mais de 1 receituario
@@ -27,9 +29,9 @@ public class ReceituarioEntity {
     @JoinColumn(name="ID_PRONTUARIO")
     private ProntuarioEntity prontuario;
 
-//    @ManyToOne
-//    @JoinColumn(name="ID_MEDICO")
-//    private UsuarioEntity medico;
+    @ManyToOne
+    @JoinColumn(name="ID_MEDICO")
+    private UsuarioEntity medico;
 
     @ManyToOne
     @JoinColumn(name="ID_TIPO_RECEITA")

@@ -1,18 +1,25 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Receituario {
 
     private BigInteger idReceituario;
 
-//    private Usuario paciente;
+    private Usuario paciente;
 
     private Prontuario prontuario;
 
-//    private Usuario medico;
+    private Usuario medico;
 
     private TipoReceita tipoReceita;
 
@@ -20,6 +27,6 @@ public class Receituario {
 
     private String dsEndImgAssMed;
 
-//    private List<Prescricao> prescricoes;
+    private List<Prescricao> prescricoes;
 
 }

@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -8,6 +9,7 @@ import java.math.BigInteger;
 @Entity
 @Table(name="TB_FORMA_FARMAC")
 @Data
+@NoArgsConstructor
 public class FormaFarmacEntity {
 
     @Id

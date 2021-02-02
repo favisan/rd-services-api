@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name="TB_ATENDIMENTO")
 @Data
+@NoArgsConstructor
 public class AtendimentoEntity {
 
     @Id
@@ -16,13 +18,13 @@ public class AtendimentoEntity {
     @Column(name="ID_ATENDIMENTO")
     private BigInteger idAtendimento;
 
-//    @ManyToOne
-//    @JoinColumn(name="ID_PACIENTE")
-//    private UsuarioEntity paciente;
+    @ManyToOne
+    @JoinColumn(name="ID_PACIENTE")
+    private UsuarioEntity paciente;
 
-//    @ManyToOne
-//    @JoinColumn(name="ID_MEDICO")
-//    private UsuarioEntity medico;
+    @ManyToOne
+    @JoinColumn(name="ID_MEDICO")
+    private UsuarioEntity medico;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ID_PRONTUARIO")
