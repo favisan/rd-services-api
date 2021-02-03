@@ -3,7 +3,6 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;

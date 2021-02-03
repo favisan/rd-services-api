@@ -8,16 +8,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @RestController
 public class SolicExameController {
+
     @Autowired
     SolicExameService service;
 
 
     @PostMapping("/solic_exame")
     public ResponseEntity gravarSolicExame(@RequestBody SolicExame solicExame) {
-
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarSolicExame(solicExame));
+    }
+
+    @GetMapping("/solic_exame")
+    public ResponseEntity getSolicExames() {
+        List<SolicExame> exames = service.listarSolicExame();
+        return ResponseEntity.status(HttpStatus.OK).body(exames);
+    }
+
+    @GetMapping("/solic_exame/{idPaciente}")
+    public ResponseEntity buscarSolicitacaoPorId(@PathVariable("idPaciente") BigInteger idPaciente) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.buscarUsuarioId(idPaciente));
     }
 }

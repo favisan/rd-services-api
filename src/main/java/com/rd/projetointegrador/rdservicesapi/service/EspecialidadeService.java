@@ -4,7 +4,6 @@ import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.EspecialidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 

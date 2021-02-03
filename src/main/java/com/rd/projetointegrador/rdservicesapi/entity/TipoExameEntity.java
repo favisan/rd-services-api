@@ -1,9 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -16,7 +14,7 @@ public class TipoExameEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "ID_TIPO_EXAME")
     private BigInteger idTipoExame;
 

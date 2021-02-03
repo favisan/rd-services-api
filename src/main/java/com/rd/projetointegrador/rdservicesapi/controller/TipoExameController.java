@@ -18,9 +18,7 @@ public class TipoExameController {
 
     @GetMapping("/tiposexames")
     public ResponseEntity listarTiposDeExames() {
-
         List<TipoExameEntity> tiposExames = service.listarTiposDeExames();
         return ResponseEntity.status(HttpStatus.OK).body(tiposExames);
-
     }
 }

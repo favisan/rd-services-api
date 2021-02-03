@@ -7,7 +7,6 @@ import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,9 @@ public class UsuarioService {
     @Autowired
     private TipoContatoRepository tipoContatoRepository;
 
+    @Autowired
+    private LoginUsuarioRepository loginUsuarioRepository;
+
     public UsuarioEntity getUsuario(BigInteger id){
         System.out.println("ID: " + id);
         Optional<UsuarioEntity> optional = repository.findById(id);
@@ -50,14 +52,10 @@ public class UsuarioService {
 
         UsuarioEntity entity= repository.findById(id).get();
 
-        EspMedEntity espMedEntity = new EspMedEntity();
-        EspMed espMed = usuario.getIdEspMed();
-        espMedEntity.setIdEspMed(espMed.getIdEspMed());
-        espMedEntity.setDsEspMed(espMed.getDsEspMed());
-        entity.setIdEspMed(espMedEntity);
+        EspMedEntity espEntity = especialidadeRepository.findById(usuario.getIdEspMed().getIdEspMed()).get();
+        entity.setIdEspMed(espEntity);
 
-        BigInteger ufId = usuario.getUf().getIdUf();
-        UfEntity ufEntity = ufRepository.findById(ufId).get();
+        UfEntity ufEntity = ufRepository.findById(usuario.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
@@ -137,6 +135,12 @@ public class UsuarioService {
         }
 
         entity.setContatos(contatosEntity);
+
+        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+        LoginUsuario loginUsuario = new LoginUsuario();
+        loginUsuarioEntity.setIdUsuario(usuario.getIdUsuario());
+        loginUsuarioEntity.setDsEmail(loginUsuario.getEmail());
+        loginUsuarioEntity.setDsSenha(loginUsuario.getSenha());
 
         repository.save(entity);
 

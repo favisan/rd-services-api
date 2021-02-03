@@ -8,8 +8,11 @@ import java.math.BigInteger;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EspMed {
+public class LoginUsuario {
 
-    private BigInteger idEspMed;
-    private String dsEspMed;
+    private BigInteger Usuario;
+
+    private String senha;
+
+    private String email;
 }

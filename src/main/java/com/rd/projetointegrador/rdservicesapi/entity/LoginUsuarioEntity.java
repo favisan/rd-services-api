@@ -5,18 +5,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "TB_UF")
+@Table(name = "TB_LOGIN_USUARIO")
 @Data
-public class UfEntity implements Serializable {
+public class LoginUsuarioEntity {
 
     @Id
-    @Column(name = "ID_UF")
-    private BigInteger idUf;
+    @Column(name = "ID_USUARIO")
+    private BigInteger idUsuario;
 
-    @Column(name = "DS_UF")
-    private String dsUf;
+    @Column(name = "DS_SENHA")
+    private String dsSenha;
+
+    @Column(name = "DS_EMAIL")
+    private String dsEmail;
 }

@@ -6,14 +6,15 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "TB_PRECO")
+@Table(name="TB_TIPO_CONSULTA")
 @Data
-public class PrecoEntity implements Serializable  {
+public class TipoConsultaEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PRECO")
-    private BigInteger idPreco;
+    @Column(name="ID_TIPO_CONSULTA")
+    private BigInteger idTipoConsulta;
 
-    @Column(name = "VL_CONSULTA")
-    private Float vlConsulta;
+    @Column(name = "DS_TIPO_CONSULTA")
+    private String dsTipoConsulta;
 }

@@ -22,6 +22,13 @@ public class ReceituarioController {
 
     }
 
+    @GetMapping("/receituario/prontuario/{idProntuario}")
+    public ResponseEntity exibirReceituarioByProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.listarReceituarioPorIdProntuario(idProntuario));
+
+    }
+
     @PostMapping("/receituario")
     public ResponseEntity inserirReceituario(@RequestBody Receituario receituario) {
 

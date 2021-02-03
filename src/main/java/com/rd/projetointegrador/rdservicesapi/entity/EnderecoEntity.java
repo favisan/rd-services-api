@@ -2,7 +2,6 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;

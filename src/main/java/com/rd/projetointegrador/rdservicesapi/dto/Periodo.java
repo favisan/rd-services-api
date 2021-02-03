@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
+import java.sql.Time;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EspMed {
-
-    private BigInteger idEspMed;
-    private String dsEspMed;
+public class Periodo {
+    private BigInteger idPeriodo;
+    private String dsPerido;
+    private Time horaInicial;
+    private Time horaFinal;
 }

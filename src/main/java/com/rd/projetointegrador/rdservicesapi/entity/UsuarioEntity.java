@@ -1,7 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -60,4 +59,9 @@ public class UsuarioEntity implements Serializable{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_CONTATO")
     private List<ContatoEntity> contatos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "TB_LOGIN_USUARIO")
+    @JoinColumn(name = "ID_USUARIO")
+    private LoginUsuarioEntity login;
 }

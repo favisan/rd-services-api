@@ -8,8 +8,9 @@ import java.math.BigInteger;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EspMed {
+public class TipoExame {
 
-    private BigInteger idEspMed;
-    private String dsEspMed;
+    private BigInteger idTipoExame;
+    private String dsTipoExame;
+
 }

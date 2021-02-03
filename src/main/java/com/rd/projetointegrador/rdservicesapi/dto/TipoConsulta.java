@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class EspMed {
-
-    private BigInteger idEspMed;
-    private String dsEspMed;
+@AllArgsConstructor
+public class TipoConsulta {
+    private BigInteger idTipoConsulta;
+    private String dsTipoConsulta;
 }
