@@ -32,7 +32,7 @@ public class ProntuarioEntity {
     @Column(name="DS_OBSERVACOES")
     private String dsObservacoes;
 
-//    @OneToOne(mappedBy = "TB_PRONTUARIO")
-//    private AtendimentoEntity atendimento;
+   @OneToOne(mappedBy = "prontuario")
+   private AtendimentoEntity atendimento;
 
 }

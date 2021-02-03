@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,7 @@ public class AtendimentoEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ID_PRONTUARIO")
+    @JsonIgnore
     private ProntuarioEntity prontuario;
 
     @Column(name="VL_PESO")
