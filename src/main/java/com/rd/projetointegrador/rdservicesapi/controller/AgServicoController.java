@@ -1,10 +1,14 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.entity.AgServicoEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.StatusEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.AgServicoRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.StatusRepository;
 import com.rd.projetointegrador.rdservicesapi.service.AgServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -38,10 +42,10 @@ public class AgServicoController {
                 .body(service.getAgendamentos(id));
     }//Retorna os agendamentos do paciente com id "id" por status (Agendado, Cancelado ou Relizado)
 
-   /* @PutMapping("/agservico/cancelar/{id}")
-    public ResponseEntity cancelar(@RequestBody AgServico agservico, @PathVariable("id") BigInteger id){
-        String retorno = service.alterar(servico, id);
-        return ResponseEntity.ok().body(retorno);
+
+    @PutMapping("/agservico/cancelar/{id}")
+    public ResponseEntity cancelar(@PathVariable("id") BigInteger id){
+        return ResponseEntity.ok().body(service.cancelarAgendamento(id));
     }//Cancelar um agendamento */
 
 }

@@ -6,25 +6,25 @@ import com.rd.projetointegrador.rdservicesapi.entity.AgServicoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LojaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.PedidoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.StatusEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.AgServicoRespository;
+import com.rd.projetointegrador.rdservicesapi.repository.AgServicoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.LojaRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.PedidoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class AgServicoService {
 
     @Autowired
-    private AgServicoRespository repository;
+    private AgServicoRepository repository;
 
     @Autowired
     private PedidoRepository pedidoRespository;
@@ -36,9 +36,15 @@ public class AgServicoService {
     private StatusRepository statusRepository;
 
 
+    @Transactional
+    public String cancelarAgendamento(BigInteger id){
+        StatusEntity statusEntity = statusRepository.findById(BigInteger.valueOf(2l)).get();
+        int result = repository.updateIdStatus(id,statusEntity);
 
-
-
+        if (result != 1)
+            return "Não foi possível cancelar o agendamento";
+        return "Agendamento cancelado com sucesso";
+    }
 
     public List<PedidoEntity> getPedidos(BigInteger id){
 
@@ -60,8 +66,6 @@ public class AgServicoService {
 
         return repository.findByIdLojaAndDtDataHoraBetweenAndIdStatus(loja,data1, data2, status);
     }
-
-
 
 
     public Map<Status, List<AgServico>> getAgendamentos(BigInteger id){
