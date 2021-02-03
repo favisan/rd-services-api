@@ -13,8 +13,7 @@ import java.math.BigInteger;
 @Data
 public class LoginUsuario {
 
-        private BigInteger idAcesso;
-        private UsuarioEntity usuario;
+        private BigInteger idUsuario;
         private String dsSenha;
         private String dsEmail;
 

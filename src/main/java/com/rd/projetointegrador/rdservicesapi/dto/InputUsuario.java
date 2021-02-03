@@ -14,29 +14,19 @@ import java.util.Date;
 public class InputUsuario {
 
     //login
-    private String dsEmail;
-    private String dsSenha;
+    private LoginUsuario loginUsuario;
 
     //usuario
-    private BigInteger idTipoUsuario;
-    private String nmNome;
-    private BigInteger idGenero;
-    private String nrCpf;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private Date dtNascimento;
-    //private Endereco endereco;
-    private String dsEndImg;
+    private Usuario usuario;
 
     //contato
     private String ddd;
     private String celular;
 
+    //plano
+    private Contrato contrato;
+
     //cartao
-    private String nrCartao;
-    private String nrCodSeguranca;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private Date dtValidade;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
-    private Date dtEmissao;
+    private Cartao cartao;
 
 }

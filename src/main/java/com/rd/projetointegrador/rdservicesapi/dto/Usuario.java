@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +13,17 @@ import java.util.Date;
 @NoArgsConstructor
 public class Usuario {
 
-    BigInteger idUsuario;
-    BigInteger idGenero;
-    BigInteger idEspMedica;
-    BigInteger idUfCrm;
-    BigInteger idTipoUsuario;
-    String nmUsuario;
-    Date dtNascimento;
-    String nrCpf;
-    String nrCrm;
-    String dsEndImg;
+    private BigInteger idUsuario;
+    private BigInteger idGenero;
+    private BigInteger idEspMedica;
+    private BigInteger idUfCrm;
+    private BigInteger idTipoUsuario;
+    private String nmNome;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date dtNascimento;
+    private String nrCpf;
+    private String nrCrm;
+    private String dsEndImg;
+
+    //private List<Endereco> enderecos;
 }

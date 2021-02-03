@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,16 +17,15 @@ public class GeneroService {
     @Autowired
     private GeneroRepository repository;
 
-    //EntityToDto
+    //MÉTODO: conversão de DTO para Entity
     public Genero conversaoGeneroDTO(GeneroEntity generoEntity, Genero genero) {
         genero.setIdGenero(generoEntity.getIdGenero());
         genero.setDsGenero(generoEntity.getDsGenero());
 
         return genero;
-
     }
 
-    //ListEntityToListDto
+    //MÉTODO: conversão de Entity para DTO
     public List<Genero> conversaoGenerosDTO(List<GeneroEntity> generosEntities, List<Genero> generos){
         for(GeneroEntity generoEntity : generosEntities){
             Genero genero = new Genero();
@@ -35,7 +35,7 @@ public class GeneroService {
         return generos;
     }
 
-    //DtoToEntity
+    //MÉTODO: conversão ListaDTO para ListaEntity
     public GeneroEntity conversaoGeneroEntity(Genero genero, GeneroEntity generoEntity) {
         generoEntity.setIdGenero(genero.getIdGenero());
         generoEntity.setDsGenero(genero.getDsGenero());
@@ -43,7 +43,8 @@ public class GeneroService {
         return generoEntity;
 
     }
-    //ListDtoToListEntity
+
+    //MÉTODO: conversão listaEntity para ListaDTO
     public List<GeneroEntity> conversaoGenerosEntities(List<Genero> generos,List<GeneroEntity> generosEntities){
       for(Genero genero : generos){
           GeneroEntity generoEntity= new GeneroEntity();
@@ -53,14 +54,31 @@ public class GeneroService {
         return generosEntities;
     }
 
+    //MÉTODOS RETORNANDO A ENTITY
     public GeneroEntity getGenero(BigInteger idGenero) {
         System.out.println("Id: " + idGenero);
         Optional<GeneroEntity> optional = repository.findById(idGenero);
         return optional.get();
     }
-
     public List<GeneroEntity> getGeneros() {
         return repository.findAll();
+    }
+
+    //MÉTODOS retornando a DTO
+    public Genero getGeneroDTO(BigInteger idGenero) {
+        GeneroEntity generoEntity = getGenero(idGenero);
+        Genero genero = new Genero();
+
+        genero = conversaoGeneroDTO(generoEntity, genero);
+        return genero;
+    }
+    public List<Genero> getGenerosDTO() {
+        List<GeneroEntity> generosEntities = getGeneros();
+        List<Genero> generos = new ArrayList<>();
+
+        generos = conversaoGenerosDTO(generosEntities, generos);
+
+        return generos;
     }
 }
 

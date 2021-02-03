@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,9 @@ public class Cartao {
     private BigInteger idUsuario;
     private String nrCartao;
     private String codSeguranca;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtValidade;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtEmissao;
-<<<<<<< HEAD
-    private BigInteger idPaciente;
-=======
-
->>>>>>> 7f248b8280510993492a1d87160ae621bd6a4887
+    //private BigInteger idPaciente;
 }

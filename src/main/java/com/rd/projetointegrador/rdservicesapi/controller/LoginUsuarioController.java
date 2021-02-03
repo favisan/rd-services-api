@@ -22,7 +22,12 @@ public class LoginUsuarioController {
     public ResponseEntity getAcesso(@PathVariable("idUsuario") BigInteger idUsuario) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAcesso(idUsuario));
+    }
 
+    @GetMapping("/login/email/{email}") // BUSCA POR ID
+    public ResponseEntity getAcesso(@PathVariable("email") String email) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.getAcessosByEmail(email));
     }
 
     @GetMapping("/login") //Busca de todos os logins
@@ -32,8 +37,8 @@ public class LoginUsuarioController {
     }
 
     @PostMapping("/login") //Cadastrar Novo Login
-    public ResponseEntity cadastrarAcesso(@RequestBody LoginUsuario login) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAcesso(login));
+    public ResponseEntity cadastrarAcesso(@RequestBody LoginUsuario login, BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAcesso(login, idUsuario));
 
     }
 

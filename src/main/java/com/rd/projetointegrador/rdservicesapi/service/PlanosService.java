@@ -24,7 +24,25 @@ public class PlanosService {
     @Autowired private ServicoPlanoRepository servRepository;
     @Autowired private ServicoPlanoService servPlanService;
 
-    //EntityToDto
+    //MÉTODO: conversão de DTO para Entity
+    public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
+        planoEntity.setIdPlano(plano.getIdPlano());
+        planoEntity.setNmPlano(plano.getNmPlano());
+        planoEntity.setDsPlano(plano.getDsPlano());
+        planoEntity.setVlPlano(plano.getVlPlano());
+
+        return planoEntity;
+    }
+    //MÉTODO: conversão ListaDTO para ListaEntity
+    public List<PlanosEntity> conversaoPlanosEntity( List<Planos> planos, List<PlanosEntity> planosEntities){
+        for(Planos plano : planos){
+            PlanosEntity planoEntity = new PlanosEntity();
+            planoEntity = conversaoPlanoEntity(plano,planoEntity);
+            planosEntities.add(planoEntity);
+        }
+        return planosEntities;
+    }
+    //MÉTODO: conversão de Entity para DTO
     public Planos conversaoPlanoDTO(PlanosEntity planoEntity, Planos plano) {
         plano.setIdPlano(planoEntity.getIdPlano());
         plano.setNmPlano(planoEntity.getNmPlano());
@@ -33,7 +51,7 @@ public class PlanosService {
 
         return plano;
     }
-    //ListEntityToListDTO
+    //MÉTODO: conversão listaEntity para ListaDTO
     public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos){
         for(PlanosEntity planoEntity : planosEntities){
             Planos plano = new Planos();
@@ -43,62 +61,18 @@ public class PlanosService {
         return planos;
     }
 
-    // DtoToEntity
-    public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
-        planoEntity.setIdPlano(plano.getIdPlano());
-        planoEntity.setNmPlano(plano.getNmPlano());
-        planoEntity.setDsPlano(plano.getDsPlano());
-        planoEntity.setVlPlano(plano.getVlPlano());
-
-        return planoEntity;
-    }
-    //ListDTOToListEntity
-    public List<PlanosEntity> conversaoPlanosEntity( List<Planos> planos, List<PlanosEntity> planosEntities){
-        for(Planos plano : planos){
-            PlanosEntity planoEntity = new PlanosEntity();
-            planoEntity = conversaoPlanoEntity(plano,planoEntity);
-            planosEntities.add(planoEntity);
-        }
-        return planosEntities;
-    }
-
-
-
-    /*public List<Planos> conversaoPlanosDTO(List<PlanosEntity> planosEntities, List<Planos> planos) {
-
-        for (PlanosEntity planoEntity : planosEntities) {
-            Planos plano = new Planos();
-            plano.setIdPlano(planoEntity.getIdPlano());
-            plano.setDsPlano(planoEntity.getDsPlano());
-            plano.setVlPlano(planoEntity.getVlPlano());
-            plano.setNmPlano(planoEntity.getNmPlano());
-
-            List<ServicoPlano> servsPlanoDTO = new ArrayList<>();
-
-            for (ServicoPlanoEntity servPlanoEntity : planoEntity.getServicos()) {
-                ServicoPlano servPlano = new ServicoPlano();
-                servPlano.setIdServicoPlano(servPlanoEntity.getIdServicoPlano());
-                servPlano.setDsServico(servPlano.getDsServico());
-
-                servsPlanoDTO.add(servPlano);
-            }
-
-            plano.setServicos(servsPlanoDTO);
-            planos.add(plano);
-        }
-        return planos;
-    }
-*/
+    //MÉTODOS RETORNANDO A ENTITY
     public PlanosEntity getPlano(BigInteger idPlano) {
         System.out.println("IdPlano: " + idPlano);
         Optional<PlanosEntity> optional = repository.findById(idPlano);
         return optional.get();
     }
-
     public List<PlanosEntity> getPlanos() {
         return repository.findAll();
     }
-        public List<Planos> getPlanosDTO() {
+
+    //MÉTODOS RETORNANDO A DTO
+    public List<Planos> getPlanosDTO() {
             List<PlanosEntity> planosEntities = getPlanos();
             List<Planos> planos = new ArrayList<>();
             planos = conversaoPlanosDTO(planosEntities, planos);

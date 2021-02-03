@@ -22,19 +22,16 @@ public class CartaoController {
     CartaoService service;
 
     @GetMapping("/cartao")
-    public ResponseEntity getCartoes(@PathParam("idCartao") BigInteger idCartao) {
-        List<CartaoEntity> cartoes = service.getCartoes(idCartao);
+    public ResponseEntity getCartoes() {
+        List<CartaoEntity> cartoes = service.getCartoes();
         return ResponseEntity.status(HttpStatus.OK).body(cartoes);
     }
 
-
     @GetMapping ("/cartao/{idCartao}")
-
     public ResponseEntity getCartao(@PathVariable("idCartao") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getCartao(idCartao));
     }
-
 
     @PostMapping("/cartao") //CADASTRO
     public ResponseEntity cadastrarCartao(@RequestBody Cartao cartao) {

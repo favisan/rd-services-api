@@ -1,7 +1,10 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.entity.GeneroEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.TipoUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -15,13 +18,30 @@ import java.util.Optional;
 
 @Service
 public class LoginUsuarioService {
-    @Autowired
-    private LoginUsuarioRepository repository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    @Autowired private LoginUsuarioRepository repository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
+    //MÉTODO: conversão de DTO para Entity
+    public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity) {
 
+        loginUsuarioEntity.setIdUsuario(loginUsuario.getIdUsuario());
+        loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
+        loginUsuarioEntity.setDsSenha(loginUsuario.getDsSenha());
+
+        return loginUsuarioEntity;
+    }
+    //MÉTODO: conversão de Entity para DTO
+    public LoginUsuario conversaoLoginUsuarioDTO(LoginUsuarioEntity loginUsuarioEntity, LoginUsuario loginUsuario) {
+
+        loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+        loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
+        loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
+
+        return loginUsuario;
+    }
+
+    //MÉTODOS RETORNANDO A ENTITY
     public LoginUsuarioEntity getAcesso(BigInteger idUsuario) {
         System.out.println("IdAcesso: " + idUsuario);
         Optional<LoginUsuarioEntity> optional = repository.findById(idUsuario);
@@ -32,40 +52,33 @@ public class LoginUsuarioService {
         return repository.findAll();
 
     }
+    public List<LoginUsuarioEntity> getAcessosByEmail(String email) {
+        return repository.findByDsEmail(email);
+    }
 
-    //CORRIGIR POIS ESTÁ GERANDO NOVOS CÓDIGOS DE ID USUARIO
     @Transactional
-    public String cadastrarAcesso(LoginUsuario login){
+    public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
 
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-
-        loginUsuarioEntity.setDsEmail(login.getDsEmail());
-        loginUsuarioEntity.setDsSenha(login.getDsSenha());
-
-        UsuarioEntity usuario= usuarioRepository.findById(BigInteger.valueOf(1)).get();
-        loginUsuarioEntity.setUsuario(usuario);
+        loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
 
         repository.save(loginUsuarioEntity);
 
-        System.out.println(login.getIdAcesso() + " . " + login.getDsEmail() + " . " +login.getUsuario());
-
         return "Contrato cadastrado com sucesso";
-
     }
 
     @Transactional
     public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
 
-        //TODO
-        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+        LoginUsuarioEntity loginUsuarioEntity = repository.findOneByIdUsuario(idUsuario);
 
         loginUsuarioEntity.setDsEmail(login.getDsEmail());
         loginUsuarioEntity.setDsSenha(login.getDsSenha());
 
-        UsuarioEntity usuario= usuarioRepository.findById(BigInteger.valueOf(1)).get();
+        UsuarioEntity usuario= usuarioRepository.findById(idUsuario).get();
         loginUsuarioEntity.setUsuario(usuario);
 
-        loginUsuarioEntity= repository.save(loginUsuarioEntity);
+        repository.save(loginUsuarioEntity);
         return "Alteração realizada com sucesso";
     }
 
