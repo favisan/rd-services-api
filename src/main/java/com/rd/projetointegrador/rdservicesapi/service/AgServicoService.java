@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class AgServicoService {
@@ -28,12 +25,12 @@ public class AgServicoService {
     public List<PedidoEntity> getPedidos(BigInteger id){
 
         return pedidoRespository.findByIdPaciente(id);
-    }
+    } /*Retorna todos os pedidos do usuário com id "id" e seus respectivos agendamentos*/
 
    public Map<Status, List<AgServico>> getAgendamentos(BigInteger id){
 
         List<PedidoEntity> pedidos = pedidoRespository.findByIdPaciente(id);
-        Map<StatusEntity, List<AgServicoEntity>> mapAgendamentos = new TreeMap<StatusEntity, List<AgServicoEntity>>();
+        Map<StatusEntity, List<AgServicoEntity>> mapAgendamentos = new HashMap<>();
 
        for(PedidoEntity p: pedidos){
 
@@ -42,7 +39,7 @@ public class AgServicoService {
             for (AgServicoEntity a: agendamentos){
                 StatusEntity statusEntity = a.getIdStatus();
                 List<AgServicoEntity> listaAgendamentos;
-                if(mapAgendamentos.containsKey(statusEntity.getNome())){
+                if(mapAgendamentos.containsKey(statusEntity)){
                     listaAgendamentos = mapAgendamentos.get(a.getIdStatus());
                 }else{
                     listaAgendamentos = new ArrayList<AgServicoEntity>();
@@ -52,9 +49,8 @@ public class AgServicoService {
             }
         }//MapAgendamentos por paciente e status preenchido
 
-       //Converter mapa de Entity para DTO
-
-       Map<Status, List<AgServico>> mapAgendamentosDTO = new TreeMap<Status, List<AgServico>>();
+       //Converter Map de Entity para DTO
+       Map<Status, List<AgServico>> mapAgendamentosDTO = new HashMap<>();
 
        for(Map.Entry<StatusEntity, List<AgServicoEntity>> entrada : mapAgendamentos.entrySet()){
 
@@ -77,5 +73,5 @@ public class AgServicoService {
            mapAgendamentosDTO.put(s,listaAgendamentos);
        }
         return mapAgendamentosDTO;
-   }
+   } /*Retorna os agendamentos do paciente com id "id" por status (Agendado, Cancelado ou Relizado)*/
 }

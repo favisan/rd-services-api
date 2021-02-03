@@ -10,5 +10,4 @@ public interface EnderecoRepository extends JpaRepository<EnderecoEntity, BigInt
 
     List<EnderecoEntity> findByDsEnderecoContainingOrDsBairroContaining(String dsEndereco, String dsBairro); // SELECT * FROM TB_ENDERECO WHERE DS_ENDERECO = ??
 
-    //SELECT * FROM TB_LOJA tl WHERE tl.NM_LOJA LIKE '%o%'
 }

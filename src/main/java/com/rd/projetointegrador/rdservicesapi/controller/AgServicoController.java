@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +29,7 @@ public class AgServicoController {
     @Autowired
     private AgServicoService service;
 
+
     @GetMapping("/agservico")
     public ResponseEntity getAgendamentos() throws ParseException {
 
@@ -44,19 +44,20 @@ public class AgServicoController {
 
         List<AgServicoEntity> agservicos = respository.findByIdLojaAndDtDataHoraBetween(loja,data1, data2);
         return ResponseEntity.ok(agservicos);
-    }
+    }/*Rretorna todos os agendamentos de determinada loja durante um período especificado.*/
 
-//    @GetMapping("/agservico/{id}")
-//    public ResponseEntity getPedidos(@PathVariable("id") BigInteger id){
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(service.getPedidos(id));
-//    }
+
+    @GetMapping("/agservico/pedidos/{id}")
+    public ResponseEntity getPedidos(@PathVariable("id") BigInteger id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.getPedidos(id));
+    }/*Retorna todos os pedidos do usuário com id "id" e seus respectivos agendamentos*/
+
 
     @GetMapping("/agservico/{id}")
-    public ResponseEntity getAgendamentos(@PathVariable("id") BigInteger id){
+    public ResponseEntity getAgendamentos(@PathVariable("id") BigInteger id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAgendamentos(id));
-    }
-
+    }//Retorna os agendamentos do paciente com id "id" por status (Agendado, Cancelado ou Relizado)
 
 }

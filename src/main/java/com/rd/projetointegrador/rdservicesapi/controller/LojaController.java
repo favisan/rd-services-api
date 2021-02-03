@@ -22,15 +22,11 @@ public class LojaController {
     @Autowired
     private ContatoService contatoService;
 
+
     @GetMapping("/loja")
     public ResponseEntity getLojas(){
         List<Loja> lojas = service.getLojas();
         return ResponseEntity.ok(lojas);
-    }
-
-    @GetMapping("/loja/contato/{idLoja}")
-    public ResponseEntity getContatosLoja(@PathVariable("idLoja") BigInteger idLoja) {
-        return ResponseEntity.status(HttpStatus.OK).body(contatoService.getContatosLoja(idLoja));
-    }
+    }//Retorna todas as lojas e seus respectivos endereços e contatos
 
 }

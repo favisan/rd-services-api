@@ -20,15 +20,16 @@ public class ServicoController {
     public ResponseEntity getServico(@PathVariable("id") BigInteger id){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getServico(id) );
-    }
+    }/* Retorna um serviço pelo id */
 
-    @GetMapping("/servico")
+
+    @GetMapping("/servicos")
     public ResponseEntity getServicos(){
         List<Servico> servicos = service.getServicos();
         return ResponseEntity.ok(servicos);
-    }
+    }/* Retorna todos os serviços */
 
-    @PostMapping("/servico")
+   @PostMapping("/servico")
     public ResponseEntity cadastrarServico(@RequestBody Servico servico){
         if (servico.getNome() == null || servico.getPreco() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nome e preço são atributos obrigatórios");

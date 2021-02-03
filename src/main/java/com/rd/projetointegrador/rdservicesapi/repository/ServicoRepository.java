@@ -10,8 +10,4 @@ public interface ServicoRepository extends JpaRepository<ServicoEntity, BigInteg
 
     List<ServicoEntity> findByNome(String nome); // SELECT * FROM TB_SERVICO WHERE DS_SERVICO = ???
 
-    //List<ServicoEntity> findById(long id); // SELECT * FROM TB_USUARIO WHERE NR_CPF = ?
-
-
-
 }
