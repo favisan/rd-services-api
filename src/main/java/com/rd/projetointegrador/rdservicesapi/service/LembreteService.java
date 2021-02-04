@@ -2,8 +2,8 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Lembrete;
 import com.rd.projetointegrador.rdservicesapi.dto.LembreteIntervalo;
-import com.rd.projetointegrador.rdservicesapi.entity.LembreteEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.LembreteIntervaloEntity;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteIntervaloRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -23,17 +23,30 @@ public class LembreteService {
     @Autowired private LembreteIntervaloRepository lirepository;
     @Autowired private UsuarioRepository usuarioRepository;
 
-    public Lembrete getLembrete(BigInteger idLembrete) {
-        System.out.println("IdLembrete: " + idLembrete);
-        Optional<LembreteEntity> optional = repository.findById(idLembrete);
-        LembreteEntity lembreteEntity = optional.get();
+    //MÉTODO: conversão de DTO para Entity
+    public LembreteEntity conversaoLembreteEntity(Lembrete lembrete, LembreteEntity lembreteEntity) {
+
+        Optional<LembreteIntervaloEntity> optional = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
+        LembreteIntervaloEntity liEntity = optional.get();
+
+        lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
+        lembreteEntity.setLembreteIntervalo(liEntity);
+        lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
+        lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
+        lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
+        lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
+        lembreteEntity.setHrHora(lembrete.getHrHora());
+        lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
+
+        return lembreteEntity;
+    }
+    //MÉTODO: conversão de Entity para DTO
+    public Lembrete conversaoLembreteDTO(LembreteEntity lembreteEntity, Lembrete lembrete) {
+
         LembreteIntervaloEntity liEntity = lembreteEntity.getLembreteIntervalo();
 
-        //criação DTO
-        Lembrete lembrete = new Lembrete();
-        LembreteIntervalo li = new LembreteIntervalo();
-
         //passando para DTO
+        LembreteIntervalo li = new LembreteIntervalo();
         li.setIdLembreteIntervalo(liEntity.getIdLembreteIntervalo());
         li.setDsLembreteIntervalo(liEntity.getDsLembreteIntervalo());
 
@@ -49,73 +62,76 @@ public class LembreteService {
         //lembrete.setLembreteIntervalo(lembreteEntity.getLembreteIntervalo().getDsLembreteIntervalo());
 
         return lembrete;
+    }
+    //MÉTODO: conversão ListaDTO para ListaEntity
+    public List<LembreteEntity> conversaoLembretesEntity(List<Lembrete> lembretes, List<LembreteEntity> lembretesEntities) {
+
+        for (Lembrete lembrete : lembretes) {
+            LembreteEntity lembreteEntity = new LembreteEntity();
+            lembreteEntity = conversaoLembreteEntity(lembrete, lembreteEntity);
+
+            lembretesEntities.add(lembreteEntity);
+        }
+
+        return lembretesEntities;
 
     }
-    public List<LembreteEntity> getLembreteId(BigInteger idPaciente) {
-        List<LembreteEntity> lembretes = repository.findByIdPaciente(idPaciente);
-        return lembretes;
-    }
-    public List<LembreteEntity> getLembreteOrderDate(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtLembrete(idPaciente);
-        return lembretesPorData;
-    }
+    //MÉTODO: conversão listaEntity para ListaDTO
+    public List<Lembrete> conversaoLembretesDTO(List<LembreteEntity> lembretesEntities, List<Lembrete> lembretes) {
 
-    public List<Lembrete> getLembretes(BigInteger idLembrete) {
-        List<LembreteEntity> lembretesEntities = repository.findAll();
-        List<Lembrete> lembretes = new ArrayList<>();
-
-        //passando para DTO
         for (LembreteEntity lembreteEntity : lembretesEntities) {
-            LembreteIntervaloEntity liEntity = lembreteEntity.getLembreteIntervalo();
-
             Lembrete lembrete = new Lembrete();
-            LembreteIntervalo li = new LembreteIntervalo();
-
-            li.setIdLembreteIntervalo(liEntity.getIdLembreteIntervalo());
-            li.setDsLembreteIntervalo(liEntity.getDsLembreteIntervalo());
-
-            lembrete.setIdLembrete(lembreteEntity.getIdLembrete());
-            lembrete.setIdPaciente(lembreteEntity.getIdPaciente());
-            lembrete.setLembreteIntervalo(li);
-            lembrete.setNmTitulo(lembreteEntity.getNmTitulo());
-            lembrete.setDsLembrete(lembreteEntity.getDsLembrete());
-            lembrete.setDtLembrete(lembreteEntity.getDtLembrete());
-            lembrete.setDtCriacao(lembreteEntity.getDtCriacao());
-            lembrete.setHrHora(lembreteEntity.getHrHora());
-            lembrete.setNrRepeticao(lembreteEntity.getNrRepeticao());
+            lembrete = conversaoLembreteDTO(lembreteEntity, lembrete);
 
             lembretes.add(lembrete);
         }
 
         return lembretes;
+    }
 
+
+    //MÉTODOS RETORNANDO A ENTITY
+    public List<LembreteEntity> getLembreteId(BigInteger idPaciente) {
+        List<LembreteEntity> lembretes = repository.findByIdPaciente(idPaciente);
+        return lembretes;
+    }
+    public List<LembreteEntity> getLembreteOrderByDate(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtLembrete(idPaciente);
+        return lembretesPorData;
+    }
+
+    //MÉTODOS RETORNANDO A DTO
+    public Lembrete getLembreteDTO(BigInteger idLembrete) {
+        Optional<LembreteEntity> optional = repository.findById(idLembrete);
+        LembreteEntity lembreteEntity = optional.get();
+
+        //criação DTO
+        Lembrete lembrete = new Lembrete();
+        lembrete = conversaoLembreteDTO(lembreteEntity, lembrete);
+
+        return lembrete;
+    }
+    public List<Lembrete> getLembretesDTO(BigInteger idLembrete) {
+        List<LembreteEntity> lembretesEntities = repository.findAll();
+        List<Lembrete> lembretes = new ArrayList<>();
+
+        lembretes = conversaoLembretesDTO(lembretesEntities, lembretes);
+
+        return lembretes;
     }
 
     @Transactional
     public String cadastrarLembrete(Lembrete lembrete){
 
         LembreteEntity lembreteEntity = new LembreteEntity();
-        Optional<LembreteIntervaloEntity> optional = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
-        LembreteIntervaloEntity liEntity = optional.get();
-
         BigInteger idPaciente = lembrete.getIdPaciente();
+
         if(usuarioRepository.existsById(idPaciente)) {
-            lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
-            lembreteEntity.setLembreteIntervalo(liEntity);
-            lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
-            lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
-            lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
-            lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
-            lembreteEntity.setHrHora(lembrete.getHrHora());
-            lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
-
+            lembreteEntity = conversaoLembreteEntity(lembrete, lembreteEntity);
             repository.save(lembreteEntity);
-
             return "Lembrete cadastrado com sucesso";
         }
-
             return null;
-
     }
 
     @Transactional
@@ -124,19 +140,9 @@ public class LembreteService {
         Optional<LembreteEntity> optional = repository.findById(idLembrete);
         LembreteEntity lembreteEntity = optional.get();
 
-        Optional<LembreteIntervaloEntity> optional2 = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
-        LembreteIntervaloEntity liEntity = optional2.get();
+        lembreteEntity = conversaoLembreteEntity(lembrete, lembreteEntity);
 
-        lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
-        lembreteEntity.setLembreteIntervalo(liEntity);
-        lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
-        lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
-        lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
-        lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
-        lembreteEntity.setHrHora(lembrete.getHrHora());
-        lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
-
-        lembreteEntity = repository.save(lembreteEntity);
+        repository.save(lembreteEntity);
         return "Alteração realizada com sucesso";
     }
 
