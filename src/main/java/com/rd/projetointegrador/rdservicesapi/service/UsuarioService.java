@@ -58,6 +58,7 @@ public class UsuarioService {
         usuarioEntity.setNrCpf(usuario.getNrCpf());
         usuarioEntity.setNrCrm(usuario.getNrCrm());
         usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+        usuarioEntity.setIdPreco(usuario.getIdPreco());
 
         return usuarioEntity;
     }
@@ -79,6 +80,7 @@ public class UsuarioService {
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
+        usuario.setIdPreco(usuarioEntity.getIdPreco());
 
         return usuario;
     }
@@ -237,7 +239,7 @@ public class UsuarioService {
             String email = loginUsuarioRepository.findOneByIdUsuario(id).getDsEmail();
 
             //buscar idPlano no contrato
-            List<ContratoEntity> contratosEntities = contratoRepository.findByIdUsuarioOrderByDtVigencia(id);
+            List<ContratoEntity> contratosEntities = contratoRepository.findByUsuarioOrderByDtVigencia(usuarioEntity);
             BigInteger idPlanoVigente = contratosEntities.get(0).getPlanosEntity().getIdPlano();
 
             //buscar lista de contatos

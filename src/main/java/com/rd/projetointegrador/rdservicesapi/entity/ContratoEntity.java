@@ -32,6 +32,7 @@ public class ContratoEntity  implements Serializable {
     @JoinColumn (name="ID_PLANO")//FK TB_PLANO
     private PlanosEntity planosEntity;
 
-    @Column(name="ID_USUARIO") //FK TB_USUARIO
-    private BigInteger idUsuario;
+    @ManyToOne
+    @JoinColumn (name="ID_USUARIO") //FK TB_USUARIO
+    private UsuarioEntity usuario;
 }

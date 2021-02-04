@@ -4,8 +4,10 @@ import com.rd.projetointegrador.rdservicesapi.dto.Contrato;
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.entity.ContratoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.PlanosEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.ContratoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.PlanosRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,9 @@ import java.util.Optional;
 @Service
 public class ContratoService {
 
-    @Autowired
-    private ContratoRepository repository;
-    @Autowired PlanosRepository planosRepository;
+    @Autowired private ContratoRepository repository;
+    @Autowired private PlanosRepository planosRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato){
@@ -28,7 +30,7 @@ public class ContratoService {
         contrato.setDsContrato(contratoEntity.getDsContrato());
         contrato.setDtVigencia(contratoEntity.getDtVigencia());
         contrato.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
-        contrato.setIdUsuario(contratoEntity.getIdUsuario());
+        contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
 
         return contrato;
     }
@@ -39,10 +41,14 @@ public class ContratoService {
         //pegar plano
         PlanosEntity planosEntity = planosRepository.findById(contrato.getIdPlano()).get();
 
+        //pegar usuario
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
+
+
         contratoEntity.setDsContrato(contrato.getDsContrato());
         contratoEntity.setDtVigencia(contrato.getDtVigencia());
         contratoEntity.setPlanosEntity(planosEntity);
-        contratoEntity.setIdUsuario(contrato.getIdUsuario());
+        contratoEntity.setUsuario(usuarioEntity);
 
         return contratoEntity;
     }
@@ -59,7 +65,8 @@ public class ContratoService {
 
     }
     public List<ContratoEntity> getContratosByUsuario(BigInteger idUsuario) {
-        List<ContratoEntity> contratosByUser = repository.findByIdUsuario(idUsuario);
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
+        List<ContratoEntity> contratosByUser = repository.findByUsuario(usuarioEntity);
         return contratosByUser;
     }
 
