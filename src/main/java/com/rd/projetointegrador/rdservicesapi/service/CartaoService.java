@@ -34,7 +34,7 @@ public class CartaoService {
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
         cartaoEntity.setDtValidade(cartao.getDtValidade());
         cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-        cartaoEntity.setIdUsuario(usuarioEntity);
+        cartaoEntity.setUsuario(usuarioEntity);
 
         return cartaoEntity;
     }
@@ -46,7 +46,7 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
-        cartao.setIdUsuario(cartaoEntity.getIdUsuario().getIdUsuario());
+        cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
 
         return cartao;
     }
@@ -68,8 +68,6 @@ public class CartaoService {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
 
-        BigInteger usuarioId = cartao.getIdUsuario();
-
         repository.save(cartaoEntity);
 
         System.out.println(cartao.getIdCartao() + " . " + cartao.getNrCartao() + " . " + cartao.getCodSeguranca() + " . " + cartao.getDtValidade() + " . " + cartao.getDtEmissao());
@@ -80,14 +78,10 @@ public class CartaoService {
 
     @Transactional
     public String alterarCartao(Cartao cartao, BigInteger idCartao) {
-        CartaoEntity cartaoEntity = new CartaoEntity();
-        BigInteger usuarioId = cartao.getIdUsuario();
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(usuarioId).get();
-        cartaoEntity.setNrCartao(cartao.getNrCartao());
-        cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-        cartaoEntity.setDtValidade(cartao.getDtValidade());
-        cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-        cartaoEntity.setIdUsuario(usuarioEntity);
+        CartaoEntity cartaoEntity = repository.findById(idCartao).get();
+
+        cartaoEntity = conversaoCartaoEntity(cartao, cartaoEntity);
+
         repository.save( cartaoEntity);
         return "Alteração  de cartão realizada com sucesso";
     }

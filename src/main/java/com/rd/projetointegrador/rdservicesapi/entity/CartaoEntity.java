@@ -25,7 +25,7 @@ public class CartaoEntity implements  Serializable{
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")// FK TB USUÁRIO
-    private UsuarioEntity idUsuario;
+    private UsuarioEntity usuario;
 
     @Column(name ="NR_CARTAO")
     private String nrCartao;

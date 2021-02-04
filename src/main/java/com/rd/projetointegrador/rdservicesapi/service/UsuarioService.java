@@ -238,7 +238,7 @@ public class UsuarioService {
 
             //buscar idPlano no contrato
             List<ContratoEntity> contratosEntities = contratoRepository.findByIdUsuarioOrderByDtVigencia(id);
-            BigInteger idPlanoVigente = contratosEntities.get(0).getIdPlano();
+            BigInteger idPlanoVigente = contratosEntities.get(0).getPlanosEntity().getIdPlano();
 
             //buscar lista de contatos
             //Optional<ContatoEntity> optional = repository.findByIdUsuario(id);
