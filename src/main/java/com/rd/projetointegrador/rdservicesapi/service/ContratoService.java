@@ -19,6 +19,7 @@ public class ContratoService {
 
     @Autowired
     private ContratoRepository repository;
+    @Autowired PlanosRepository planosRepository;
 
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato){
@@ -26,7 +27,7 @@ public class ContratoService {
         contrato.setIdContrato(contratoEntity.getIdContrato());
         contrato.setDsContrato(contratoEntity.getDsContrato());
         contrato.setDtVigencia(contratoEntity.getDtVigencia());
-        contrato.setIdPlano(contratoEntity.getIdPlano());
+        contrato.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
         contrato.setIdUsuario(contratoEntity.getIdUsuario());
 
         return contrato;
@@ -35,9 +36,12 @@ public class ContratoService {
     //MÉTODO: conversão de DTO para Entity
     public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
 
+        //pegar plano
+        PlanosEntity planosEntity = planosRepository.findById(contrato.getIdPlano()).get();
+
         contratoEntity.setDsContrato(contrato.getDsContrato());
         contratoEntity.setDtVigencia(contrato.getDtVigencia());
-        contratoEntity.setIdPlano(contrato.getIdPlano());
+        contratoEntity.setPlanosEntity(planosEntity);
         contratoEntity.setIdUsuario(contrato.getIdUsuario());
 
         return contratoEntity;
@@ -75,13 +79,9 @@ public class ContratoService {
     public String alterarContrato(Contrato contrato, BigInteger idContrato){
 
         ContratoEntity contratoEntity = getContrato(idContrato);
+        contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
 
-        contratoEntity.setDsContrato(contrato.getDsContrato());
-        contratoEntity.setDtVigencia(contrato.getDtVigencia());
-        contratoEntity.setIdPlano(contrato.getIdPlano());
-        contratoEntity.setIdUsuario(contrato.getIdUsuario());
-
-        contratoEntity = repository.save(contratoEntity);
+        repository.save(contratoEntity);
         return "Alteração realizada com sucesso";
     }
 

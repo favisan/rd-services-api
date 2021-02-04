@@ -31,6 +31,12 @@ public class LembreteController {
         return ResponseEntity.status(HttpStatus.OK).body(lembretes);
     }
 
+    @GetMapping("/lembrete/user/{idUsuario}") //Busca de lembrete por usuario
+    public ResponseEntity getLembretesByData(@PathVariable("idUsuario") BigInteger idUsuario) {
+        List<LembreteEntity> lembretes = service.getLembretesOrderByDataCriacao(idUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(lembretes);
+    }
+
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete
     public ResponseEntity cadastrarLembrete(@RequestBody Lembrete Lembrete) {
         String retorno = service.cadastrarLembrete(Lembrete);
