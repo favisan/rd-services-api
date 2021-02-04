@@ -5,14 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class LoginUsuario {
-
-    private BigInteger Usuario;
-
-    private String senha;
-
-    private String email;
+    private BigInteger idUsuario;
+    private String dsSenha;
+    private String dsEmail;
 }

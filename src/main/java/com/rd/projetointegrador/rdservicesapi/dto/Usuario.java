@@ -33,4 +33,6 @@ public class Usuario{
     private List<Endereco> enderecos;
 
     private List<Contato> contatos;
+
+    private LoginUsuario login;
 }

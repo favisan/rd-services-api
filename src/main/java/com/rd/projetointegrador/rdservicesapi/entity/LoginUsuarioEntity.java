@@ -1,24 +1,35 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigInteger;
 
+@AllArgsConstructor
+@NoArgsConstructor
+
 @Entity
-@Table(name = "TB_LOGIN_USUARIO")
 @Data
-public class LoginUsuarioEntity {
+@Table(name="TB_LOGIN_USUARIO")
+public class LoginUsuarioEntity implements Serializable {
 
     @Id
-    @Column(name = "ID_USUARIO")
+    @Column(name="ID_USUARIO")
     private BigInteger idUsuario;
 
-    @Column(name = "DS_SENHA")
+    @PrimaryKeyJoinColumn
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UsuarioEntity usuario;
+
+    @Column(name="DS_SENHA")
     private String dsSenha;
 
-    @Column(name = "DS_EMAIL")
+    @Column(name="DS_EMAIL")
     private String dsEmail;
+
 }

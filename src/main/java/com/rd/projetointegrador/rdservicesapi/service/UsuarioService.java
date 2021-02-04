@@ -34,6 +34,8 @@ public class UsuarioService {
     @Autowired
     private LoginUsuarioRepository loginUsuarioRepository;
 
+
+
     public UsuarioEntity getUsuario(BigInteger id){
         System.out.println("ID: " + id);
         Optional<UsuarioEntity> optional = repository.findById(id);
@@ -46,6 +48,8 @@ public class UsuarioService {
 
         return repository.findAll();
     }
+
+
 
     @Transactional
     public String alterar(Usuario usuario, BigInteger id){
@@ -135,14 +139,17 @@ public class UsuarioService {
         }
 
         entity.setContatos(contatosEntity);
+        repository.save(entity);
 
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-        LoginUsuario loginUsuario = new LoginUsuario();
-        loginUsuarioEntity.setIdUsuario(usuario.getIdUsuario());
-        loginUsuarioEntity.setDsEmail(loginUsuario.getEmail());
-        loginUsuarioEntity.setDsSenha(loginUsuario.getSenha());
+        LoginUsuario loginUsuario = usuario.getLogin();
 
-        repository.save(entity);
+        BigInteger novoId = entity.getIdUsuario();
+        loginUsuarioEntity.setIdUsuario(novoId);
+        loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
+        loginUsuarioEntity.setDsSenha(loginUsuario.getDsSenha());
+
+        loginUsuarioRepository.save(loginUsuarioEntity);
 
         return "Usuário cadastrado com sucesso";
     }
