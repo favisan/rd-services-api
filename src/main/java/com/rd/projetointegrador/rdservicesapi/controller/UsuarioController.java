@@ -21,6 +21,11 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getUsuario(id));
     }
+    @GetMapping("/usuarioCpf/{nrCpf}")
+    public ResponseEntity consultarPorCpf(@PathVariable("nrCpf") String cpf){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.consultarPorCpf(cpf));
+    }
 
     @GetMapping("/usuario")
     public ResponseEntity getUsuarios(){
@@ -29,11 +34,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario")
-    public ResponseEntity cadastrar(@RequestBody Usuario usuario){
-        if(usuario.getNome() == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo nome é obrigatório");
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrar(usuario));
+    public ResponseEntity cadastrar(@RequestBody Usuario usuario) {
+        if (service.consultarPorCpf(usuario.getNrCpf()) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrar(usuario));
+        }
     }
 
     @PutMapping("/usuario/{idUsuario}")

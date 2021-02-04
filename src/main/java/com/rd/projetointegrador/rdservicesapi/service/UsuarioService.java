@@ -49,6 +49,9 @@ public class UsuarioService {
         return repository.findAll();
     }
 
+    public UsuarioEntity consultarPorCpf(String nrCpf){
+        return repository.findByNrCpf(nrCpf);
+    }
 
 
     @Transactional
