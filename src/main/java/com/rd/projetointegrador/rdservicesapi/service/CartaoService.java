@@ -22,7 +22,6 @@ import java.util.Optional;
 public class CartaoService {
 
     @Autowired private CartaoRepository repository;
-
     @Autowired private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de DTO para Entity
@@ -60,6 +59,11 @@ public class CartaoService {
     }
     public List<CartaoEntity> getCartoes() {
         return repository.findAll();
+
+    }
+    public List<CartaoEntity> getCartaoByUsuario(BigInteger idUsuario) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
+        return repository.findByUsuario(usuarioEntity);
 
     }
 
