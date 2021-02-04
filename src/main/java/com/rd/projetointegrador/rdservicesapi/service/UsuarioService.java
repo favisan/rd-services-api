@@ -152,35 +152,43 @@ public class UsuarioService {
         ContratoEntity contratoEntity = new ContratoEntity();
         CartaoEntity cartaoEntity= new CartaoEntity();
 
-        //Passando dados do Usuário
-        usuarioEntity = conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
-        usuarioEntity = repository.save(usuarioEntity);
-        BigInteger novoId = usuarioEntity.getIdUsuario();
+        String cpf = usuarioEntity.getNrCpf();
+        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        //Entidade LoginUsuario
-        inputUsuario.getLoginUsuario().setIdUsuario(novoId);
-        loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
-        loginUsuarioRepository.save(loginUsuarioEntity);
+        if(usuarioExistente.isEmpty()) {
 
-        //Entidade Contrato
-        inputUsuario.getContrato().setIdUsuario(novoId);
-        contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
-        contratoRepository.save(contratoEntity);
+            //Passando dados do Usuário
+            usuarioEntity = conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
+            usuarioEntity = repository.save(usuarioEntity);
+            BigInteger novoId = usuarioEntity.getIdUsuario();
 
-        //Entidade Cartao
-        inputUsuario.getCartao().setIdUsuario(novoId);
-        cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-        cartaoRepository.save(cartaoEntity);
+            //Entidade LoginUsuario
+            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
+            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
+            loginUsuarioRepository.save(loginUsuarioEntity);
 
-        //Entidade Contato
-        //TODO: fazer relacao com contatoService para cadastrar telefone
+            //Entidade Contrato
+            inputUsuario.getContrato().setIdUsuario(novoId);
+            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
+            contratoRepository.save(contratoEntity);
+
+            //Entidade Cartao
+            inputUsuario.getCartao().setIdUsuario(novoId);
+            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+            cartaoRepository.save(cartaoEntity);
+
+            //Entidade Contato
+            //TODO: fazer relacao com contatoService para cadastrar telefone
 
         /*
         //contato
         private String ddd;
         private String celular;*/
 
-        return "Usuário cadastrado com sucesso";
+            return "Usuário cadastrado com sucesso";
+        }
+
+        return "Erro. Cpf já utilizado.";
     }
 
     @Transactional
@@ -188,10 +196,18 @@ public class UsuarioService {
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
-        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
-        repository.save(usuarioEntity);
+        String cpf = usuarioEntity.getNrCpf();
+        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        return "Usuário cadastrado com sucesso";
+        if(usuarioExistente.isEmpty()) {
+
+            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+            repository.save(usuarioEntity);
+
+            return "Usuário cadastrado com sucesso";
+        }
+
+        return "Erro. Cpf já utilizado.";
     }
 
     @Transactional
