@@ -51,6 +51,14 @@ public class LembreteService {
         return lembrete;
 
     }
+    public List<LembreteEntity> getLembreteId(BigInteger idPaciente) {
+        List<LembreteEntity> lembretes = repository.findByIdPaciente(idPaciente);
+        return lembretes;
+    }
+    public List<LembreteEntity> getLembreteOrderDate(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtLembrete(idPaciente);
+        return lembretesPorData;
+    }
 
     public List<Lembrete> getLembretes(BigInteger idLembrete) {
         List<LembreteEntity> lembretesEntities = repository.findAll();
