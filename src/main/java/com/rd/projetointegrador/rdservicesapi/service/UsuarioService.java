@@ -34,7 +34,7 @@ public class UsuarioService {
     @Autowired
     private LoginUsuarioRepository loginUsuarioRepository;
 
-    public Usuario getMed(BigInteger id){
+    public Usuario getMedico(BigInteger id){
         System.out.println("ID: " + id);
         UsuarioEntity entity = repository.findById(id).get();
         Usuario user = new Usuario();
@@ -47,7 +47,7 @@ public class UsuarioService {
         uf.setDsUf(ufEntity.getDsUf());
         user.setUf(uf);
 
-        EspMedEntity espMedEntity = entity.getIdEspMed();
+        EspMedEntity espMedEntity = entity.getEspMed();
         EspMed espMed = new EspMed();
         espMed.setDsEspMed(espMedEntity.getDsEspMed());
         user.setIdEspMed(espMed);
@@ -93,6 +93,26 @@ public class UsuarioService {
         return repository.findAll();
     }
 
+    public List<UsuarioSaida> getMedicos() {
+        List<UsuarioEntity> usuarios = repository.findAll();
+        List<UsuarioSaida> medicos = new ArrayList<>();
+        for(UsuarioEntity usuarioEntity : usuarios){
+            UsuarioSaida usuario = new UsuarioSaida();
+            usuario.setIdUsuario(usuarioEntity.getIdUsuario());
+            usuario.setGenero(usuarioEntity.getGenero().getIdGenero());
+            usuario.setEspMedica(usuarioEntity.getEspMed().getIdEspMed());
+            usuario.setUfCrm(usuarioEntity.getUf().getIdUf());
+            usuario.setTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
+            usuario.setNmNome(usuarioEntity.getNome());
+            usuario.setDtNascimento(usuarioEntity.getDtNascimento());
+            usuario.setNrCpf(usuarioEntity.getNrCpf());
+            usuario.setNrCrm(usuarioEntity.getNrCrm());
+
+            medicos.add(usuario);
+        }
+        return medicos;
+    }
+
     public UsuarioEntity consultarPorCpf(String nrCpf){
         return repository.findByNrCpf(nrCpf);
     }
@@ -104,13 +124,13 @@ public class UsuarioService {
         UsuarioEntity entity= repository.findById(id).get();
 
         EspMedEntity espEntity = especialidadeRepository.findById(usuario.getIdEspMed().getIdEspMed()).get();
-        entity.setIdEspMed(espEntity);
+        entity.setEspMed(espEntity);
 
         UfEntity ufEntity = ufRepository.findById(usuario.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
-        entity.setIdTipoUsuario(tipoUsuarioEntity);
+        entity.setTipoUsuario(tipoUsuarioEntity);
 
         entity.setNome(usuario.getNome());
         entity.setDtNascimento(usuario.getDtNascimento());
@@ -153,13 +173,13 @@ public class UsuarioService {
         UsuarioEntity entity = new UsuarioEntity();
 
         EspMedEntity espEntity = especialidadeRepository.findById(usuario.getIdEspMed().getIdEspMed()).get();
-        entity.setIdEspMed(espEntity);
+        entity.setEspMed(espEntity);
 
         UfEntity ufEntity = ufRepository.findById(usuario.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
-        entity.setIdTipoUsuario(tipoUsuarioEntity);
+        entity.setTipoUsuario(tipoUsuarioEntity);
 
         entity.setNome(usuario.getNome());
         entity.setDtNascimento(usuario.getDtNascimento());

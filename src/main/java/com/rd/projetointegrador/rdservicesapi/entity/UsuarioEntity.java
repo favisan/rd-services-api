@@ -19,11 +19,11 @@ public class UsuarioEntity implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "ID_GENERO")
-    private GeneroEntity idGenero;
+    private GeneroEntity genero;
 
     @ManyToOne
     @JoinColumn(name="ID_ESP_MED")
-    private EspMedEntity idEspMed;
+    private EspMedEntity espMed;
 
     @ManyToOne
     @JoinColumn(name = "ID_UF_CRM")
@@ -31,7 +31,7 @@ public class UsuarioEntity implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_USUARIO")
-    private TipoUsuarioEntity idTipoUsuario;
+    private TipoUsuarioEntity tipoUsuario;
 
     @Column(name="NM_NOME")
     private String nome;

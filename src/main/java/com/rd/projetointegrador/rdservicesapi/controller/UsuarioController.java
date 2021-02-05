@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.dto.UsuarioSaida;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.TipoUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.service.UsuarioService;
@@ -17,10 +18,10 @@ public class UsuarioController {
     @Autowired
     UsuarioService service;
 
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/medico/{id}")
     public ResponseEntity getMedico(@PathVariable("id") BigInteger id){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getMed(id));
+                .body(service.getMedico(id));
     }
     @GetMapping("/usuarioCpf/{nrCpf}")
     public ResponseEntity consultarPorCpf(@PathVariable("nrCpf") String cpf){
@@ -29,8 +30,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario")
+    public ResponseEntity getUsuarios(){
+        List<UsuarioEntity> usuarios = service.getUsuarios();
+        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+    }
+    @GetMapping("/medicos")
     public ResponseEntity getMedicos(){
-        List<UsuarioEntity> medicos = service.getUsuarios();
+        List<UsuarioSaida> medicos = service.getMedicos();
         return ResponseEntity.status(HttpStatus.OK).body(medicos);
     }
 
