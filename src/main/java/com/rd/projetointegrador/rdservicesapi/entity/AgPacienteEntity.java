@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "TB_AG_PACIENTE")
@@ -17,19 +18,23 @@ public class AgPacienteEntity implements Serializable {
         @Column(name = "ID_AG_PACIENTE")
         private BigInteger idAgPaciente;
 
-        @Column(name = "ID_PACIENTE")
-        private BigInteger idPaciente;
+        @ManyToOne
+        @JoinColumn(name = "ID_USUARIO")
+        private UsuarioEntity paciente;
 
-        @Column(name = "ID_AGENDA")
-        private BigInteger idAgenda;
+        @OneToOne
+        @JoinColumn(name = "ID_AGENDA")
+        private AgendaEntity agenda;
 
         @Column(name = "DT_SOLICITACAO")
-        private LocalDateTime dtSolicitacao;
+        private Date dtSolicitacao;
 
-        @Column(name = "ID_TIPO_CONFIRMACAO")
-        private BigInteger idTipoConfirmacao;
+        @ManyToOne
+        @JoinColumn (name = "ID_TIPO_CONFIRMACAO")
+        private TipoConfirmacaoEntity tipoConfirmacao;
 
-        @Column(name = "ID_STATUS_CONSULTA")
-        private BigInteger idStatusConsulta;
+        @ManyToOne
+        @JoinColumn(name = "ID_STATUS_CONSULTA")
+        private StatusConsultaEntity statusConsulta;
 
 }

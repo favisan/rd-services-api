@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Entity
 @Data
@@ -29,7 +30,7 @@ public class NfEntity {
     private BigInteger nrSerie;
 
     @Column(name = "DT_EMISSAO", nullable = false)
-    private DateTimeFormatter dtEmissao;
+    private Date dtEmissao;
 
     @Column(name = "CDS_CHAVE_ACESSO", nullable = false)
     private String cdsChaveAcesso;
