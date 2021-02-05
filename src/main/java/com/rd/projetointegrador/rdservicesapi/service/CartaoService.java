@@ -37,7 +37,6 @@ public class CartaoService {
 
         return cartaoEntity;
     }
-
     //MÉTODO: conversão de Entity para DTO
     public Cartao conversaoCartaoDTO(CartaoEntity cartaoEntity, Cartao cartao) {
 

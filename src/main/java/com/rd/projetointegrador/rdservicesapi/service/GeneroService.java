@@ -25,7 +25,6 @@ public class GeneroService {
 
         return genero;
     }
-
     //MÉTODO: conversão listaEntity para ListaDTO
     public List<Genero> conversaoGenerosDTO(List<GeneroEntity> generosEntities, List<Genero> generos){
         for(GeneroEntity generoEntity : generosEntities){
@@ -35,7 +34,6 @@ public class GeneroService {
         }
         return generos;
     }
-
     //MÉTODO: conversão de DTO para Entity
     public GeneroEntity conversaoGeneroEntity(Genero genero, GeneroEntity generoEntity) {
         generoEntity.setIdGenero(genero.getIdGenero());
@@ -44,7 +42,6 @@ public class GeneroService {
         return generoEntity;
 
     }
-
     //MÉTODO: conversão ListaDTO para ListaEntity
     public List<GeneroEntity> conversaoGenerosEntities(List<Genero> generos,List<GeneroEntity> generosEntities){
       for(Genero genero : generos){

@@ -13,19 +13,18 @@ import java.util.Optional;
 
 @Service
 public class TipoPagamentoService {
-    @Autowired
-    private TipoPagamentoRepository repository;
 
-
+    @Autowired private TipoPagamentoRepository repository;
 
     public TipoPagamentoEntity getTipoPagamento(BigInteger idFormaPagamento) {
         Optional<TipoPagamentoEntity> optional = repository.findById(idFormaPagamento);
         return optional.get();
 
     }
-    public List<TipoPagamentoEntity> getTiposPagamentos(BigInteger idFormaPagamento) {
+    public List<TipoPagamentoEntity> getTiposPagamentos() {
         return repository.findAll();
     }
+
     @Transactional
     public String cadastrarTipoPagamento(TipoPagamento tipoPagamento){
 
@@ -46,8 +45,6 @@ public class TipoPagamentoService {
         tipoPagamentoEntity.setDsFormaPagamento(tipoPagamento.getDsFormaPagamento());
 
         repository.save(tipoPagamentoEntity);
-
-        System.out.println(tipoPagamento.getIdFormaPagamento() + " . " + tipoPagamento.getDsFormaPagamento() );
 
         return "Pagamento Tipo alterado com sucesso";
 

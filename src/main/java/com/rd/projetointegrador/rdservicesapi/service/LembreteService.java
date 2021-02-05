@@ -99,7 +99,6 @@ public class LembreteService {
         return lembretes;
     }
 
-
     //MÉTODOS RETORNANDO A ENTITY
     public List<LembreteEntity> getLembretesIdPaciente(BigInteger idPaciente) {
         List<LembreteEntity> lembretes = repository.findByIdPaciente(idPaciente);
@@ -117,7 +116,6 @@ public class LembreteService {
         List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtCriacao(idPaciente);
         return lembretesPorData;
     }
-
 
     //MÉTODOS RETORNANDO A DTO
     public Lembrete getLembreteDTO(BigInteger idLembrete) {

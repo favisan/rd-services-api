@@ -34,7 +34,6 @@ public class ContratoService {
 
         return contrato;
     }
-
     //MÉTODO: conversão de DTO para Entity
     public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
 
