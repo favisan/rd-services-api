@@ -25,6 +25,7 @@ public class CardapioService {
     @Autowired
     private TipoRefeRepository tipoRefeRepository;
 
+   //buscar cardapio por id
     public CardapioEntity buscarCardapio(BigInteger idCardapio){
         System.out.println("ID: " + idCardapio);
         Optional<CardapioEntity> optional = cardapioRepository.findById(idCardapio);
@@ -33,10 +34,12 @@ public class CardapioService {
         return entity;
     }
 
+    //lista todos os cardapios
     public List<CardapioEntity> buscarCardapios(BigInteger idCardapio){
         return cardapioRepository.findAll();
     }
 
+    //cadastra um novo cardapio
     @Transactional
     public String cadastrarCardapio(Cardapio cardapio) {
         CardapioEntity entity = new CardapioEntity();
@@ -59,6 +62,7 @@ public class CardapioService {
         return "Cadastro realizado com sucesso";
     }
 
+    //altera um cardapio já existente.
     public String alterarCardapio(Cardapio cardapio, BigInteger idCardapio) {
         CardapioEntity entity = buscarCardapio(idCardapio);
 
@@ -79,6 +83,7 @@ public class CardapioService {
 
     }
 
+    //exclui um cardapio
     public String excluirCardapio(BigInteger idCardapio) {
       cardapioRepository.deleteById(idCardapio);
 

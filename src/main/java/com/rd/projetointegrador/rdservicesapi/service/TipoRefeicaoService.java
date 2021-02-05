@@ -10,20 +10,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TipoRefeicaoService {
+
     @Autowired
     private CardapioRepository cardapioRepository;
 
     @Autowired
     private TipoRefeRepository tipoRefeRepository;
 
+   //Tipo refeicoes por Id
+    public TipoRefeEntity getTipoRefeicao(BigInteger idTipoRefeicao){
+        System.out.println("ID: " + idTipoRefeicao);
+        Optional<TipoRefeEntity> optional = tipoRefeRepository.findById(idTipoRefeicao);
+        TipoRefeEntity tipoRefeEntity = optional.get();
 
+        return tipoRefeEntity;
+    }
+
+    public List<TipoRefeEntity> getTiposRefeicoes(){
+
+        return tipoRefeRepository.findAll();
+    }
+
+    // retorna TipoRefeicoes em DTO.
+    public List<TipoRefeicao> getTipoRefeicoesDTO(){
+
+        List<TipoRefeEntity> refeEntities = tipoRefeRepository.findAll();
+
+        List<TipoRefeicao> tipoRefeicoesDTO = new ArrayList<>();
+
+        for(TipoRefeEntity tipoRefeEntity: refeEntities){
+            TipoRefeicao tipoRefeicaoDTO = new TipoRefeicao();
+
+            tipoRefeicaoDTO.setIdTipoRefeicao(tipoRefeEntity.getIdTipoRefeicao());
+            tipoRefeicaoDTO.setDsTipoRefeicao(tipoRefeEntity.getDsTipoRefeicao());
+
+            tipoRefeicoesDTO.add(tipoRefeicaoDTO);
+        }
+        return tipoRefeicoesDTO;
+    }
+
+
+    //lista todas as refeicoes cadastradas do cardapio de acordo com o id paciente
     public Map<TipoRefeicao, List<Cardapio>> listarRefeicoes(){
 
         List<CardapioEntity> lista = cardapioRepository.getByIdPaciente(BigInteger.valueOf(24l));
