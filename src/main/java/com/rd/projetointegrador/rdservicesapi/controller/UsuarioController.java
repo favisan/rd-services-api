@@ -2,6 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.TipoUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,9 @@ public class UsuarioController {
     UsuarioService service;
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity getUsuario(@PathVariable("id") BigInteger id){
+    public ResponseEntity getMedico(@PathVariable("id") BigInteger id){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getUsuario(id));
+                .body(service.getMed(id));
     }
     @GetMapping("/usuarioCpf/{nrCpf}")
     public ResponseEntity consultarPorCpf(@PathVariable("nrCpf") String cpf){
@@ -28,21 +29,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario")
-    public ResponseEntity getUsuarios(){
-        List<UsuarioEntity> usuarios = service.getUsuario();
-        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+    public ResponseEntity getMedicos(){
+        List<UsuarioEntity> medicos = service.getUsuarios();
+        return ResponseEntity.status(HttpStatus.OK).body(medicos);
     }
 
-    @PostMapping("/usuario")
+    @PostMapping("/usuarioMedico")
     public ResponseEntity cadastrar(@RequestBody Usuario usuario) {
         if (service.consultarPorCpf(usuario.getNrCpf()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrar(usuario));
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(usuario));
         }
     }
 
-    @PutMapping("/usuario/{idUsuario}")
+    @PutMapping("/usuarioMedico/{idUsuario}")
     public ResponseEntity alterar(@RequestBody Usuario usuario, @PathVariable("idUsuario") BigInteger id){
         String retorno = service.alterar(usuario, id);
         return ResponseEntity.ok().body(retorno);

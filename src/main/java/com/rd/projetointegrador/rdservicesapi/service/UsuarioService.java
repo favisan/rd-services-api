@@ -34,18 +34,62 @@ public class UsuarioService {
     @Autowired
     private LoginUsuarioRepository loginUsuarioRepository;
 
-
-
-    public UsuarioEntity getUsuario(BigInteger id){
+    public Usuario getMed(BigInteger id){
         System.out.println("ID: " + id);
-        Optional<UsuarioEntity> optional = repository.findById(id);
-        UsuarioEntity entity = optional.get();
+        UsuarioEntity entity = repository.findById(id).get();
+        Usuario user = new Usuario();
+        user.setIdUsuario(entity.getIdUsuario());
+        user.setNome(entity.getNome());
+        user.setNrCrm(entity.getNrCrm());
 
-        return entity;
+        UfEntity ufEntity = entity.getUf();
+        Uf uf = new Uf();
+        uf.setDsUf(ufEntity.getDsUf());
+        user.setUf(uf);
+
+        EspMedEntity espMedEntity = entity.getIdEspMed();
+        EspMed espMed = new EspMed();
+        espMed.setDsEspMed(espMedEntity.getDsEspMed());
+        user.setIdEspMed(espMed);
+
+        user.setNome(entity.getNome());
+        user.setDtNascimento(entity.getDtNascimento());
+        user.setNrCpf(entity.getNrCpf());
+        user.setNrCrm(entity.getNrCrm());
+
+        PrecoEntity precoEntity = entity.getPreco();
+        Preco preco = new Preco();
+        preco.setVlConsulta(precoEntity.getVlConsulta());
+        user.setPreco(preco);
+
+        List<ContatoEntity> contatosEntity = entity.getContatos();
+        List<Contato> contatos = new ArrayList<>();
+        for(ContatoEntity contatoEntity : contatosEntity){
+            Contato contato = new Contato();
+            contato.setDsContato(contatoEntity.getDsContato());
+
+            contatos.add(contato);
+        }
+        user.setContatos(contatos);
+
+        List<EnderecoEntity> enderecoEntities = entity.getEnderecos();
+        List<Endereco> enderecos = new ArrayList<>();
+        for(EnderecoEntity enderecoEntity : enderecoEntities){
+            Endereco endereco = new Endereco();
+            endereco.setDsEndereco(enderecoEntity.getDsEndereco());
+            endereco.setDsBairro(enderecoEntity.getDsBairro());
+            endereco.setIdCidade(enderecoEntity.getIdCidade());
+            endereco.setDsComplemento(enderecoEntity.getDsComplemento());
+            endereco.setNrCep(enderecoEntity.getNrCep());
+
+            enderecos.add(endereco);
+        }
+        user.setEnderecos(enderecos);
+
+        return user;
     }
 
-    public List<UsuarioEntity> getUsuario(){
-
+    public List<UsuarioEntity> getUsuarios() {
         return repository.findAll();
     }
 
@@ -78,6 +122,17 @@ public class UsuarioService {
         precoEntity.setVlConsulta(preco.getVlConsulta());
         entity.setPreco(precoEntity);
 
+        List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
+        for(Endereco endereco : usuario.getEnderecos()){
+            EnderecoEntity enderecoEntity = new EnderecoEntity();
+            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            enderecoEntity.setDsComplemento(endereco.getDsComplemento());
+            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
+            enderecoEntity.setDsBairro(endereco.getDsBairro());
+            enderecoEntity.setNrCep(endereco.getNrCep());
+        }
+        entity.setEnderecos(enderecosEntity);
+
         List<ContatoEntity> contatosEntity = entity.getContatos();
         for(Contato contato : usuario.getContatos()){
             ContatoEntity contatoEntity = new ContatoEntity();
@@ -85,7 +140,6 @@ public class UsuarioService {
             contatoEntity.setTipoContato(tpContatoEntity);
             contatoEntity.setDsContato(contato.getDsContato());
         }
-
         entity.setContatos(contatosEntity);
 
         repository.save(entity);
@@ -94,7 +148,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public String cadastrar(Usuario usuario){
+    public String cadastrarMedico(Usuario usuario){
 
         UsuarioEntity entity = new UsuarioEntity();
 
