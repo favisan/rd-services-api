@@ -1,7 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Receituario;
-import com.rd.projetointegrador.rdservicesapi.service.ReceituarioService;
+import com.rd.projetointegrador.rdservicesapi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +16,28 @@ public class ReceituarioController {
     private ReceituarioService receituarioService;
 
     @GetMapping("/receituario/{idReceituario}")
-    public ResponseEntity exibirReceituarioById(@PathVariable("idReceituario") BigInteger idReceituario) {
+    public ResponseEntity getReceituarioById(@PathVariable("idReceituario") BigInteger idReceituario) {
 
         return ResponseEntity.status(HttpStatus.OK).body(receituarioService.exibirReceituarioPorId(idReceituario));
 
     }
 
     @GetMapping("/receituario/prontuario/{idProntuario}")
-    public ResponseEntity exibirReceituarioByProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
+    public ResponseEntity getReceituarioByIdProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
 
         return ResponseEntity.status(HttpStatus.OK).body(receituarioService.listarReceituarioPorIdProntuario(idProntuario));
 
     }
 
+    @GetMapping("/receituario/{idMedico}/{idPaciente}")
+    public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
+
+    }
+
     @PostMapping("/receituario")
-    public ResponseEntity inserirReceituario(@RequestBody Receituario receituario) {
+    public ResponseEntity setReceituario(@RequestBody Receituario receituario) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(receituarioService.inserirReceituario(receituario));
 
