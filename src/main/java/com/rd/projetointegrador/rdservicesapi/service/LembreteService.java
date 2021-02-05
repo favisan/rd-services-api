@@ -59,6 +59,16 @@ public class LembreteService {
         lembrete.setDtCriacao(lembreteEntity.getDtCriacao());
         lembrete.setHrHora(lembreteEntity.getHrHora());
         lembrete.setNrRepeticao(lembreteEntity.getNrRepeticao());
+
+        int difData = lembreteEntity.getDtLembrete().compareTo(java.util.Calendar.getInstance().getTime());
+
+        if (difData >= 0) {
+            lembrete.setVencido(false);
+        }else {
+            lembrete.setVencido(true);
+        }
+
+        //possibilidade passar a string:
         //lembrete.setLembreteIntervalo(lembreteEntity.getLembreteIntervalo().getDsLembreteIntervalo());
 
         return lembrete;

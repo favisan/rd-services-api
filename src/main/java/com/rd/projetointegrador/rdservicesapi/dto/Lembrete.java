@@ -22,6 +22,7 @@ public class Lembrete {
     private Date dtCriacao;
     private Date hrHora;
     private Integer nrRepeticao;
+    private Boolean vencido;
 
     //private UsuarioEntity paciente;
     //private String lembreteIntervalo;
