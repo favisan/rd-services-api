@@ -27,7 +27,7 @@ public class AgPacienteEntity implements Serializable {
         private AgendaEntity agenda;
 
         @Column(name = "DT_SOLICITACAO")
-        private Date dtSolicitacao;
+        private LocalDateTime dtSolicitacao;
 
         @ManyToOne
         @JoinColumn (name = "ID_TIPO_CONFIRMACAO")

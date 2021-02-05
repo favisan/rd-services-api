@@ -2,9 +2,6 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.TipoConfirmacaoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,26 +10,23 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class AgPacienteService {
 
     @Autowired private AgPacienteRepository repository;
-    @Autowired private AgendaRepository agendaRepository;
-    @Autowired private UsuarioRepository usuarioRepository;
-    @Autowired private TipoConfirmacaoRepository tipoConfirmacaoRepository;
-
 
     @Transactional
-    public String setAgPaciente (BigInteger idAgenda, BigInteger idPaciente, BigInteger idtipoConfirmacao){
-        AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
+    public String setAgPaciente (AgPacienteEntity agPacienteEntity){
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(1));
+//        LocalDateTime data = new LocalDateTime();
 
-        agPacienteEntity.setAgenda(agendaRepository.findByIdAgenda(idAgenda).get());
-        agPacienteEntity.setPaciente(usuarioRepository.findByIdUsuario(idPaciente).get());
-        agPacienteEntity.setTipoConfirmacao(tipoConfirmacaoRepository.findByIdTipoConfirmacao(idtipoConfirmacao).get());
+        agPacienteEntity.setAgenda(agPacienteEntity.getAgenda());
+        agPacienteEntity.setPaciente(agPacienteEntity.getPaciente());
+//        agPacienteEntity.setDtSolicitacao(data);
+        agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
 
         repository.save(agPacienteEntity);

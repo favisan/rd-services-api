@@ -17,8 +17,8 @@ public class AgPacienteController {
     @Autowired private AgPacienteService service;
 
     @PostMapping ("/agPaciente/cadastrar")
-    public ResponseEntity cadastrarAgPaciente(@RequestBody BigInteger idAgenda, BigInteger idPaciente, BigInteger idTipoConfirmacao) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(idAgenda, idPaciente, idTipoConfirmacao));
+    public ResponseEntity <String> cadastrarAgPaciente(@RequestBody AgPacienteEntity agPacienteEntity) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(agPacienteEntity));
 
     }
 
