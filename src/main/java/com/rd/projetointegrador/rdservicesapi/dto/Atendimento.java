@@ -13,9 +13,9 @@ public class Atendimento {
 
     private BigInteger idAtendimento;
 
-//    private Usuario paciente;
+    private Usuario paciente;
 
-//    private Usuario medico;
+    private Usuario medico;
 
     private Prontuario prontuario;
 

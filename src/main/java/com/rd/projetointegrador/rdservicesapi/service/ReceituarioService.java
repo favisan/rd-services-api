@@ -8,6 +8,7 @@ import com.rd.projetointegrador.rdservicesapi.repository.TipoReceitaRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
@@ -28,6 +29,21 @@ public class ReceituarioService {
 
     @Autowired
     private TipoReceitaRepository tipoReceitaRepository;
+
+    @Autowired
+    private TipoReceitaService tipoReceitaService;
+
+    @Autowired
+    private FormaFarmacService formaFarmacService;
+
+    @Autowired
+    private ViaAdmService viaAdmService;
+
+    @Autowired
+    private MedicacaoService medicacaoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     public ReceituarioEntity exibirReceituarioPorId(BigInteger idReceituario){
 
@@ -147,6 +163,19 @@ public class ReceituarioService {
         receituarioRepository.save(receituarioEntity);
 
         return "Receituário inserido com sucesso!";
+
+    }
+
+    public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente){
+        ReceituarioOutput receituarioOutput = new ReceituarioOutput();
+        receituarioOutput.setListaTipoReceita(tipoReceitaService.listarTiposDeReceita());
+        //receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente))
+        receituarioOutput.setListaMedicacao(medicacaoService.listarMedicacoes());
+        receituarioOutput.setListaViaAdm(viaAdmService.listarViasAdm());
+        receituarioOutput.setListaFormaFarmac(formaFarmacService.listarFormasFarmac());
+        receituarioOutput.setMedico(usuarioService.getMedico(idMedico));
+
+        return receituarioOutput;
 
     }
 
