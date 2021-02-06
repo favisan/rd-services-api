@@ -1,9 +1,9 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -11,12 +11,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario{
-
+public class OutputMedico {
 
     private BigInteger idUsuario;
 
-    private Uf uf;
+    private Uf ufCrm;
 
     private EspMed IdEspMed;
 
@@ -33,6 +32,4 @@ public class Usuario{
     private List<Endereco> enderecos;
 
     private List<Contato> contatos;
-
-    private LoginUsuario login;
 }

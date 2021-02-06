@@ -47,7 +47,7 @@ public class ReceituarioService {
             Receituario receituario = new Receituario();
             receituario.setIdReceituario(receituarioEntity.getIdReceituario());
 
-            Usuario paciente = new Usuario();
+            InputMedico paciente = new InputMedico();
             paciente.setIdUsuario(receituarioEntity.getPaciente().getIdUsuario());
             paciente.setNome(receituarioEntity.getPaciente().getNome());
 
@@ -63,7 +63,7 @@ public class ReceituarioService {
 
             receituario.setProntuario(prontuario);
 
-            Usuario medico = new Usuario();
+            InputMedico medico = new InputMedico();
             medico.setIdUsuario(receituarioEntity.getMedico().getIdUsuario());
             medico.setNome(receituarioEntity.getMedico().getNome());
 

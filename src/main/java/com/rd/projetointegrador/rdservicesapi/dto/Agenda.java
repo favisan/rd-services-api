@@ -14,7 +14,7 @@ import java.util.Date;
 public class Agenda {
     private BigInteger idAgenda;
 
-    private Usuario medico;
+    private InputMedico medico;
 
     private TipoConsulta tipoConsulta;
 

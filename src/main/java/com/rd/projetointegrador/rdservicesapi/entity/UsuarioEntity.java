@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -63,5 +64,6 @@ public class UsuarioEntity implements Serializable{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "TB_LOGIN_USUARIO")
     @JoinColumn(name = "ID_USUARIO")
+    @JsonIgnore
     private LoginUsuarioEntity login;
 }

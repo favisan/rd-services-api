@@ -1,10 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.GeneroEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.TipoUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;

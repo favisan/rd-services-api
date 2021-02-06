@@ -15,11 +15,11 @@ public class Receituario {
 
     private BigInteger idReceituario;
 
-    private Usuario paciente;
+    private InputMedico paciente;
 
     private Prontuario prontuario;
 
-    private Usuario medico;
+    private InputMedico medico;
 
     private TipoReceita tipoReceita;
 

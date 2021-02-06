@@ -3,7 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.service;
 import com.rd.projetointegrador.rdservicesapi.dto.Prontuario;
 import com.rd.projetointegrador.rdservicesapi.dto.SolicExame;
 import com.rd.projetointegrador.rdservicesapi.dto.TipoExame;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.dto.InputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.ProntuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.SolicExameEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.TipoExameEntity;
@@ -97,13 +97,13 @@ public class SolicExameService {
             s.setProntuario(p);
 
 
-            Usuario paciente = new Usuario();
+            InputMedico paciente = new InputMedico();
             paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
             paciente.setNome(solic.getPaciente().getNome());
 
             s.setPaciente(paciente);
 
-            Usuario medico = new Usuario();
+            InputMedico medico = new InputMedico();
             medico.setIdUsuario(solic.getMedico().getIdUsuario());
             medico.setNome(solic.getMedico().getNome());
 
@@ -152,13 +152,13 @@ public class SolicExameService {
             s.setProntuario(p);
 
 
-            Usuario paciente = new Usuario();
+            InputMedico paciente = new InputMedico();
             paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
             paciente.setNome(solic.getPaciente().getNome());
 
             s.setPaciente(paciente);
 
-            Usuario medico = new Usuario();
+            InputMedico medico = new InputMedico();
             medico.setIdUsuario(solic.getMedico().getIdUsuario());
             medico.setNome(solic.getMedico().getNome());
 
