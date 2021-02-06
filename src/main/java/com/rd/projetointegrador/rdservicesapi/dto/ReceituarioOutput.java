@@ -22,6 +22,6 @@ public class ReceituarioOutput {
 
     private List<FormaFarmacEntity> listaFormaFarmac;
 
-    private Usuario medico;
+    private OutputMedico medico;
 
 }

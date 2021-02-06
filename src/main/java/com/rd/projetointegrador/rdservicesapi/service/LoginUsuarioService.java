@@ -7,17 +7,30 @@ import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class LoginUsuarioService {
 
-    @Autowired private LoginUsuarioRepository repository;
-    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired
+    private LoginUsuarioRepository repository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    public String codificar(String senha) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
+            return hash.toString(1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
     //MÉTODO: conversão de DTO para Entity
     public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity) {
