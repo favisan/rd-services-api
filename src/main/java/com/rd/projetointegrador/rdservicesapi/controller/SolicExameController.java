@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.List;
 
 @RestController
 public class SolicExameController {
@@ -19,17 +18,34 @@ public class SolicExameController {
 
     @PostMapping("/solic_exame")
     public ResponseEntity gravarSolicExame(@RequestBody SolicExame solicExame) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarSolicExame(solicExame));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.inserirSolicExame(solicExame));
     }
 
-    @GetMapping("/solic_exame")
-    public ResponseEntity getSolicExames() {
-        List<SolicExame> exames = service.listarSolicExame();
-        return ResponseEntity.status(HttpStatus.OK).body(exames);
+    @GetMapping("/solic_exame/prontuario/{idProntuario}")
+    public ResponseEntity buscarSolicitacaoPorIdProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarSolicExamePorIdProntuario(idProntuario));
     }
 
-    @GetMapping("/solic_exame/{idPaciente}")
-    public ResponseEntity buscarSolicitacaoPorId(@PathVariable("idPaciente") BigInteger idPaciente) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.buscarUsuarioId(idPaciente));
+    @GetMapping("/solic_exame/solicitacao/{idSolicitacao}")
+    public ResponseEntity getSolicitacaoPorIdSolicitacao(@PathVariable("idSolicitacao") BigInteger idSolicitacao) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.exibirSolicExamePorIdSolicitacao(idSolicitacao));
     }
+
+    @GetMapping("/solic_exame/{idMedico}")
+    public ResponseEntity preencherSolicitacaoInicial(@PathVariable("idMedico") BigInteger idMedico) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
+
+    }
+
+
+//    @GetMapping("/solic_exame")
+//    public ResponseEntity getSolicExames() {
+//
+//        List<SolicExame> exames = service.listarSolicExame();
+//        return ResponseEntity.status(HttpStatus.OK).body(exames);
+//    }
 }
