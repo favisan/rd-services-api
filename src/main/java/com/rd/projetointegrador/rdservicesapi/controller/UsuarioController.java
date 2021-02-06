@@ -27,16 +27,6 @@ public class UsuarioController {
         }
     }
 
-    //BUSCAR MEDICO POR CPF (USADO NO METODO CADASTRAR IMPEDIR CADATRO COM MESMO CPF)
-    @GetMapping("/usuarioCpf/{nrCpf}")
-    public ResponseEntity consultarPorCpf(@PathVariable("nrCpf") String cpf){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.consultarPorCpf(cpf));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar médico");
-        }
-    }
-
     //LISTAR TODOS OS MEDICOS
     @GetMapping("/medicos")
     public ResponseEntity getmedicos(){
@@ -49,10 +39,10 @@ public class UsuarioController {
     }
 
     //EXIBIR TELA DE PERFIL DO MEDICO
-    @GetMapping("/perfilMedico/{idMedico}/{idUf}")
+    @GetMapping("/perfilMedico/{idMedico}")
     public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idUf") BigInteger idUf){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaPerfil(idMedico,idUf));
+                .body(service.mostrarTelaPerfil(idMedico));
     }
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO

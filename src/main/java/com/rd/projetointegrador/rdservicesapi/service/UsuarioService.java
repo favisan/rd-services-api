@@ -214,11 +214,11 @@ public class UsuarioService {
     }
 
     //EXIBIR TELA DE PERFIL DO MEDICO
-    public PerfilMedico mostrarTelaPerfil(BigInteger idMedico, BigInteger idUf) {
+    public PerfilMedico mostrarTelaPerfil(BigInteger idMedico) {
         PerfilMedico perfilMedico = new PerfilMedico();
         perfilMedico.setMedico(getMedico(idMedico));
         perfilMedico.setDsEmail(loginUsuarioRepository.findOneByIdUsuario(idMedico).getDsEmail());
-        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
+        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(getMedico(idMedico).getUfCrm().getIdUf()));
         perfilMedico.setEspecialidades(especialidadeRepository.findAll());
         perfilMedico.setUfs(ufRepository.findAll());
 
