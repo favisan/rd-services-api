@@ -15,20 +15,28 @@ public class ReceituarioController {
     @Autowired
     private ReceituarioService receituarioService;
 
+    //BUSCAR RECEITUÁRIO POR ID
     @GetMapping("/receituario/{idReceituario}")
     public ResponseEntity getReceituarioById(@PathVariable("idReceituario") BigInteger idReceituario) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.exibirReceituarioPorId(idReceituario));
-
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(receituarioService.exibirReceituarioPorId(idReceituario));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar receituário.");
+        }
     }
 
+    //BUSCAR RECEITUÁRIOS POR ID DE PRONTUADRIO
     @GetMapping("/receituario/prontuario/{idProntuario}")
     public ResponseEntity getReceituarioByIdProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.listarReceituarioPorIdProntuario(idProntuario));
-
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(receituarioService.listarReceituarioPorIdProntuario(idProntuario));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar receituários.");
+        }
     }
 
+    //EXIBIR LISTAS DA TELA DE RECEITUÁRIO E CAMPOS DESABILITADOS PREENCHIDOS
     @GetMapping("/receituario/{idMedico}/{idPaciente}")
     public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
 
@@ -36,6 +44,7 @@ public class ReceituarioController {
 
     }
 
+    //CADASTRAR RECEITUÁRIO
     @PostMapping("/receituario")
     public ResponseEntity setReceituario(@RequestBody Receituario receituario) {
 
