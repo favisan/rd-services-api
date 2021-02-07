@@ -63,9 +63,9 @@ public class ReceituarioService {
         ////Buscando A Lista de Entity Receituário por Id de Prontuário
         List <ReceituarioEntity> receituariosEntity = receituarioRepository.findByProntuario(prontuarioEntity);
 
-        //Convertendo a Entity Receituario para DTO
+        //Convertendo a Lista Entity Receituario para Lista DTO
         List<Receituario> receituarios = new ArrayList<>();
-        receituarios = converterReceituariosDTO(receituariosEntity,receituarios);
+        receituarios = converterReceituariosToDTO(receituariosEntity,receituarios);
 
         return receituarios;
 
@@ -75,47 +75,9 @@ public class ReceituarioService {
     @Transactional
     public String inserirReceituario(Receituario receituario) {
 
+        //Convertendo a DTO Receituario para Entity
         ReceituarioEntity  receituarioEntity= new ReceituarioEntity();
-
-        //PEGAR A ENTITY USUARIO Paciente
-//        BigInteger idPaciente = receituario.getPaciente().getIdUsuario();
-//        UsuarioEntity pacienteEntity = usuarioRepository.findById(idPaciente).get();
-
-        //PEGAR A ENTITY Prontuario
-        BigInteger idProntuario = receituario.getProntuario().getIdProntuario();
-        ProntuarioEntity prontuarioEntity = prontuarioRepository.findById(idProntuario).get();
-
-        //PEGAR A ENTITY USUARIO Medico
-        BigInteger idMedico = receituario.getMedico().getIdUsuario();
-        UsuarioEntity medicoEntity = usuarioRepository.findById(idMedico).get();
-
-        //PEGAR A ENTITY Tipo de receita
-        BigInteger idTipoReceita = receituario.getTipoReceita().getIdTipoReceita();
-        TipoReceitaEntity tipoReceitaEntity = tipoReceitaRepository.findById(idTipoReceita).get();
-
-        //PEGAR A ENTITY Lista de prescricoes
-        List<PrescricaoEntity> prescricoesEntity = new ArrayList<>();
-        for(Prescricao prescricao : receituario.getPrescricoes()){
-
-            PrescricaoEntity prescricaoEntity = new PrescricaoEntity();
-            prescricaoEntity.setIdMedicacao(prescricao.getIdMedicacao());
-            prescricaoEntity.setIdFormaFarmac(prescricao.getIdFormaFarmac());
-            prescricaoEntity.setIdViaAdm(prescricao.getIdViaAdm());
-            prescricaoEntity.setVlQuantidade(prescricao.getVlQuantidade());
-            prescricaoEntity.setVlConcentracao(prescricao.getVlConcentracao());
-            prescricaoEntity.setDsOrientacoes(prescricao.getDsOrientacoes());
-
-            prescricoesEntity.add(prescricaoEntity);
-        }
-
-        //SETANDO OS VALORES NA ENTITY Receituario
-        //receituarioEntity.setPaciente(pacienteEntity);
-        receituarioEntity.setProntuario(prontuarioEntity);
-        receituarioEntity.setMedico(medicoEntity);
-        receituarioEntity.setTipoReceita(tipoReceitaEntity);
-        receituarioEntity.setDtEmissao(receituario.getDtEmissao());
-        receituarioEntity.setDsEndImgAssMed(receituario.getDsEndImgAssMed());
-        receituarioEntity.setPrescricoes(prescricoesEntity);
+        receituarioEntity = converterReceituarioToEntity(receituario, receituarioEntity);
 
         //INSERINDO A ENTITY Receituário no BD
         receituarioRepository.save(receituarioEntity);
@@ -140,7 +102,7 @@ public class ReceituarioService {
     }
 
     //Convertendo de Entity para DTO
-    public Receituario converterReceituarioDTO(ReceituarioEntity receituarioEntity, Receituario receituario) {
+    public Receituario converterReceituarioToDTO(ReceituarioEntity receituarioEntity, Receituario receituario) {
 
         //PEGAR A DTO Usuario paciente
 //            Usuario paciente = new Usuario();
@@ -196,16 +158,62 @@ public class ReceituarioService {
     }
 
     //Convertendo listaEntity para ListaDTO
-    public List<Receituario> converterReceituariosDTO(List<ReceituarioEntity> receituariosEntity, List<Receituario> receituarios) {
+    public List<Receituario> converterReceituariosToDTO(List<ReceituarioEntity> receituariosEntity, List<Receituario> receituarios) {
 
         for(ReceituarioEntity receituarioEntity : receituariosEntity) {
             Receituario receituario = new Receituario();
-            receituario = converterReceituarioDTO(receituarioEntity,receituario);
+            receituario = converterReceituarioToDTO(receituarioEntity,receituario);
 
             receituarios.add(receituario);
         }
 
         return receituarios;
+    }
+
+    //Convertendo de DTO para Entity
+    public ReceituarioEntity converterReceituarioToEntity(Receituario receituario, ReceituarioEntity receituarioEntity) {
+
+        //PEGAR A ENTITY USUARIO Paciente
+//        BigInteger idPaciente = receituario.getPaciente().getIdUsuario();
+//        UsuarioEntity pacienteEntity = usuarioRepository.findById(idPaciente).get();
+
+        //PEGAR A ENTITY Prontuario
+        BigInteger idProntuario = receituario.getProntuario().getIdProntuario();
+        ProntuarioEntity prontuarioEntity = prontuarioRepository.findById(idProntuario).get();
+
+        //PEGAR A ENTITY USUARIO Medico
+        BigInteger idMedico = receituario.getMedico().getIdUsuario();
+        UsuarioEntity medicoEntity = usuarioRepository.findById(idMedico).get();
+
+        //PEGAR A ENTITY Tipo de receita
+        BigInteger idTipoReceita = receituario.getTipoReceita().getIdTipoReceita();
+        TipoReceitaEntity tipoReceitaEntity = tipoReceitaRepository.findById(idTipoReceita).get();
+
+        //PEGAR A ENTITY Lista de prescricoes
+        List<PrescricaoEntity> prescricoesEntity = new ArrayList<>();
+        for(Prescricao prescricao : receituario.getPrescricoes()){
+
+            PrescricaoEntity prescricaoEntity = new PrescricaoEntity();
+            prescricaoEntity.setIdMedicacao(prescricao.getIdMedicacao());
+            prescricaoEntity.setIdFormaFarmac(prescricao.getIdFormaFarmac());
+            prescricaoEntity.setIdViaAdm(prescricao.getIdViaAdm());
+            prescricaoEntity.setVlQuantidade(prescricao.getVlQuantidade());
+            prescricaoEntity.setVlConcentracao(prescricao.getVlConcentracao());
+            prescricaoEntity.setDsOrientacoes(prescricao.getDsOrientacoes());
+
+            prescricoesEntity.add(prescricaoEntity);
+        }
+
+        //SETANDO OS VALORES NA ENTITY Receituario
+        //receituarioEntity.setPaciente(pacienteEntity);
+        receituarioEntity.setProntuario(prontuarioEntity);
+        receituarioEntity.setMedico(medicoEntity);
+        receituarioEntity.setTipoReceita(tipoReceitaEntity);
+        receituarioEntity.setDtEmissao(receituario.getDtEmissao());
+        receituarioEntity.setDsEndImgAssMed(receituario.getDsEndImgAssMed());
+        receituarioEntity.setPrescricoes(prescricoesEntity);
+
+        return receituarioEntity;
     }
 
 }

@@ -12,15 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 public class ReceituarioOutput {
 
-    private List<TipoReceitaEntity> listaTipoReceita;
+    private List<TipoReceita> listaTipoReceita;
 
     private String nomePaciente;
 
-    private List<MedicacaoEntity> listaMedicacao;
+    private List<Medicacao> listaMedicacao;
 
-    private List<ViaAdmEntity> listaViaAdm;
+    private List<ViaAdm> listaViaAdm;
 
-    private List<FormaFarmacEntity> listaFormaFarmac;
+    private List<FormaFarmac> listaFormaFarmac;
 
     private OutputMedico medico;
 
