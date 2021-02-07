@@ -77,18 +77,18 @@ public class LoginUsuarioService {
 
     //VALIDAR DADOS ESQUECEU A SENHA
     @Transactional
-    public String acessoSemSenha(String nome, String cpf, String crm) {
+    public String acessoSemSenha(OutputMedico medico) {
 
-        String nomeTela = nome;
-        String cpfTela = cpf;
-        String crmTela = crm;
+        String  nome = medico.getNome();
+        String  cpf = medico.getNrCpf();
+        String  crm = medico.getNrCrm();
 
-        UsuarioEntity medico = usuarioService.consultarPorCpf(cpfTela);
-        String nomeBanco = medico.getNome();
-        String cpfBanco = medico.getNrCpf();
-        String crmBanco = medico.getNrCrm();
+        UsuarioEntity medicoEnt = usuarioService.consultarPorCpf(cpf);
+        String nomeBanco = medicoEnt.getNome();
+        String cpfBanco = medicoEnt.getNrCpf();
+        String crmBanco = medicoEnt.getNrCrm();
 
-        if (nomeTela.equals(nomeBanco) && cpfTela.equals(cpfBanco) && crmTela.equals(crmBanco)) {
+        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
             return " senha de acesso enviada para o email de cadastro";
         } else {
             return "acesso negado";

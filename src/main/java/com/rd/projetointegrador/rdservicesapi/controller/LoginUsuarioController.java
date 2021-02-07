@@ -38,9 +38,9 @@ public class LoginUsuarioController {
 
     //ESQUECI A SENHA
     @GetMapping("/esqueci")
-    public ResponseEntity acessoSemSenha(@RequestBody String nome, String cpf, String crm) {
+    public ResponseEntity acessoSemSenha(@RequestBody OutputMedico medico) {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.acessoSemSenha(nome, cpf, crm));
+            return ResponseEntity.status(HttpStatus.OK).body(service.acessoSemSenha(medico));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }
