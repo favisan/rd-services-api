@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.List;
 
 @RestController
 public class SolicExameController {
@@ -19,17 +18,45 @@ public class SolicExameController {
 
     @PostMapping("/solic_exame")
     public ResponseEntity gravarSolicExame(@RequestBody SolicExame solicExame) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarSolicExame(solicExame));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.inserirSolicExame(solicExame));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao gravar solicitação de exame.");
+        }
     }
 
-    @GetMapping("/solic_exame")
-    public ResponseEntity getSolicExames() {
-        List<SolicExame> exames = service.listarSolicExame();
-        return ResponseEntity.status(HttpStatus.OK).body(exames);
+    @GetMapping("/solic_exame/prontuario/{idProntuario}")
+    public ResponseEntity buscarSolicitacaoPorIdProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.listarSolicExamePorIdProntuario(idProntuario));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar solicitação de exame.");
+        }
     }
 
-    @GetMapping("/solic_exame/{idPaciente}")
-    public ResponseEntity buscarSolicitacaoPorId(@PathVariable("idPaciente") BigInteger idPaciente) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.buscarUsuarioId(idPaciente));
+    @GetMapping("/solic_exame/solicitacao/{idSolicitacao}")
+    public ResponseEntity getSolicitacaoPorIdSolicitacao(@PathVariable("idSolicitacao") BigInteger idSolicitacao) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.exibirSolicExamePorIdSolicitacao(idSolicitacao));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar solicitação de exame.");
+        }
     }
+
+    @GetMapping("/solic_exame/{idMedico}")
+    public ResponseEntity preencherSolicitacaoInicial(@PathVariable("idMedico") BigInteger idMedico) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao recuperar informações pré cadastradas no formulário.");
+        }
+    }
+
+
+//    @GetMapping("/solic_exame")
+//    public ResponseEntity getSolicExames() {
+//
+//        List<SolicExame> exames = service.listarSolicExame();
+//        return ResponseEntity.status(HttpStatus.OK).body(exames);
+//    }
 }

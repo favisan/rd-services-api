@@ -1,89 +1,97 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
+import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.List;
-import java.util.Optional;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 @Service
 public class LoginUsuarioService {
 
-    @Autowired private LoginUsuarioRepository repository;
-    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired
+    private LoginUsuarioRepository loginUsuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    UsuarioService usuarioService;
 
-    //MÉTODO: conversão de DTO para Entity
-    public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity) {
-
-        loginUsuarioEntity.setIdUsuario(loginUsuario.getIdUsuario());
-        loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
-        loginUsuarioEntity.setDsSenha(loginUsuario.getDsSenha());
-
-        return loginUsuarioEntity;
-    }
-    //MÉTODO: conversão de Entity para DTO
-    public LoginUsuario conversaoLoginUsuarioDTO(LoginUsuarioEntity loginUsuarioEntity, LoginUsuario loginUsuario) {
-
-        loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
-        loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
-        loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
-
-        return loginUsuario;
+    //CRIPTOGRAFAR SENHA USUARIO
+    public String codificar(String senha) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
+            return hash.toString(1);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
-    //MÉTODOS RETORNANDO A ENTITY
-    public LoginUsuarioEntity getAcesso(BigInteger idUsuario) {
-        System.out.println("IdAcesso: " + idUsuario);
-        Optional<LoginUsuarioEntity> optional = repository.findById(idUsuario);
-        return optional.get();
-
-    }
-    public List<LoginUsuarioEntity> getAcessos() {
-        return repository.findAll();
-
-    }
-    public List<LoginUsuarioEntity> getAcessosByEmail(String email) {
-        return repository.findByDsEmail(email);
+    //BUSCAR DADOS DE LOGIN POR EMAIL - USADO NO METODO VALIDAR
+    public LoginUsuarioEntity getAcessoByEmail(String email) {
+        return loginUsuarioRepository.findByDsEmail(email);
     }
 
+
+    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
-    public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
+    public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
 
-        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-        loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
-
-        repository.save(loginUsuarioEntity);
-
-        return "Contrato cadastrado com sucesso";
-    }
-
-    @Transactional
-    public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
-
-        LoginUsuarioEntity loginUsuarioEntity = repository.findOneByIdUsuario(idUsuario);
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
         loginUsuarioEntity.setDsEmail(login.getDsEmail());
-        loginUsuarioEntity.setDsSenha(login.getDsSenha());
+        loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
 
-        UsuarioEntity usuario= usuarioRepository.findById(idUsuario).get();
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
         loginUsuarioEntity.setUsuario(usuario);
 
-        repository.save(loginUsuarioEntity);
+        loginUsuarioRepository.save(loginUsuarioEntity);
         return "Alteração realizada com sucesso";
     }
 
-    //Confirmar se haverá ou não exclusão de acessos ou apenas bloqueios
-    public String excluirAcesso(BigInteger idUsuario){
-        repository.deleteById(idUsuario);
-        return "Exclusão de login realizada com sucesso";
+    //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
+    @Transactional
+    public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
 
+        String emailTela = loginUsuario.getDsEmail();
+        String senhaTela = codificar(loginUsuario.getDsSenha());
+
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+        String login = loginUsuarioEntity.getDsEmail();
+        String senha = loginUsuarioEntity.getDsSenha();
+
+        if (emailTela.equals(login) && senhaTela.equals(senha)) {
+            return " acesso permitido";
+        } else {
+            return "acesso negado";
+        }
     }
 
+    //VALIDAR DADOS ESQUECEU A SENHA
+    @Transactional
+    public String acessoSemSenha(OutputMedico medico) {
+
+        String  nome = medico.getNome();
+        String  cpf = medico.getNrCpf();
+        String  crm = medico.getNrCrm();
+
+        UsuarioEntity medicoEnt = usuarioService.consultarPorCpf(cpf);
+        String nomeBanco = medicoEnt.getNome();
+        String cpfBanco = medicoEnt.getNrCpf();
+        String crmBanco = medicoEnt.getNrCrm();
+
+        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
+            return " senha de acesso enviada para o email de cadastro";
+        } else {
+            return "acesso negado";
+        }
+    }
 }

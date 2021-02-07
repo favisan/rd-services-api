@@ -14,28 +14,22 @@ public class AgendaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_AGENDA")
-    private BigInteger idAgenda;
+    private BigInteger Agenda;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="ID_MEDICO")
-    private UsuarioEntity medico;
+    private UsuarioEntity Medico;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="ID_TIPO_CONSULTA")
-    private TipoConsultaEntity idTipoConsulta;
+    private TipoConsultaEntity TipoConsulta;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="ID_PERIODO")
-    private PeriodoEntity idPeriodo;
+    private PeriodoEntity Periodo;
 
     @Column(name = "DT_DIA_DISPONIVEL")
     private Date diaDisponivel;
-
-    @Column(name="TM_HORA_INICIAL")
-    private Time horaInicial;
-
-    @Column(name="TM_HORA_FINAL")
-    private Time horaFinal;
 
     @Column(name="FL_DISPONIVEL")
     private Integer flDisponivel;

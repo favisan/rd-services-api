@@ -21,7 +21,4 @@ public class PeriodoEntity implements Serializable {
 
     @Column(name="TM_HORA_INICIAL")
     private Time horaInicial;
-
-    @Column(name="TM_HORA_FINAL")
-    private Time horaFinal;
 }

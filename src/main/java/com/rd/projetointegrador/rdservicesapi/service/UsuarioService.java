@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class UsuarioService {
     private LoginUsuarioRepository loginUsuarioRepository;
     @Autowired
     private CidadeService cidadeService;
+    @Autowired
+    private LoginUsuarioService loginUsuarioService;
 
     //BUSCAR MEDICO POR ID
     public OutputMedico getMedico(BigInteger id) {
@@ -148,7 +151,7 @@ public class UsuarioService {
 
     //CADASTRAR MEDICO
     @Transactional
-    public String cadastrarMedico(InputMedico inputMedico) {
+    public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
 
         UsuarioEntity entity = new UsuarioEntity();
 
@@ -200,11 +203,10 @@ public class UsuarioService {
 
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         LoginUsuario loginUsuario = inputMedico.getLogin();
-
-        BigInteger novoId = entity.getIdUsuario();
-        loginUsuarioEntity.setIdUsuario(novoId);
+        
+        loginUsuarioEntity.setIdUsuario(entity.getIdUsuario());
         loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
-        loginUsuarioEntity.setDsSenha(loginUsuario.getDsSenha());
+        loginUsuarioEntity.setDsSenha(loginUsuarioService.codificar(loginUsuario.getDsSenha()));
 
         loginUsuarioRepository.save(loginUsuarioEntity);
 
@@ -212,11 +214,11 @@ public class UsuarioService {
     }
 
     //EXIBIR TELA DE PERFIL DO MEDICO
-    public PerfilMedico mostrarTelaPerfil(BigInteger idMedico, BigInteger idUf) {
+    public PerfilMedico mostrarTelaPerfil(BigInteger idMedico) {
         PerfilMedico perfilMedico = new PerfilMedico();
         perfilMedico.setMedico(getMedico(idMedico));
         perfilMedico.setDsEmail(loginUsuarioRepository.findOneByIdUsuario(idMedico).getDsEmail());
-        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
+        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(getMedico(idMedico).getUfCrm().getIdUf()));
         perfilMedico.setEspecialidades(especialidadeRepository.findAll());
         perfilMedico.setUfs(ufRepository.findAll());
 
