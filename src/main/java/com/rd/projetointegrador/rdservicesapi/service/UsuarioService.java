@@ -152,10 +152,16 @@ public class UsuarioService {
         ContratoEntity contratoEntity = new ContratoEntity();
         CartaoEntity cartaoEntity= new CartaoEntity();
 
+        //VALIDAR CPF
         String cpf = usuarioEntity.getNrCpf();
         List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        if(usuarioExistente.isEmpty()) {
+        //VALIDAR E-MAIL
+        String email = loginUsuarioEntity.getDsEmail();
+        LoginUsuarioEntity loginExistente = loginUsuarioRepository.findByDsEmail(email);
+
+
+        if(usuarioExistente.isEmpty() && loginExistente == null) {
 
             //Passando dados do Usuário
             usuarioEntity = conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
@@ -188,7 +194,7 @@ public class UsuarioService {
             return "Usuário cadastrado com sucesso";
         }
 
-        return "Erro. Cpf já utilizado.";
+        return "Erro. Usuário já cadastrado.";
     }
 
     @Transactional

@@ -11,5 +11,5 @@ public interface LoginUsuarioRepository  extends JpaRepository<LoginUsuarioEntit
 
     public LoginUsuarioEntity findOneByIdUsuario(BigInteger idUsuario);
 
-    public List<LoginUsuarioEntity> findByDsEmail(String dsEmail);
+    public LoginUsuarioEntity findByDsEmail(String dsEmail);
 }

@@ -24,10 +24,16 @@ public class LoginUsuarioController {
                 .body(service.getAcesso(idUsuario));
     }
 
-    @GetMapping("/login/email/{email}") // BUSCA POR ID
+    @GetMapping("/login/email/{email}") // BUSCA POR E-MAIL
     public ResponseEntity getAcesso(@PathVariable("email") String email) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getAcessosByEmail(email));
+                .body(service.getAcessoByEmail(email));
+    }
+
+    @GetMapping("/login/esqueceu-senha/{email}") // BUSCA POR E-MAIL
+    public ResponseEntity esqueceuASenha(@PathVariable("email") String email) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.esqueceuASenha(email));
     }
 
     @GetMapping("/login") //Busca de todos os logins
@@ -58,6 +64,7 @@ public class LoginUsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir login");
         }
     }
+
 
 }
 
