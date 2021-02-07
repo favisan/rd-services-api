@@ -18,27 +18,38 @@ public class SolicExameController {
 
     @PostMapping("/solic_exame")
     public ResponseEntity gravarSolicExame(@RequestBody SolicExame solicExame) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.inserirSolicExame(solicExame));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.inserirSolicExame(solicExame));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao gravar solicitação de exame.");
+        }
     }
 
     @GetMapping("/solic_exame/prontuario/{idProntuario}")
     public ResponseEntity buscarSolicitacaoPorIdProntuario(@PathVariable("idProntuario") BigInteger idProntuario) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(service.listarSolicExamePorIdProntuario(idProntuario));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.listarSolicExamePorIdProntuario(idProntuario));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar solicitação de exame.");
+        }
     }
 
     @GetMapping("/solic_exame/solicitacao/{idSolicitacao}")
     public ResponseEntity getSolicitacaoPorIdSolicitacao(@PathVariable("idSolicitacao") BigInteger idSolicitacao) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(service.exibirSolicExamePorIdSolicitacao(idSolicitacao));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.exibirSolicExamePorIdSolicitacao(idSolicitacao));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar solicitação de exame.");
+        }
     }
 
     @GetMapping("/solic_exame/{idMedico}")
     public ResponseEntity preencherSolicitacaoInicial(@PathVariable("idMedico") BigInteger idMedico) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
-
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao recuperar informações pré cadastradas no formulário.");
+        }
     }
 
 
