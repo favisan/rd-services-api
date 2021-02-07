@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name="TB_TIPO_RECEITA")
 @Data
 @NoArgsConstructor
+@Table(name="TB_TIPO_RECEITA")
 public class TipoReceitaEntity {
 
     @Id

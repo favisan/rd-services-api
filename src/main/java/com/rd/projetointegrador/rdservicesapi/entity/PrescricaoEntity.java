@@ -8,9 +8,9 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Entity
-@Table(name="TB_PRESCRICAO")
 @Data
 @NoArgsConstructor
+@Table(name="TB_PRESCRICAO")
 public class PrescricaoEntity {
 
     @Id

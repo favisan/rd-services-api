@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="TB_RECEITUARIO")
 @Data
 @NoArgsConstructor
+@Table(name="TB_RECEITUARIO")
 public class ReceituarioEntity {
 
     @Id

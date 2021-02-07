@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name="TB_FORMA_FARMAC")
 @Data
 @NoArgsConstructor
+@Table(name="TB_FORMA_FARMAC")
 public class FormaFarmacEntity {
 
     @Id
