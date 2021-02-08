@@ -26,13 +26,13 @@ public class PagamentoController {
     @GetMapping("/pagamento/{idPagamento}") // BUSCA POR ID
     public ResponseEntity getPagamento(@PathVariable("idPagamento") BigInteger idPagamento) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getPagamento(idPagamento));
+                .body(service.getPagamentoDTO(idPagamento));
 
     }
 
-    @GetMapping("/pagamento") //Busca de todos os Planos
-    public ResponseEntity getPagamentos(@PathParam("idPagamento") BigInteger idPagamento) {
-        List<PagamentoEntity> pagamentos = service.getPagamentos(idPagamento);
+    @GetMapping("/pagamento") //Busca de todos os Pagamentos
+    public ResponseEntity getPagamentos() {
+        List<Pagamento> pagamentos = service.getPagamentosDTO();
         return ResponseEntity.status(HttpStatus.OK).body(pagamentos);
     }
 

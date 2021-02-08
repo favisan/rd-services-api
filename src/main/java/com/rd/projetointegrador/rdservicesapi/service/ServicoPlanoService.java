@@ -18,18 +18,18 @@ public class ServicoPlanoService {
     @Autowired
     private ServicoPlanoRepository repository;
 
+    //MÉTODOS RETORNANDO A ENTITY
     public ServicoPlanoEntity getServicoPlano(BigInteger idServicoPlano) {
         System.out.println("IdServPlano: " + idServicoPlano);
         Optional<ServicoPlanoEntity> optional = repository.findById(idServicoPlano);
         return optional.get();
 
     }
-
     public List<ServicoPlanoEntity> getServicosPlano() {
         return repository.findAll();
     }
 
-
+    //MÉTODO RETORNANDO AS DTOs
     public List<ServicoPlano> getServicosPlanoDTO() {
         List<ServicoPlanoEntity> servsPlanoEntities = getServicosPlano();
         List<ServicoPlano> servicosPlano = new ArrayList<>();

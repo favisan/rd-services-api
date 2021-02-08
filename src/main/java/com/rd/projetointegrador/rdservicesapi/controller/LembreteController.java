@@ -22,13 +22,19 @@ public class LembreteController {
     @GetMapping("/lembrete/{idLembrete}") // BUSCA POR ID
     public ResponseEntity getLembrete(@PathVariable("idLembrete") BigInteger idLembrete) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getLembrete(idLembrete));
+                .body(service.getLembreteDTO(idLembrete));
    }
 
     @GetMapping("/lembrete") //Busca de todos os Lembretes
-    public ResponseEntity getLembretes(@PathParam("idLembrete") BigInteger idLembrete) {
-        List<Lembrete> Lembretes = service.getLembretes(idLembrete);
-        return ResponseEntity.status(HttpStatus.OK).body(Lembretes);
+    public ResponseEntity getLembretes() {
+        List<Lembrete> lembretes = service.getLembretesDTO();
+        return ResponseEntity.status(HttpStatus.OK).body(lembretes);
+    }
+
+    @GetMapping("/lembrete/user/{idUsuario}") //Busca de lembrete por usuario
+    public ResponseEntity getLembretesByData(@PathVariable("idUsuario") BigInteger idUsuario) {
+        List<Lembrete> lembretes = service.getLembretesOrderByDataDesc(idUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(lembretes);
     }
 
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete

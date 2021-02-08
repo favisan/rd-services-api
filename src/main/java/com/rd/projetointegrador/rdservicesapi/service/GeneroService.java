@@ -17,15 +17,15 @@ public class GeneroService {
     @Autowired
     private GeneroRepository repository;
 
-    //MÉTODO: conversão de DTO para Entity
+    //MÉTODO: conversão de Entity para DTO
     public Genero conversaoGeneroDTO(GeneroEntity generoEntity, Genero genero) {
+
         genero.setIdGenero(generoEntity.getIdGenero());
         genero.setDsGenero(generoEntity.getDsGenero());
 
         return genero;
     }
-
-    //MÉTODO: conversão de Entity para DTO
+    //MÉTODO: conversão listaEntity para ListaDTO
     public List<Genero> conversaoGenerosDTO(List<GeneroEntity> generosEntities, List<Genero> generos){
         for(GeneroEntity generoEntity : generosEntities){
             Genero genero = new Genero();
@@ -34,8 +34,7 @@ public class GeneroService {
         }
         return generos;
     }
-
-    //MÉTODO: conversão ListaDTO para ListaEntity
+    //MÉTODO: conversão de DTO para Entity
     public GeneroEntity conversaoGeneroEntity(Genero genero, GeneroEntity generoEntity) {
         generoEntity.setIdGenero(genero.getIdGenero());
         generoEntity.setDsGenero(genero.getDsGenero());
@@ -43,8 +42,7 @@ public class GeneroService {
         return generoEntity;
 
     }
-
-    //MÉTODO: conversão listaEntity para ListaDTO
+    //MÉTODO: conversão ListaDTO para ListaEntity
     public List<GeneroEntity> conversaoGenerosEntities(List<Genero> generos,List<GeneroEntity> generosEntities){
       for(Genero genero : generos){
           GeneroEntity generoEntity= new GeneroEntity();

@@ -10,6 +10,8 @@ import java.util.List;
 public interface LembreteRepository extends JpaRepository<LembreteEntity, BigInteger> {
 
     List<LembreteEntity> findByIdPaciente(BigInteger idPaciente);
-    List<LembreteEntity> findByIdPacienteOrderByDtLembrete(BigInteger idPaciente);
+    List<LembreteEntity> findByIdPacienteOrderByDtLembreteAsc(BigInteger idPaciente);
+    List<LembreteEntity> findByIdPacienteOrderByDtLembreteDesc(BigInteger idPaciente);
+    List<LembreteEntity> findByIdPacienteOrderByDtCriacao(BigInteger idPaciente);
 
 }

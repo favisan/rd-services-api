@@ -28,29 +28,32 @@ public class UsuarioEntity implements Serializable {
     private GeneroEntity genero;
 
     @Column(name="ID_ESP_MED")
-    BigInteger idEspMedica;
+    private BigInteger idEspMedica;
 
     @Column(name= "ID_UF_CRM")
-    BigInteger idUfCrm;
+    private BigInteger idUfCrm;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_USUARIO")
     private TipoUsuarioEntity tipoUsuario;
 
     @Column(name="NM_NOME")
-    String nmNome;
+    private String nmNome;
 
     @Column(name="DT_NASCIMENTO")
-    Date dtNascimento;
+    private Date dtNascimento;
 
     @Column(name="NR_CPF")
-    String nrCpf;
+    private String nrCpf;
 
     @Column(name="NR_CRM")
-    String nrCrm;
+    private String nrCrm;
 
     @Column(name="DS_END_IMG")
-    String dsEndImg;
+    private String dsEndImg;
+
+    @Column(name="ID_PRECO")
+    private BigInteger idPreco;
 
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "TB_USUARIO_ENDERECO",

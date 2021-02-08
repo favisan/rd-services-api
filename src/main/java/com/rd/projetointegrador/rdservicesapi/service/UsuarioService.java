@@ -58,6 +58,7 @@ public class UsuarioService {
         usuarioEntity.setNrCpf(usuario.getNrCpf());
         usuarioEntity.setNrCrm(usuario.getNrCrm());
         usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+        usuarioEntity.setIdPreco(usuario.getIdPreco());
 
         return usuarioEntity;
     }
@@ -79,6 +80,7 @@ public class UsuarioService {
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
+        usuario.setIdPreco(usuarioEntity.getIdPreco());
 
         return usuario;
     }
@@ -150,35 +152,49 @@ public class UsuarioService {
         ContratoEntity contratoEntity = new ContratoEntity();
         CartaoEntity cartaoEntity= new CartaoEntity();
 
-        //Passando dados do Usuário
-        usuarioEntity = conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
-        usuarioEntity = repository.save(usuarioEntity);
-        BigInteger novoId = usuarioEntity.getIdUsuario();
+        //VALIDAR CPF
+        String cpf = usuarioEntity.getNrCpf();
+        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        //Entidade LoginUsuario
-        inputUsuario.getLoginUsuario().setIdUsuario(novoId);
-        loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
-        loginUsuarioRepository.save(loginUsuarioEntity);
+        //VALIDAR E-MAIL
+        String email = loginUsuarioEntity.getDsEmail();
+        LoginUsuarioEntity loginExistente = loginUsuarioRepository.findByDsEmail(email);
 
-        //Entidade Contrato
-        inputUsuario.getContrato().setIdUsuario(novoId);
-        contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
-        contratoRepository.save(contratoEntity);
 
-        //Entidade Cartao
-        inputUsuario.getCartao().setIdUsuario(novoId);
-        cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-        cartaoRepository.save(cartaoEntity);
+        if(usuarioExistente.isEmpty() && loginExistente == null) {
 
-        //Entidade Contato
-        //TODO: fazer relacao com contatoService para cadastrar telefone
+            //Passando dados do Usuário
+            usuarioEntity = conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
+            usuarioEntity = repository.save(usuarioEntity);
+            BigInteger novoId = usuarioEntity.getIdUsuario();
+
+            //Entidade LoginUsuario
+            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
+            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
+            loginUsuarioRepository.save(loginUsuarioEntity);
+
+            //Entidade Contrato
+            inputUsuario.getContrato().setIdUsuario(novoId);
+            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
+            contratoRepository.save(contratoEntity);
+
+            //Entidade Cartao
+            inputUsuario.getCartao().setIdUsuario(novoId);
+            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+            cartaoRepository.save(cartaoEntity);
+
+            //Entidade Contato
+            //TODO: fazer relacao com contatoService para cadastrar telefone
 
         /*
         //contato
         private String ddd;
         private String celular;*/
 
-        return "Usuário cadastrado com sucesso";
+            return "Usuário cadastrado com sucesso";
+        }
+
+        return "Erro. Usuário já cadastrado.";
     }
 
     @Transactional
@@ -186,10 +202,18 @@ public class UsuarioService {
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
-        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
-        repository.save(usuarioEntity);
+        String cpf = usuarioEntity.getNrCpf();
+        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        return "Usuário cadastrado com sucesso";
+        if(usuarioExistente.isEmpty()) {
+
+            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+            repository.save(usuarioEntity);
+
+            return "Usuário cadastrado com sucesso";
+        }
+
+        return "Erro. Cpf já utilizado.";
     }
 
     @Transactional
@@ -237,8 +261,8 @@ public class UsuarioService {
             String email = loginUsuarioRepository.findOneByIdUsuario(id).getDsEmail();
 
             //buscar idPlano no contrato
-            List<ContratoEntity> contratosEntities = contratoRepository.findByIdUsuarioOrderByDtVigencia(id);
-            BigInteger idPlanoVigente = contratosEntities.get(0).getIdPlano();
+            List<ContratoEntity> contratosEntities = contratoRepository.findByUsuarioOrderByDtVigencia(usuarioEntity);
+            BigInteger idPlanoVigente = contratosEntities.get(0).getPlanosEntity().getIdPlano();
 
             //buscar lista de contatos
             //Optional<ContatoEntity> optional = repository.findByIdUsuario(id);

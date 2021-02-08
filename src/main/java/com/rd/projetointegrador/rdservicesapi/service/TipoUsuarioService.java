@@ -19,8 +19,8 @@ public class TipoUsuarioService {
     @Autowired
     private TipoUsuarioRepository repository;
 
+    //MÉTODOS RETORNANDO A ENTITY
     public TipoUsuarioEntity getTipoUsuario(BigInteger idTipoUsuario) {
-        System.out.println("Id Tipo Usuario: " + idTipoUsuario);
         Optional<TipoUsuarioEntity> optional = repository.findById(idTipoUsuario);
         return optional.get();
 
@@ -28,6 +28,7 @@ public class TipoUsuarioService {
     public List<TipoUsuarioEntity> getTiposUsuario(BigInteger idTipoUsuario) {
         return repository.findAll();
     }
+
     @Transactional
     public String cadastrarTipoUsuario(TipoUsuario tipoUsuario){
 
@@ -35,9 +36,6 @@ public class TipoUsuarioService {
         tipoUsuarioEntity.setDsTipoUsuario(tipoUsuario.getDsTipoUsuario());
 
         repository.save(tipoUsuarioEntity);
-
-        System.out.println(tipoUsuario.getIdTipoUsuario() + " . " + tipoUsuario.getDsTipoUsuario() );
-
         return "Tipo Usuário cadastrado com sucesso";
     }
 
@@ -48,8 +46,6 @@ public class TipoUsuarioService {
         tipoUsuarioEntity.setDsTipoUsuario(tipoUsuario.getDsTipoUsuario());
 
         repository.save(tipoUsuarioEntity);
-
-        System.out.println(tipoUsuario.getIdTipoUsuario() + " . " + tipoUsuario.getDsTipoUsuario() );
 
         return "Tipo Usuário alterado com sucesso";
 

@@ -27,8 +27,8 @@ public class TipoPagamentoController {
 
     }
     @GetMapping("/tipoPagamento") //Busca de todos os Tipos
-    public ResponseEntity getTiposPagamentos(@PathParam("idFormaPagamento") BigInteger idFormaPagamento) {
-        List<TipoPagamentoEntity> tiposPagamentos = service.getTiposPagamentos(idFormaPagamento);
+    public ResponseEntity getTiposPagamentos() {
+        List<TipoPagamentoEntity> tiposPagamentos = service.getTiposPagamentos();
         return ResponseEntity.status(HttpStatus.OK).body(tiposPagamentos);
     }
     @PostMapping("/tipoPagamento") //Cadastrar Novo Tipo

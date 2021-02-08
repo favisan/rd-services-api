@@ -22,7 +22,6 @@ import java.util.Optional;
 public class CartaoService {
 
     @Autowired private CartaoRepository repository;
-
     @Autowired private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de DTO para Entity
@@ -34,11 +33,10 @@ public class CartaoService {
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
         cartaoEntity.setDtValidade(cartao.getDtValidade());
         cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-        cartaoEntity.setIdUsuario(usuarioEntity);
+        cartaoEntity.setUsuario(usuarioEntity);
 
         return cartaoEntity;
     }
-
     //MÉTODO: conversão de Entity para DTO
     public Cartao conversaoCartaoDTO(CartaoEntity cartaoEntity, Cartao cartao) {
 
@@ -46,7 +44,7 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
-        cartao.setIdUsuario(cartaoEntity.getIdUsuario().getIdUsuario());
+        cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
 
         return cartao;
     }
@@ -62,13 +60,16 @@ public class CartaoService {
         return repository.findAll();
 
     }
+    public List<CartaoEntity> getCartaoByUsuario(BigInteger idUsuario) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
+        return repository.findByUsuario(usuarioEntity);
+
+    }
 
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
-
-        BigInteger usuarioId = cartao.getIdUsuario();
 
         repository.save(cartaoEntity);
 
@@ -80,14 +81,10 @@ public class CartaoService {
 
     @Transactional
     public String alterarCartao(Cartao cartao, BigInteger idCartao) {
-        CartaoEntity cartaoEntity = new CartaoEntity();
-        BigInteger usuarioId = cartao.getIdUsuario();
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(usuarioId).get();
-        cartaoEntity.setNrCartao(cartao.getNrCartao());
-        cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-        cartaoEntity.setDtValidade(cartao.getDtValidade());
-        cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-        cartaoEntity.setIdUsuario(usuarioEntity);
+        CartaoEntity cartaoEntity = repository.findById(idCartao).get();
+
+        cartaoEntity = conversaoCartaoEntity(cartao, cartaoEntity);
+
         repository.save( cartaoEntity);
         return "Alteração  de cartão realizada com sucesso";
     }
