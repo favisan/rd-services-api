@@ -15,4 +15,5 @@ public interface LembreteRepository extends JpaRepository<LembreteEntity, BigInt
     List<LembreteEntity> findByIdPacienteOrderByDtLembreteDesc(BigInteger idPaciente);
     List<LembreteEntity> findByIdPacienteOrderByDtCriacao(BigInteger idPaciente);
 
+
 }

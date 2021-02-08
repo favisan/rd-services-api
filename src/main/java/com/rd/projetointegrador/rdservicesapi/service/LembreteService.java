@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.AreaDoCliente;
 import com.rd.projetointegrador.rdservicesapi.dto.Lembrete;
 import com.rd.projetointegrador.rdservicesapi.dto.LembreteIntervalo;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
@@ -8,7 +9,10 @@ import com.rd.projetointegrador.rdservicesapi.repository.LembreteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.LembreteIntervaloRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
@@ -23,6 +27,8 @@ public class LembreteService {
     @Autowired private LembreteRepository repository;
     @Autowired private LembreteIntervaloRepository lirepository;
     @Autowired private UsuarioRepository usuarioRepository;
+
+
 
     //MÉTODO: conversão de DTO para Entity
     public LembreteEntity conversaoLembreteEntity(Lembrete lembrete, LembreteEntity lembreteEntity) {
@@ -100,6 +106,7 @@ public class LembreteService {
         return lembretes;
     }
 
+
     //MÉTODOS RETORNANDO A ENTITY
     public LembreteEntity getLembrete(BigInteger idLembrete) {
         LembreteEntity lembrete = repository.findById(idLembrete).get();
@@ -157,6 +164,25 @@ public class LembreteService {
 
         return lembretesPorData;
     }
+
+
+     public AreaDoCliente getAreaDoCliente(BigInteger idUsuario){
+        AreaDoCliente areaDoCliente = new AreaDoCliente();
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
+
+        areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
+        areaDoCliente.setNmNome( usuarioEntity.getNmNome());
+
+        List<Lembrete> lembretes = getLembretesIdPaciente(idUsuario);
+        areaDoCliente.setLembrete(lembretes);
+
+        return areaDoCliente;
+     }
+
+
+
+
+
 
     @Transactional
     public String cadastrarLembrete(Lembrete lembrete){
