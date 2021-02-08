@@ -86,6 +86,17 @@ public class LoginUsuarioService {
         return repository.findByDsEmail(email);
     }
 
+    //MÉTODO RETORNANDO A DTO
+    public LoginUsuario getAcessoByEmailDTO(String email) {
+        LoginUsuarioEntity loginUsuarioEntity = getAcessoByEmail(email);
+        LoginUsuario loginUsuario = new LoginUsuario();
+
+        loginUsuario = conversaoLoginUsuarioDTO(loginUsuarioEntity, loginUsuario);
+
+        return loginUsuario;
+
+    }
+
     //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
     @Transactional
     public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {

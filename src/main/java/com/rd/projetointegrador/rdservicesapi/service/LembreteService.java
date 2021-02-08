@@ -100,27 +100,18 @@ public class LembreteService {
     }
 
     //MÉTODOS RETORNANDO A ENTITY
-    public List<LembreteEntity> getLembretesIdPaciente(BigInteger idPaciente) {
-        List<LembreteEntity> lembretes = repository.findByIdPaciente(idPaciente);
+    public LembreteEntity getLembrete(BigInteger idLembrete) {
+        LembreteEntity lembrete = repository.findById(idLembrete).get();
+        return lembrete;
+    }
+    public List<LembreteEntity> getLembretes() {
+        List<LembreteEntity> lembretes = repository.findAll();
         return lembretes;
-    }
-    public List<LembreteEntity> getLembretesOrderByDataAsc(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtLembreteAsc(idPaciente);
-        return lembretesPorData;
-    }
-    public List<LembreteEntity> getLembretesOrderByDataDesc(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtLembreteDesc(idPaciente);
-        return lembretesPorData;
-    }
-    public List<LembreteEntity> getLembretesOrderByDataCriacao(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesPorData = repository.findByIdPacienteOrderByDtCriacao(idPaciente);
-        return lembretesPorData;
     }
 
     //MÉTODOS RETORNANDO A DTO
     public Lembrete getLembreteDTO(BigInteger idLembrete) {
-        Optional<LembreteEntity> optional = repository.findById(idLembrete);
-        LembreteEntity lembreteEntity = optional.get();
+        LembreteEntity lembreteEntity = getLembrete(idLembrete);
 
         //criação DTO
         Lembrete lembrete = new Lembrete();
@@ -128,13 +119,42 @@ public class LembreteService {
 
         return lembrete;
     }
-    public List<Lembrete> getLembretesDTO(BigInteger idLembrete) {
-        List<LembreteEntity> lembretesEntities = repository.findAll();
+    public List<Lembrete> getLembretesDTO() {
+        List<LembreteEntity> lembretesEntities = getLembretes();
         List<Lembrete> lembretes = new ArrayList<>();
 
         lembretes = conversaoLembretesDTO(lembretesEntities, lembretes);
 
         return lembretes;
+    }
+    public List<Lembrete> getLembretesIdPaciente(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesEntities = repository.findByIdPaciente(idPaciente);
+        List<Lembrete> lembretes = new ArrayList<>();
+        return lembretes;
+    }
+    public List<Lembrete> getLembretesOrderByDataAsc(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtLembreteAsc(idPaciente);
+        List<Lembrete> lembretesPorData = new ArrayList<>();
+
+        lembretesPorData = conversaoLembretesDTO(lembretesEntities, lembretesPorData);
+
+        return lembretesPorData;
+    }
+    public List<Lembrete> getLembretesOrderByDataDesc(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtLembreteDesc(idPaciente);
+        List<Lembrete> lembretesPorData = new ArrayList<>();
+
+        lembretesPorData = conversaoLembretesDTO(lembretesEntities, lembretesPorData);
+
+        return lembretesPorData;
+    }
+    public List<Lembrete> getLembretesOrderByDataCriacao(BigInteger idPaciente) {
+        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtCriacao(idPaciente);
+        List<Lembrete> lembretesPorData = new ArrayList<>();
+
+        lembretesPorData = conversaoLembretesDTO(lembretesEntities, lembretesPorData);
+
+        return lembretesPorData;
     }
 
     @Transactional
@@ -146,9 +166,9 @@ public class LembreteService {
         if(usuarioRepository.existsById(idPaciente)) {
             lembreteEntity = conversaoLembreteEntity(lembrete, lembreteEntity);
             repository.save(lembreteEntity);
-            return "Lembrete cadastrado com sucesso";
+            return "Lembrete cadastrado com sucesso.";
         }
-            return null;
+            return "Erro ao cadastrar lembrete.";
     }
 
     @Transactional
