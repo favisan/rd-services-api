@@ -29,7 +29,6 @@ public class LembreteService {
     @Autowired private UsuarioRepository usuarioRepository;
 
 
-
     //MÉTODO: conversão de DTO para Entity
     public LembreteEntity conversaoLembreteEntity(Lembrete lembrete, LembreteEntity lembreteEntity) {
 
@@ -164,25 +163,6 @@ public class LembreteService {
 
         return lembretesPorData;
     }
-
-
-     public AreaDoCliente getAreaDoCliente(BigInteger idUsuario){
-        AreaDoCliente areaDoCliente = new AreaDoCliente();
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
-
-        areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
-        areaDoCliente.setNmNome( usuarioEntity.getNmNome());
-
-        List<Lembrete> lembretes = getLembretesIdPaciente(idUsuario);
-        areaDoCliente.setLembrete(lembretes);
-
-        return areaDoCliente;
-     }
-
-
-
-
-
 
     @Transactional
     public String cadastrarLembrete(Lembrete lembrete){

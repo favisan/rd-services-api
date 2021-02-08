@@ -1,9 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.FormularioCadastro;
-import com.rd.projetointegrador.rdservicesapi.dto.FormularioMeusDados;
-import com.rd.projetointegrador.rdservicesapi.dto.InputCliente;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.ContratoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
@@ -21,7 +18,7 @@ public class ClienteService {
     //GRUPO1
 
     //repositories
-    @Autowired private UsuarioRepository repository;
+    @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private GeneroRepository generoRepository;
     @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
     @Autowired private LoginUsuarioRepository loginUsuarioRepository;
@@ -36,6 +33,7 @@ public class ClienteService {
     @Autowired private ContratoService contratoService;
     @Autowired private LoginUsuarioService luService;
     @Autowired private CartaoService cartaoService;
+    @Autowired private LembreteService lembreteService;
     //@Autowired private EnderecoService enderecoService;
 
     //TODO: CADASTRO DE USUÁRIO - TELA DE CADASTRO
@@ -49,7 +47,7 @@ public class ClienteService {
 
         //VALIDAR CPF
         String cpf = usuarioEntity.getNrCpf();
-        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
+        List<UsuarioEntity> usuarioExistente = usuarioRepository.findByNrCpf(cpf);
 
         //VALIDAR E-MAIL
         String email = loginUsuarioEntity.getDsEmail();
@@ -60,7 +58,7 @@ public class ClienteService {
 
             //Passando dados do Usuário
             usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
-            usuarioEntity = repository.save(usuarioEntity);
+            usuarioEntity = usuarioRepository.save(usuarioEntity);
             BigInteger novoId = usuarioEntity.getIdUsuario();
 
             //Entidade LoginUsuario
@@ -109,7 +107,7 @@ public class ClienteService {
         FormularioCadastro formularioCadastro = getFormularioCadastro();
         FormularioMeusDados formularioMeusDados = new FormularioMeusDados();
 
-        Boolean teste = repository.existsById(id);
+        Boolean teste = usuarioRepository.existsById(id);
         if(teste) {
             //buscar entities
             UsuarioEntity usuarioEntity = usuarioService.getUsuario(id);
@@ -139,4 +137,18 @@ public class ClienteService {
 
         return formularioMeusDados;
     }
+
+    public AreaDoCliente getAreaDoCliente(BigInteger idUsuario){
+        AreaDoCliente areaDoCliente = new AreaDoCliente();
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
+
+        areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
+        areaDoCliente.setNmNome( usuarioEntity.getNmNome());
+
+        List<Lembrete> lembretes = lembreteService.getLembretesIdPaciente(idUsuario);
+        areaDoCliente.setLembrete(lembretes);
+
+        return areaDoCliente;
+    }
+
 }
