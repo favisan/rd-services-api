@@ -1,10 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
-import com.rd.projetointegrador.rdservicesapi.dto.FormularioCadastro;
-import com.rd.projetointegrador.rdservicesapi.dto.FormularioMeusDados;
-import com.rd.projetointegrador.rdservicesapi.dto.InputUsuario;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,29 +30,6 @@ public class UsuarioController {
         List<Usuario> usuarios = service.getUsuariosDTO();
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
-
-
-    //PÁGINA DE CADASTRO
-    @GetMapping("/usuario/cadastro")
-    public ResponseEntity getFormularioCadastro(){
-        FormularioCadastro formularioCadastro = service.getFormularioCadastro();
-        return ResponseEntity.status(HttpStatus.OK).body(formularioCadastro);
-    }
-
-    //PÁGINA MEUS-DADOS
-    @GetMapping("/usuario/meus-dados/{id}")
-    public ResponseEntity getFormularioMeusDados(@PathParam("idUsuario") BigInteger idUsuario){
-        FormularioMeusDados formularioMeusDados = service.getFormularioMeusDados(idUsuario);
-        return ResponseEntity.status(HttpStatus.OK).body(formularioMeusDados);
-    }
-
-    //POST PÁGINA DE CADASTRO (Novo Usuario + Login + Contato + Cartao + Contrato)
-    @PostMapping("/usuario/cadastro")
-    public ResponseEntity cadastrarUsuario(@RequestBody InputUsuario inputUsuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(inputUsuario));
-    }
-
-
 
     @PostMapping("/usuario") //Cadastrar Novo Usuario
     public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
