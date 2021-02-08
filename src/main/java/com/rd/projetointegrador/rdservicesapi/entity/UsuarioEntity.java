@@ -58,4 +58,7 @@ public class UsuarioEntity implements Serializable {
 //            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
 //    )
 //    private List<EnderecoEntity> enderecos;
+
+
+
 }
