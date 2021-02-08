@@ -7,15 +7,20 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class AgPacienteService {
 
     @Autowired private AgPacienteRepository repository;
+    @Autowired private UsuarioRepository usuarioRepository;
+
+    public Optional<AgPacienteEntity> getAgPaciente(BigInteger idUsuario){
+        usuarioRepository.findByIdUsuario(idUsuario);
+        Optional<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuarioRepository.findByIdUsuario(idUsuario).get());
+        return listaAgendas;
+    };
 
     @Transactional
     public String setAgPaciente (AgPacienteEntity agPacienteEntity){
@@ -28,16 +33,12 @@ public class AgPacienteService {
 //        agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
+        agPacienteEntity.getAgenda().setFlDisponivel(2);
 
         repository.save(agPacienteEntity);
 
         return "Consulta agendada com sucesso!";
     }
-
-    public List<AgPacienteEntity> getAgPaciente(){
-        List<AgPacienteEntity> listaAgendas = repository.findAll();
-        return listaAgendas;
-    };
 
     @Transactional
     public String cancelarAgPaciente(BigInteger idAgPaciente){
@@ -45,6 +46,7 @@ public class AgPacienteService {
         status.setIdStatusConsulta(BigInteger.valueOf(3));
         AgPacienteEntity agPaciente = repository.findByIdAgPaciente(idAgPaciente).get();
         agPaciente.setStatusConsulta(status);
+        agPaciente.getAgenda().setFlDisponivel(3);
 
         return "Consulta cancelada com sucesso";
     }

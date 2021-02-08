@@ -22,9 +22,9 @@ public class AgPacienteController {
 
     }
 
-    @GetMapping("/agPaciente")
-    public ResponseEntity listarAgPaciente(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente());
+    @GetMapping("/agPaciente/{id}")
+    public ResponseEntity listarAgPaciente(@PathVariable("id") BigInteger idUsuario){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(idUsuario));
     }
 
     @PutMapping ("/agPaciente/mudar-status/{idAgPaciente}")
