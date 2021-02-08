@@ -14,9 +14,10 @@ import java.util.List;
 
 @RestController
 public class UsuarioController {
+    //GRUPO1
+
     @Autowired
     UsuarioService service;
-
 
     @GetMapping("/usuario/{idUsuario}") // BUSCA POR ID
     public ResponseEntity getUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
@@ -34,7 +35,6 @@ public class UsuarioController {
     @PostMapping("/usuario") //Cadastrar Novo Usuario
     public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(usuario));
-
     }
 
     @PutMapping("/usuario/{idUsuario}") // Alterar Usuario

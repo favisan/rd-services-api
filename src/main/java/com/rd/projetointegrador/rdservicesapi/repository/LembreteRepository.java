@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface LembreteRepository extends JpaRepository<LembreteEntity, BigInteger> {
+    //GRUPO1
 
     List<LembreteEntity> findByIdPaciente(BigInteger idPaciente);
     List<LembreteEntity> findByIdPacienteOrderByDtLembreteAsc(BigInteger idPaciente);

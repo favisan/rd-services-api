@@ -11,7 +11,7 @@ import java.math.BigInteger;
 @Data
 @Table(name="TB_PAGAMENTO_TIPO")
 public class TipoPagamentoEntity implements Serializable {
-
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

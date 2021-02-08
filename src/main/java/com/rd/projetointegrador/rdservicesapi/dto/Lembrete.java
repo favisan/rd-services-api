@@ -13,6 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lembrete {
+    //GRUPO1
+
     private BigInteger idLembrete;
     private BigInteger idPaciente;
     private LembreteIntervalo lembreteIntervalo;

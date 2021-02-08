@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pagamento {
+    //GRUPO1
 
     private BigInteger  idPagamento;
     private BigInteger idCartao ;

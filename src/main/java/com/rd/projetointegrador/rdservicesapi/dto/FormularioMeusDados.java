@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormularioMeusDados {
+    //GRUPO1
 
     private Usuario usuario;
     private String dsEmail;

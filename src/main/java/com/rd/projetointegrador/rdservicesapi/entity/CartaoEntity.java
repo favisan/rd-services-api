@@ -16,7 +16,8 @@ import java.util.Date;
 
 @Table (name="TB_CARTAO")
 @Data
-public class CartaoEntity implements  Serializable{
+public class CartaoEntity implements Serializable{
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

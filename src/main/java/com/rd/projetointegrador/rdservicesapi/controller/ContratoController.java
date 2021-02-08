@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 public class ContratoController {
+    //GRUPO1
 
     @Autowired
     ContratoService service;

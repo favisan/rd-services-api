@@ -17,6 +17,8 @@ import java.util.List;
 
 @RestController
 public class TipoUsuarioController {
+    //GRUPO1
+
     @Autowired
     TipoUsuarioService service;
 

@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contrato {
+    //GRUPO1
 
     private BigInteger idContrato;
     private String dsContrato;

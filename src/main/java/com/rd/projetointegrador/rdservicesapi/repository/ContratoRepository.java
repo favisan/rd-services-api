@@ -8,8 +8,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface ContratoRepository extends JpaRepository<ContratoEntity, BigInteger> {
+    //GRUPO1
 
     public List<ContratoEntity> findByUsuarioOrderByDtVigencia(UsuarioEntity usuarioEntity);
-
     public List<ContratoEntity> findByUsuario(UsuarioEntity usuarioEntity);
 }

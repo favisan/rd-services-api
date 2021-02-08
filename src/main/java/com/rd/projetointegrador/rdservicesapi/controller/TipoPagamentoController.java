@@ -15,10 +15,10 @@ import java.util.List;
 
 @RestController
 public class TipoPagamentoController {
+    //GRUPO1
 
     @Autowired
     TipoPagamentoService service;
-
 
     @GetMapping("/tipoPagamento/{idFormaPagamento}") // BUSCA POR ID
     public ResponseEntity getTipoPagamento(@PathVariable("idFormaPagamento") BigInteger idFormaPagamento){

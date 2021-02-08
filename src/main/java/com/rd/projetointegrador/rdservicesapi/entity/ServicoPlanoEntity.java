@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @Table(name ="TB_SERVICO_PLANO")
 public class ServicoPlanoEntity implements Serializable {
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

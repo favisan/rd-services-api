@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @Service
 public class LoginUsuarioService {
+    //GRUPO1
 
     @Autowired private LoginUsuarioRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
@@ -35,7 +36,6 @@ public class LoginUsuarioService {
             return "";
         }
     }
-
 
     //MÉTODO: conversão de DTO para Entity
     public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity){
@@ -155,7 +155,7 @@ public class LoginUsuarioService {
     }
 
 
-    //OBSOLETO
+    //---OBSOLETO---
     @Transactional
     public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
 

@@ -12,6 +12,7 @@ import java.math.BigInteger;
 
 @Data
 public class LoginUsuario {
+    //GRUPO1
 
         private BigInteger idUsuario;
         private String dsSenha;

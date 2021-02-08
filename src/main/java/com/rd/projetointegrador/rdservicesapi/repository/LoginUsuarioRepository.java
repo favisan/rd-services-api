@@ -8,8 +8,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface LoginUsuarioRepository  extends JpaRepository<LoginUsuarioEntity, BigInteger> {
+    //GRUPO1
 
     public LoginUsuarioEntity findOneByIdUsuario(BigInteger idUsuario);
-
     public LoginUsuarioEntity findByDsEmail(String dsEmail);
 }

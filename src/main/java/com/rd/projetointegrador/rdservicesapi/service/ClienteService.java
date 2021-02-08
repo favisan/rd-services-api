@@ -18,10 +18,10 @@ import java.util.List;
 
 @Service
 public class ClienteService {
+    //GRUPO1
 
     //repositories
-    @Autowired
-    private UsuarioRepository repository;
+    @Autowired private UsuarioRepository repository;
     @Autowired private GeneroRepository generoRepository;
     @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
     @Autowired private LoginUsuarioRepository loginUsuarioRepository;

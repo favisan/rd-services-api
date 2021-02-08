@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 public class LoginUsuarioController {
+    //GRUPO1
 
     @Autowired
     LoginUsuarioService service;

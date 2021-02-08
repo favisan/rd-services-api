@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Planos {
+    //GRUPO1
 
     private BigInteger idPlano;
     private String nmPlano;

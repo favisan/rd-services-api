@@ -16,6 +16,7 @@ import java.util.Date;
 @Data
 @Table (name="TB_USUARIO")
 public class UsuarioEntity implements Serializable {
+    //GRUPO1
     //TODO: usar as entitdades das outras tabelas ao invés de biginteger.
 
     @Id

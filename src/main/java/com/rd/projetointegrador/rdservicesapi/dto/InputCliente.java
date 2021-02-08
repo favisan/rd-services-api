@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InputCliente {
+    //GRUPO1
 
     //login
     private LoginUsuario loginUsuario;

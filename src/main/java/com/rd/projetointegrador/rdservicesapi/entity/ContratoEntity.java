@@ -16,6 +16,7 @@ import java.util.Date;
 @Data
 @Table (name="TB_CONTRATO")
 public class ContratoEntity  implements Serializable {
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

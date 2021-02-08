@@ -16,6 +16,8 @@ import java.util.Date;
 @Table(name="TB_LEMBRETE_INTERVALO")
 @Data
 public class LembreteIntervaloEntity implements Serializable {
+    //GRUPO1
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_LEMBRETE_INTERVALO")
