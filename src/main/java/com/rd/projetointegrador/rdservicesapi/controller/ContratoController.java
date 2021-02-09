@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.math.BigInteger;
+import javax.websocket.server.PathParam;;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,11 @@ public class ContratoController {
     public ResponseEntity getContratos(@PathParam("idContrato") BigInteger idContrato) {
         List<ContratoEntity> contratos = service.getContratos(idContrato);
         return ResponseEntity.status(HttpStatus.OK).body(contratos);
+    }
+
+    @GetMapping("/contrato/user/{idUsuario}")
+    public ResponseEntity verContratoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPlanobyUsuario(idUsuario));
     }
 
     @PostMapping("/contrato") //Cadastrar Novo Contrato
@@ -56,4 +64,3 @@ public class ContratoController {
     }
 
 }
-

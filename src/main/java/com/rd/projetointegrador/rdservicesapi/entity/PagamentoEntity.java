@@ -50,3 +50,4 @@ public class PagamentoEntity  implements Serializable {
     @Column (name= "NR_PARCELA")
     private Integer nrParcela;
 }
+

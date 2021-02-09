@@ -1,7 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Contrato;
-import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.entity.ContratoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.PlanosEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
@@ -15,17 +14,22 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+
 
 @Service
 public class ContratoService {
     //GRUPO1
 
-    @Autowired private ContratoRepository repository;
-    @Autowired private PlanosRepository planosRepository;
-    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ContratoRepository repository;
+    @Autowired
+    private PlanosRepository planosRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de Entity para DTO
-    public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato){
+    public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
 
         contrato.setIdContrato(contratoEntity.getIdContrato());
         contrato.setDsContrato(contratoEntity.getDsContrato());
@@ -35,6 +39,7 @@ public class ContratoService {
 
         return contrato;
     }
+
     //MÉTODO: conversão de DTO para Entity
     public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
 
@@ -60,10 +65,12 @@ public class ContratoService {
         return optional.get();
 
     }
+
     public List<ContratoEntity> getContratos(BigInteger idContrato) {
         return repository.findAll();
 
     }
+
     public List<ContratoEntity> getContratosByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
         List<ContratoEntity> contratosByUser = repository.findByUsuario(usuarioEntity);
@@ -71,7 +78,7 @@ public class ContratoService {
     }
 
     @Transactional
-    public String cadastrarContrato(Contrato contrato){
+    public String cadastrarContrato(Contrato contrato) {
 
         ContratoEntity contratoEntity = new ContratoEntity();
         contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
@@ -83,7 +90,7 @@ public class ContratoService {
     }
 
     @Transactional
-    public String alterarContrato(Contrato contrato, BigInteger idContrato){
+    public String alterarContrato(Contrato contrato, BigInteger idContrato) {
 
         ContratoEntity contratoEntity = getContrato(idContrato);
         contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
@@ -93,10 +100,22 @@ public class ContratoService {
     }
 
     //Confirmar se haverá ou não exclusão do contrato
-    public String excluirContrato(BigInteger idContrato){
+    public String excluirContrato(BigInteger idContrato) {
         repository.deleteById(idContrato);
         return "Exclusão de contrato realizada com sucesso";
-
     }
 
+
+    //GRUPO2
+
+    public List<PlanosEntity> getPlanobyUsuario(BigInteger id) {
+        UsuarioEntity usuario = usuarioRepository.findById(id).get();
+        List<ContratoEntity> contratos = repository.findByUsuario(usuario);
+        List<PlanosEntity> listaPlanos = new ArrayList<>();
+        for (ContratoEntity contratoEntity : contratos) {
+            PlanosEntity plano = contratoEntity.getPlanosEntity();
+            listaPlanos.add(plano);
+        }
+        return listaPlanos;
+    }
 }

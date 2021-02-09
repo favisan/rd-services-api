@@ -40,5 +40,4 @@ public class CartaoEntity implements Serializable{
     @Column(name ="DT_EMISSAO")
     private Date dtEmissao;
 
-
 }

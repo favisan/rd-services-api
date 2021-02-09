@@ -1,29 +1,27 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-
-
 import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 
-import javax.transaction.Transactional;
-import javax.websocket.server.PathParam;
-import java.math.BigInteger;
+
 import java.util.List;
+import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.Optional;
 
 @Service
 public class CartaoService {
     //GRUPO1
 
-    @Autowired private CartaoRepository repository;
-    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired
+    private CartaoRepository repository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de DTO para Entity
     public CartaoEntity conversaoCartaoEntity(Cartao cartao, CartaoEntity cartaoEntity) {
@@ -67,6 +65,12 @@ public class CartaoService {
 
     }
 
+    //GRUPO2
+    public List<CartaoEntity> getCartaobyUsuario(UsuarioEntity usuario) {
+        List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
+        return listaCartoes;
+    }
+
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
 
@@ -86,7 +90,7 @@ public class CartaoService {
 
         cartaoEntity = conversaoCartaoEntity(cartao, cartaoEntity);
 
-        repository.save( cartaoEntity);
+        repository.save(cartaoEntity);
         return "Alteração  de cartão realizada com sucesso";
     }
 
@@ -94,5 +98,4 @@ public class CartaoService {
         repository.deleteById(idCartao);
         return "Exclusão do cartão realizada com sucesso";
     }
-
 }

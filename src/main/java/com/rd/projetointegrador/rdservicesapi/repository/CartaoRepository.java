@@ -12,3 +12,4 @@ public interface CartaoRepository extends JpaRepository <CartaoEntity, BigIntege
 
     List<CartaoEntity> findByUsuario(UsuarioEntity usuarioEntity);
 }
+

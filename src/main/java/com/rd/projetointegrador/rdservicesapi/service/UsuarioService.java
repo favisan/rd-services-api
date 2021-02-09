@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import java.util.Optional;
 
 @Service
@@ -33,7 +35,7 @@ public class UsuarioService {
         usuarioEntity.setGenero(genero);
 
         //TODO: objeto Esp Medica
-        usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
+        //usuarioEntity.setEspMed();
 
         //TODO: objeto Uf
         usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
@@ -65,7 +67,7 @@ public class UsuarioService {
 
         usuario.setIdUsuario(usuarioEntity.getIdUsuario());
         usuario.setIdGenero(usuarioEntity.getGenero().getIdGenero());
-        usuario.setIdEspMedica(usuarioEntity.getIdEspMedica());
+        usuario.setIdEspMedica(usuarioEntity.getEspMed().getIdEspMed());
         usuario.setIdUfCrm(usuarioEntity.getIdUfCrm());
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
         usuario.setNmNome(usuarioEntity.getNmNome());
@@ -171,7 +173,4 @@ public class UsuarioService {
         return "Exclusão de usuário realizada com sucesso";
 
     }
-
-
-
 }

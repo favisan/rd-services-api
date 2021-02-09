@@ -36,4 +36,5 @@ public class ContratoEntity  implements Serializable {
     @ManyToOne
     @JoinColumn (name="ID_USUARIO") //FK TB_USUARIO
     private UsuarioEntity usuario;
+
 }

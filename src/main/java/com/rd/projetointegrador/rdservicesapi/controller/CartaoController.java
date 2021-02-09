@@ -1,5 +1,4 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
-
 import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
 import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
 
@@ -8,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.rd.projetointegrador.rdservicesapi.service.UsuarioService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.websocket.server.PathParam;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -18,9 +19,10 @@ import java.util.List;
 public class CartaoController {
     //GRUPO1
 
-
     @Autowired
-    CartaoService service;
+    private CartaoService service;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping("/cartao")
     public ResponseEntity getCartoes() {
@@ -32,6 +34,12 @@ public class CartaoController {
     public ResponseEntity getCartao(@PathVariable("idCartao") BigInteger idCartao) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getCartao(idCartao));
+    }
+
+    //GRUPO2
+    @GetMapping("/cartoes/{idUsuario}")
+    public ResponseEntity verCartaoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getCartaobyUsuario(usuarioService.getUsuario(idUsuario)));
     }
 
     @PostMapping("/cartao") //CADASTRO
@@ -50,7 +58,4 @@ public class CartaoController {
     }
 
 }
-
-
-
 
