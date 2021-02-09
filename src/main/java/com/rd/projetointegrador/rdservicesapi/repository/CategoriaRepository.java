@@ -1,6 +1,6 @@
-package br.com.rd.projetointegrador.repository;
+package com.rd.projetointegrador.rdservicesapi.repository;
 
-import br.com.rd.projetointegrador.entity.CategoriaEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.CategoriaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;

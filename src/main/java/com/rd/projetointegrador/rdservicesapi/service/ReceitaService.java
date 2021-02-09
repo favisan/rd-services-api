@@ -1,8 +1,8 @@
-package br.com.rd.projetointegrador.service;
+package com.rd.projetointegrador.rdservicesapi.service;
 
-import br.com.rd.projetointegrador.entity.ReceitaEntity;
-import br.com.rd.projetointegrador.repository.CategoriaRepository;
-import br.com.rd.projetointegrador.repository.ReceitaRepository;
+import com.rd.projetointegrador.rdservicesapi.entity.ReceitaEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.CategoriaRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

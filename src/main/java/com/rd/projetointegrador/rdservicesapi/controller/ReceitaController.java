@@ -1,7 +1,7 @@
-package br.com.rd.projetointegrador.controller;
+package com.rd.projetointegrador.rdservicesapi.controller;
 
-import br.com.rd.projetointegrador.entity.ReceitaEntity;
-import br.com.rd.projetointegrador.service.ReceitaService;
+import com.rd.projetointegrador.rdservicesapi.entity.ReceitaEntity;
+import com.rd.projetointegrador.rdservicesapi.service.ReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

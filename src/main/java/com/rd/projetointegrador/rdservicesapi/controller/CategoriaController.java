@@ -1,4 +1,4 @@
-package br.com.rd.projetointegrador.controller;
+package com.rd.projetointegrador.rdservicesapi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

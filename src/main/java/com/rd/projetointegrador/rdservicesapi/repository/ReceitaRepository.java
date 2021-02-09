@@ -1,7 +1,5 @@
-package br.com.rd.projetointegrador.repository;
-
-
-import br.com.rd.projetointegrador.entity.ReceitaEntity;
+package com.rd.projetointegrador.rdservicesapi.repository;
+import com.rd.projetointegrador.rdservicesapi.entity.ReceitaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

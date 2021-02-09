@@ -1,4 +1,4 @@
-package br.com.rd.projetointegrador.entity;
+package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
 
