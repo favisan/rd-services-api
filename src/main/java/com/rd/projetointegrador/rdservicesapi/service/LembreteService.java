@@ -137,6 +137,9 @@ public class LembreteService {
     public List<Lembrete> getLembretesIdPaciente(BigInteger idPaciente) {
         List<LembreteEntity> lembretesEntities = repository.findByIdPaciente(idPaciente);
         List<Lembrete> lembretes = new ArrayList<>();
+
+        lembretes = conversaoLembretesDTO(lembretesEntities, lembretes);
+
         return lembretes;
     }
     public List<Lembrete> getLembretesOrderByDataAsc(BigInteger idPaciente) {
