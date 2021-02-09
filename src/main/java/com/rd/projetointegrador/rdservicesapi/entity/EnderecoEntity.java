@@ -2,7 +2,6 @@ package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -11,7 +10,6 @@ import java.math.BigInteger;
 @Table(name = "TB_ENDERECO")
 @Data
 @NoArgsConstructor
-
 public class EnderecoEntity implements Serializable  {
 
     @Id

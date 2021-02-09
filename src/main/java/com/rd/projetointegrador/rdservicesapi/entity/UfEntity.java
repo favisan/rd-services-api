@@ -1,8 +1,11 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -18,5 +21,4 @@ public class UfEntity implements Serializable {
 
     @Column(name = "DS_UF")
     private String dsUf;
-
 }

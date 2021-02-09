@@ -19,10 +19,8 @@ import java.util.List;
 public class CartaoController {
     //GRUPO1
 
-    @Autowired
-    private CartaoService service;
-    @Autowired
-    private UsuarioService usuarioService;
+    @Autowired private CartaoService service;
+    @Autowired private UsuarioService usuarioService;
 
     @GetMapping("/cartao")
     public ResponseEntity getCartoes() {

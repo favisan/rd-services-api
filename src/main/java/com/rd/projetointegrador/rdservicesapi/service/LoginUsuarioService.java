@@ -1,10 +1,8 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.GeneroEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.TipoUsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -22,9 +20,9 @@ import java.util.Optional;
 public class LoginUsuarioService {
     //GRUPO1
 
-    @Autowired private LoginUsuarioRepository repository;
+    @Autowired private LoginUsuarioRepository loginUsuarioRepository;
     @Autowired private UsuarioRepository usuarioRepository;
-
+    @Autowired private UsuarioService usuarioService;
 
     //CRIPTOGRAFAR SENHA USUARIO
     public String codificar(String senha) throws NoSuchAlgorithmException {
@@ -74,16 +72,16 @@ public class LoginUsuarioService {
     //MÉTODOS RETORNANDO A ENTITY
     public LoginUsuarioEntity getAcesso(BigInteger idUsuario) {
         System.out.println("IdAcesso: " + idUsuario);
-        Optional<LoginUsuarioEntity> optional = repository.findById(idUsuario);
+        Optional<LoginUsuarioEntity> optional = loginUsuarioRepository.findById(idUsuario);
         return optional.get();
 
     }
     public List<LoginUsuarioEntity> getAcessos() {
-        return repository.findAll();
+        return loginUsuarioRepository.findAll();
 
     }
     public LoginUsuarioEntity getAcessoByEmail(String email) {
-        return repository.findByDsEmail(email);
+        return loginUsuarioRepository.findByDsEmail(email);
     }
 
     //MÉTODO RETORNANDO A DTO
@@ -94,7 +92,6 @@ public class LoginUsuarioService {
         loginUsuario = conversaoLoginUsuarioDTO(loginUsuarioEntity, loginUsuario);
 
         return loginUsuario;
-
     }
 
     //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
@@ -104,7 +101,7 @@ public class LoginUsuarioService {
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
-        LoginUsuarioEntity loginUsuarioEntity = repository.findByDsEmail(emailTela);
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
         String login = loginUsuarioEntity.getDsEmail();
         String senha = loginUsuarioEntity.getDsSenha();
 
@@ -135,7 +132,7 @@ public class LoginUsuarioService {
     @Transactional
     public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
 
-        LoginUsuarioEntity loginUsuarioEntity = repository.findOneByIdUsuario(idUsuario);
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
         loginUsuarioEntity.setDsEmail(login.getDsEmail());
         loginUsuarioEntity.setDsSenha(login.getDsSenha());
@@ -143,15 +140,59 @@ public class LoginUsuarioService {
         UsuarioEntity usuario= usuarioRepository.findById(idUsuario).get();
         loginUsuarioEntity.setUsuario(usuario);
 
-        repository.save(loginUsuarioEntity);
+        loginUsuarioRepository.save(loginUsuarioEntity);
         return "Alteração realizada com sucesso";
     }
 
     //Confirmar se haverá ou não exclusão de acessos ou apenas bloqueios
     public String excluirAcesso(BigInteger idUsuario){
-        repository.deleteById(idUsuario);
+        loginUsuarioRepository.deleteById(idUsuario);
         return "Exclusão de login realizada com sucesso";
 
+    }
+
+
+
+    //GRUPO4
+
+    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
+    @Transactional
+    public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
+
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
+
+        loginUsuarioEntity.setDsEmail(login.getDsEmail());
+        loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
+
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
+        loginUsuarioEntity.setUsuario(usuario);
+
+        loginUsuarioRepository.save(loginUsuarioEntity);
+        return "Alteração realizada com sucesso";
+    }
+
+    //VALIDAR DADOS ESQUECEU A SENHA
+    //TODO
+    @Transactional
+    public String acessoSemSenha(OutputMedico medico) {
+
+        String  nome = medico.getNome();
+        String  cpf = medico.getNrCpf();
+        String  crm = medico.getNrCrm();
+
+        //TODO: Consultar por CPF recebe uma lista de usuários
+//        UsuarioEntity medicoEnt = usuarioService.consultarPorCpf(cpf);
+//        String nomeBanco = medicoEnt.getNmNome();
+//        String cpfBanco = medicoEnt.getNrCpf();
+//        String crmBanco = medicoEnt.getNrCrm();
+
+//        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
+//            return " senha de acesso enviada para o email de cadastro";
+//        } else {
+//            return "acesso negado";
+//        }
+
+        return "";
     }
 
 
@@ -162,10 +203,11 @@ public class LoginUsuarioService {
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
 
-        repository.save(loginUsuarioEntity);
+        loginUsuarioRepository.save(loginUsuarioEntity);
 
         return "Contrato cadastrado com sucesso";
     }
+
 
 }
 

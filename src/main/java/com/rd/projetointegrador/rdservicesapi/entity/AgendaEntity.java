@@ -24,13 +24,14 @@ public class AgendaEntity implements Serializable {
     @JoinColumn(name="ID_TIPO_CONSULTA")
     private TipoConsultaEntity tipoConsulta;
 
-//    @OneToOne
-//    @JoinColumn(name="ID_PERIODO")
-//    private PeriodoEntity Periodo;
+    @OneToOne
+    @JoinColumn(name="ID_PERIODO")
+    private PeriodoEntity periodo;
 
     @Column(name = "DT_DIA_DISPONIVEL")
     private Date diaDisponivel;
 
     @Column(name="FL_DISPONIVEL")
     private Integer flDisponivel;
+
 }

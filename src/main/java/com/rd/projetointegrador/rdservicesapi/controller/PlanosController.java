@@ -25,13 +25,13 @@ public class PlanosController {
                 .body(service.getPlano(idPlano));
 
     }
-/*
+
     @GetMapping("/planos") //Busca de todos os Planos
     public ResponseEntity getPlanos() {
         List<PlanosEntity> planos = service.getPlanos();
         return ResponseEntity.status(HttpStatus.OK).body(planos);
     }
-*/
+
     @PostMapping("/planos") //Cadastrar Novo Plano
     public ResponseEntity cadastrarPlano(@RequestBody Planos plano) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPlano(plano));

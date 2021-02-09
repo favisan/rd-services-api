@@ -18,3 +18,4 @@ public class TipoConsultaEntity implements Serializable {
     @Column(name = "DS_TIPO_CONSULTA")
     private String dsTipoConsulta;
 }
+

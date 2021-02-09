@@ -1,7 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -22,8 +21,9 @@ public class ContatoEntity implements Serializable {
     @Column(name="ID_LOJA")
     private BigInteger idLoja;
 
-    @Column(name="ID_TIPO_CONTATO")
-    private BigInteger idTipoContato;
+    @ManyToOne
+    @JoinColumn(name = "ID_TIPO_CONTATO")
+    private TipoContatoEntity tipoContato;
 
     @Column(name="NR_DDI")
     private String nrDdi;

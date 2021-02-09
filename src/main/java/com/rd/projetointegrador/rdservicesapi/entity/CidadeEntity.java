@@ -1,13 +1,9 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
-
 import lombok.Data;
-
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.math.BigInteger;
-
 
 @Entity
 @Table(name = "TB_CIDADE")
@@ -19,8 +15,9 @@ public class CidadeEntity implements Serializable {
     @Column(name="ID_CIDADE")
     private BigInteger idCidade;
 
-    @Column(name="ID_UF")
-    private BigInteger idUf;
+    @ManyToOne
+    @JoinColumn(name = "ID_UF")
+    private UfEntity uf;
 
     @Column(name="CD_CIDADE_IBGE")
     private BigInteger cdCidadeIbge;

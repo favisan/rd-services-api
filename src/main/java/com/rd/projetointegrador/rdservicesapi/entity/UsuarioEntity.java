@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,15 +30,13 @@ public class UsuarioEntity implements Serializable {
     @JoinColumn(name = "ID_GENERO")
     private GeneroEntity genero;
 
-//    @Column(name="ID_ESP_MED")
-//    private BigInteger idEspMedica;
+    @ManyToOne
+    @JoinColumn(name="ID_ESP_MED")
+    private EspMedEntity espMed;
 
     @ManyToOne
-    @JoinColumn(name = "ID_ESP_MED")
-    private EspMedEntity EspMed;
-
-    @Column(name = "ID_UF_CRM")
-    private BigInteger idUfCrm;
+    @JoinColumn(name = "ID_UF_CRM")
+    private UfEntity uf;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_USUARIO")
@@ -57,15 +57,26 @@ public class UsuarioEntity implements Serializable {
     @Column(name = "DS_END_IMG")
     private String dsEndImg;
 
-    @Column(name = "ID_PRECO")
-    private BigInteger idPreco;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_PRECO")
+    private PrecoEntity preco;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "TB_USUARIO_ENDERECO",
-//            joinColumns = @JoinColumn(name = "ID_USUARIO"),
-//            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
-//    )
-//    private List<EnderecoEntity> enderecos;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "TB_USUARIO_ENDERECO",
+            joinColumns = @JoinColumn(name = "ID_USUARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
+    )
+    private List<EnderecoEntity> enderecos;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_CONTATO")
+    private List<ContatoEntity> contatos;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "TB_LOGIN_USUARIO")
+    @JoinColumn(name = "ID_USUARIO")
+    @JsonIgnore
+    private LoginUsuarioEntity login;
 
 
 }

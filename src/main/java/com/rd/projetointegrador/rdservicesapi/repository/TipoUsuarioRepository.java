@@ -9,3 +9,4 @@ public interface TipoUsuarioRepository extends JpaRepository<TipoUsuarioEntity, 
     //GRUPO1
 
 }
+

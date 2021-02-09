@@ -17,4 +17,6 @@ public class EspMedEntity implements Serializable {
 
     @Column(name = "DS_ESP_MED")
     private String dsEspMed;
+
 }
+
