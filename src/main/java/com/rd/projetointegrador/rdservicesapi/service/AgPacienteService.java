@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -27,11 +28,11 @@ public class AgPacienteService {
     public String setAgPaciente (AgPacienteEntity agPacienteEntity){
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(1));
-//        LocalDateTime data = new LocalDateTime();
+        LocalDateTime data = LocalDateTime.now();
 
         agPacienteEntity.setAgenda(agPacienteEntity.getAgenda());
         agPacienteEntity.setPaciente(agPacienteEntity.getPaciente());
-//        agPacienteEntity.setDtSolicitacao(data);
+        agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
 
