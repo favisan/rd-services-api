@@ -35,11 +35,6 @@ public class ContratoController {
         return ResponseEntity.status(HttpStatus.OK).body(contratos);
     }
 
-    @GetMapping("/contrato/user/{idUsuario}")
-    public ResponseEntity verContratoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getPlanobyUsuario(idUsuario));
-    }
-
     @PostMapping("/contrato") //Cadastrar Novo Contrato
     public ResponseEntity cadastrarContrato(@RequestBody Contrato contrato) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarContrato(contrato));

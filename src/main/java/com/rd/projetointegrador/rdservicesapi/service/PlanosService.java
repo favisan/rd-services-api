@@ -3,11 +3,11 @@ package com.rd.projetointegrador.rdservicesapi.service;
 import com.rd.projetointegrador.rdservicesapi.dto.Genero;
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.dto.ServicoPlano;
-import com.rd.projetointegrador.rdservicesapi.entity.GeneroEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.PlanosEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.ServicoPlanoEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.ContratoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.PlanosRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.ServicoPlanoRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,8 @@ public class PlanosService {
     @Autowired private PlanosRepository repository;
     @Autowired private ServicoPlanoRepository servRepository;
     @Autowired private ServicoPlanoService servPlanService;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private ContratoRepository contratoRepository;
 
     //MÉTODO: conversão de DTO para Entity
     public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
@@ -128,6 +130,19 @@ public class PlanosService {
         repository.deleteById(idPlano);
         return "Exclusão de plano realizada com sucesso";
 
+    }
+
+    //GRUPO2
+
+    public List<PlanosEntity> getPlanobyUsuario(BigInteger id) {
+        UsuarioEntity usuario = usuarioRepository.findById(id).get();
+        List<ContratoEntity> contratos = contratoRepository.findByUsuario(usuario);
+        List<PlanosEntity> listaPlanos = new ArrayList<>();
+        for (ContratoEntity contratoEntity : contratos) {
+            PlanosEntity plano = contratoEntity.getPlanosEntity();
+            listaPlanos.add(plano);
+        }
+        return listaPlanos;
     }
 
 

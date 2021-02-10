@@ -106,16 +106,5 @@ public class ContratoService {
     }
 
 
-    //GRUPO2
 
-    public List<PlanosEntity> getPlanobyUsuario(BigInteger id) {
-        UsuarioEntity usuario = usuarioRepository.findById(id).get();
-        List<ContratoEntity> contratos = repository.findByUsuario(usuario);
-        List<PlanosEntity> listaPlanos = new ArrayList<>();
-        for (ContratoEntity contratoEntity : contratos) {
-            PlanosEntity plano = contratoEntity.getPlanosEntity();
-            listaPlanos.add(plano);
-        }
-        return listaPlanos;
-    }
 }

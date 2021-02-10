@@ -26,6 +26,11 @@ public class PlanosController {
 
     }
 
+    @GetMapping("/contrato/user/{idUsuario}")
+    public ResponseEntity verContratoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPlanobyUsuario(idUsuario));
+    }
+
     @GetMapping("/planos") //Busca de todos os Planos
     public ResponseEntity getPlanos() {
         List<PlanosEntity> planos = service.getPlanos();
