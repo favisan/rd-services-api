@@ -49,7 +49,12 @@ public class AgendaService {
         return especialidades;
     }
     public List<AgendaEntity> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
-        List<AgendaEntity> agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
+        List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
+        if(idConsulta.intValue() == 2){
+            agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
+        } else {
+            agendaPorTipoConsulta = agendaRepository.findAll();
+        }
         List<AgendaEntity> agendaFinal = new ArrayList<>();
         for (AgendaEntity agenda : agendaPorTipoConsulta) {
             BigInteger espMedAgenda = agenda.getMedico().getEspMed().getIdEspMed();
