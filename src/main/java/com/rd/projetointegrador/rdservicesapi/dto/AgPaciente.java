@@ -17,13 +17,13 @@ public class AgPaciente {
 
     private BigInteger idPaciente;
 
-    private BigInteger idAgenda;
+    private Agenda agenda;
 
     private LocalDateTime dtSolicitacao;
 
     private BigInteger idTipoConfirmacao;
 
-    private BigInteger idStatusConsulta;
+    private StatusConsulta statusConsulta;
 
 
 }

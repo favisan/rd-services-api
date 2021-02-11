@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -18,10 +21,49 @@ public class AgPacienteService {
     @Autowired private AgPacienteRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
 
-    public Optional<AgPacienteEntity> getAgPaciente(BigInteger idUsuario){
-        usuarioRepository.findByIdUsuario(idUsuario);
-        Optional<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuarioRepository.findByIdUsuario(idUsuario).get());
-        return listaAgendas;
+    public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
+        List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
+        List<AgPaciente> agPacientes = new ArrayList<>();
+
+        for (AgPacienteEntity agPacienteEntity : listaAgendas){
+            AgPaciente agPaciente = new AgPaciente();
+            agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
+
+            //idAgenda
+            Agenda agenda = new Agenda();
+            agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
+
+            //nomeMedico
+            UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
+            InputMedico medicoDto = new InputMedico();
+            medicoDto.setNome(medicoEntity.getNmNome());
+
+            //especialidade
+            EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
+            EspMed espMedDto = new EspMed();
+            espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
+            medicoDto.setEspMed(espMedDto);
+            agenda.setMedico(medicoDto);
+
+            //data
+            agenda.setDiaDisponivel(agPacienteEntity.getAgenda().getDiaDisponivel());
+
+            //horaInicial
+            agenda.setHoraInicial(agPacienteEntity.getAgenda().getPeriodo().getHoraInicial());
+
+            //statusConsulta
+            StatusConsulta status = new StatusConsulta();
+            status.setIdStatusConsulta(agPacienteEntity.getStatusConsulta().getIdStatusConsulta());
+            status.setDsStatusConsulta(agPacienteEntity.getStatusConsulta().getDsStatusConsulta());
+            agPaciente.setStatusConsulta(status);
+
+            //passando agendaDTO para agPacienteDTO
+            agPaciente.setAgenda(agenda);
+
+            agPacientes.add(agPaciente);
+        }
+
+        return agPacientes;
     };
 
     @Transactional
