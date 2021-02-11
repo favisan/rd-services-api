@@ -198,4 +198,23 @@ public class LembreteService {
         return "Exclusão de Lembrete realizada com sucesso";
 
     }
+
+    //LEMBRETE INTERVALO
+    //méotodo retornando a DTO
+    public List<LembreteIntervalo> getLembreteIntervalos() {
+        List<LembreteIntervaloEntity> lembretesIntervalosEntities = lirepository.findAll();
+
+        List<LembreteIntervalo> lembretesIntervalos = new ArrayList<>();
+
+        for (LembreteIntervaloEntity liEntity: lembretesIntervalosEntities) {
+            LembreteIntervalo li = new LembreteIntervalo();
+            li.setIdLembreteIntervalo(liEntity.getIdLembreteIntervalo());
+            li.setDsLembreteIntervalo(liEntity.getDsLembreteIntervalo());
+
+            lembretesIntervalos.add(li);
+        }
+
+        return lembretesIntervalos;
+
+    }
 }
