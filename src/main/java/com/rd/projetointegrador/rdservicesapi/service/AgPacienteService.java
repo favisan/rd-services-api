@@ -42,6 +42,7 @@ public class AgPacienteService {
             EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
             EspMed espMedDto = new EspMed();
             espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
+            espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
             medicoDto.setEspMed(espMedDto);
             agenda.setMedico(medicoDto);
 
