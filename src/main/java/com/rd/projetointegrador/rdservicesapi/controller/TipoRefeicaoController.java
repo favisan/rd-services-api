@@ -18,10 +18,10 @@ public class TipoRefeicaoController {
     private TipoRefeicaoService tipoRefeicaoService;
 
     //listar todas refeicoes cadastradas
-    @GetMapping("/listar-refeicoes")
-    public ResponseEntity listarRefeicoes(){
-        return ResponseEntity.status(HttpStatus.OK).body(tipoRefeicaoService.listarRefeicoes());
-    }
+   @GetMapping("/listar-refeicoes/{idPaciente}")
+  public ResponseEntity listarRefeicoes(@PathVariable ("idPaciente") BigInteger idPaciente){
+       return ResponseEntity.status(HttpStatus.OK).body(tipoRefeicaoService.listarRefeicoes(idPaciente));
+  }
 
     // BUSCA POR ID
     @GetMapping("/tipo-refeicoes/{idTipoRefeicao}")
@@ -32,7 +32,6 @@ public class TipoRefeicaoController {
     }
 
     //Busca todos os tipos de refeicoes
-
     @GetMapping("/tipo-refeicoes")
     public ResponseEntity getTipoRefeicoesDTO() {
         List<TipoRefeEntity> tiporefeicoes = tipoRefeicaoService.getTiposRefeicoes();
