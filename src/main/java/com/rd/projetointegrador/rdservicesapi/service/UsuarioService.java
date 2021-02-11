@@ -186,7 +186,7 @@ public class UsuarioService {
     }
 
 
-    //GRUPO4 --------------------------------------------------------------------------
+    //GRUPO4
 
     //BUSCAR MEDICO POR ID
     public OutputMedico getMedico(BigInteger id) {
@@ -297,7 +297,7 @@ public class UsuarioService {
 
         repository.save(entity);
 
-        return "Alteração realizado com sucesso";
+        return "Alteração realizada com sucesso";
     }
 
     //CADASTRAR MEDICO
@@ -385,4 +385,5 @@ public class UsuarioService {
 
         return cadastroMedico;
     }
+
 }

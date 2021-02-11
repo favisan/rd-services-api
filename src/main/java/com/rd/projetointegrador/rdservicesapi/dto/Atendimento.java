@@ -13,7 +13,7 @@ public class Atendimento {
 
     private BigInteger idAtendimento;
 
-    private OutputMedico paciente;
+    private Usuario paciente;
 
     private OutputMedico medico;
 

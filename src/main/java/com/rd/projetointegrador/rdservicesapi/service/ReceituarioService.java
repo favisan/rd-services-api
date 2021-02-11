@@ -2,10 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
-import com.rd.projetointegrador.rdservicesapi.repository.ProntuarioRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.ReceituarioRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.TipoReceitaRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,33 +15,26 @@ import java.util.List;
 public class ReceituarioService {
 
     //Repository
-    @Autowired
-    private ReceituarioRepository receituarioRepository;
+    @Autowired private ReceituarioRepository receituarioRepository;
 
-    @Autowired
-    private ProntuarioRepository prontuarioRepository;
+    @Autowired private ProntuarioRepository prontuarioRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private TipoReceitaRepository tipoReceitaRepository;
+    @Autowired private UsuarioG4Repository usuarioG4Repository;
+
+    @Autowired private TipoReceitaRepository tipoReceitaRepository;
 
     //Service
-    @Autowired
-    private TipoReceitaService tipoReceitaService;
+    @Autowired private TipoReceitaService tipoReceitaService;
 
-    @Autowired
-    private FormaFarmacService formaFarmacService;
+    @Autowired private FormaFarmacService formaFarmacService;
 
-    @Autowired
-    private ViaAdmService viaAdmService;
+    @Autowired private ViaAdmService viaAdmService;
 
-    @Autowired
-    private MedicacaoService medicacaoService;
+    @Autowired private MedicacaoService medicacaoService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    @Autowired private UsuarioService usuarioService;
 
     //Consultar receituário por Id
     public ReceituarioEntity exibirReceituarioPorId(BigInteger idReceituario){
@@ -55,25 +45,25 @@ public class ReceituarioService {
     }
 
     //Consultar todos os receituários vinculados a um mesmo Id de prontuário
-    public List<Receituario> listarReceituarioPorIdProntuario(BigInteger idProntuario){
+    public List<ReceituarioInput> listarReceituarioPorIdProntuario(BigInteger idProntuario){
 
         //Buscando A Entity Prontuario por Id
         ProntuarioEntity prontuarioEntity= prontuarioRepository.findById(idProntuario).get();
 
-        ////Buscando A Lista de Entity Receituário por Id de Prontuário
+        //Buscando A Lista de Entity Receituário por Id de Prontuário
         List <ReceituarioEntity> receituariosEntity = receituarioRepository.findByProntuario(prontuarioEntity);
 
         //Convertendo a Lista Entity Receituario para Lista DTO
-        List<Receituario> receituarios = new ArrayList<>();
+        List<ReceituarioInput> receituarios = new ArrayList<>();
         receituarios = converterReceituariosToDTO(receituariosEntity,receituarios);
 
         return receituarios;
 
     }
 
-    //inserir um receituário
+    //Inserir um receituário
     @Transactional
-    public String inserirReceituario(Receituario receituario) {
+    public String inserirReceituario(ReceituarioInput receituario) {
 
         //Convertendo a DTO Receituario para Entity
         ReceituarioEntity  receituarioEntity= new ReceituarioEntity();
@@ -91,7 +81,7 @@ public class ReceituarioService {
 
         ReceituarioOutput receituarioOutput = new ReceituarioOutput();
         receituarioOutput.setListaTipoReceita(tipoReceitaService.listarTiposDeReceita());
-//        receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente).getNmNome());
+        receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente).getNmNome());
         receituarioOutput.setListaMedicacao(medicacaoService.listarMedicacoes());
         receituarioOutput.setListaViaAdm(viaAdmService.listarViasAdm());
         receituarioOutput.setListaFormaFarmac(formaFarmacService.listarFormasFarmac());
@@ -102,12 +92,12 @@ public class ReceituarioService {
     }
 
     //Convertendo de Entity para DTO
-    public Receituario converterReceituarioToDTO(ReceituarioEntity receituarioEntity, Receituario receituario) {
+    public ReceituarioInput converterReceituarioToDTO(ReceituarioEntity receituarioEntity, ReceituarioInput receituario) {
 
         //PEGAR A DTO Usuario paciente
-//            Usuario paciente = new Usuario();
-//            paciente.setIdUsuario(receituarioEntity.getPaciente().getIdUsuario());
-//            paciente.setNome(receituarioEntity.getPaciente().getNmNome());
+        Usuario paciente = new Usuario();
+        paciente.setIdUsuario(receituarioEntity.getPaciente().getIdUsuario());
+        paciente.setNmNome(receituarioEntity.getPaciente().getNmNome());
 
         //PEGAR A DTO Prontuario
         Prontuario prontuario = new Prontuario();
@@ -119,9 +109,8 @@ public class ReceituarioService {
         prontuario.setDsObservacoes(receituarioEntity.getProntuario().getDsObservacoes());
 
         //PEGAR A DTO InputMedico medico
-        InputMedico medico = new InputMedico();
-        medico.setIdUsuario(receituarioEntity.getMedico().getIdUsuario());
-        medico.setNome(receituarioEntity.getMedico().getNmNome());
+        BigInteger idMedico = receituarioEntity.getMedico().getIdUsuario();
+        OutputMedico medico = (usuarioG4Repository.findByIdUsuario(idMedico));
 
         //PEGAR A DTO Tipo de receita
         TipoReceita tipoReceita = new TipoReceita();
@@ -146,7 +135,7 @@ public class ReceituarioService {
 
         //SETANDO OS VALORES NA DTO Receituario
         receituario.setIdReceituario(receituarioEntity.getIdReceituario());
-//        receituario.setPaciente(paciente);
+        receituario.setPaciente(paciente);
         receituario.setProntuario(prontuario);
         receituario.setMedico(medico);
         receituario.setTipoReceita(tipoReceita);
@@ -158,10 +147,10 @@ public class ReceituarioService {
     }
 
     //Convertendo listaEntity para ListaDTO
-    public List<Receituario> converterReceituariosToDTO(List<ReceituarioEntity> receituariosEntity, List<Receituario> receituarios) {
+    public List<ReceituarioInput> converterReceituariosToDTO(List<ReceituarioEntity> receituariosEntity, List<ReceituarioInput> receituarios) {
 
         for(ReceituarioEntity receituarioEntity : receituariosEntity) {
-            Receituario receituario = new Receituario();
+            ReceituarioInput receituario = new ReceituarioInput();
             receituario = converterReceituarioToDTO(receituarioEntity,receituario);
 
             receituarios.add(receituario);
@@ -171,11 +160,11 @@ public class ReceituarioService {
     }
 
     //Convertendo de DTO para Entity
-    public ReceituarioEntity converterReceituarioToEntity(Receituario receituario, ReceituarioEntity receituarioEntity) {
+    public ReceituarioEntity converterReceituarioToEntity(ReceituarioInput receituario, ReceituarioEntity receituarioEntity) {
 
         //PEGAR A ENTITY USUARIO Paciente
-//        BigInteger idPaciente = receituario.getPaciente().getIdUsuario();
-//        UsuarioEntity pacienteEntity = usuarioRepository.findById(idPaciente).get();
+        BigInteger idPaciente = receituario.getPaciente().getIdUsuario();
+        UsuarioEntity pacienteEntity = usuarioRepository.findById(idPaciente).get();
 
         //PEGAR A ENTITY Prontuario
         BigInteger idProntuario = receituario.getProntuario().getIdProntuario();
@@ -205,7 +194,7 @@ public class ReceituarioService {
         }
 
         //SETANDO OS VALORES NA ENTITY Receituario
-        //receituarioEntity.setPaciente(pacienteEntity);
+        receituarioEntity.setPaciente(pacienteEntity);
         receituarioEntity.setProntuario(prontuarioEntity);
         receituarioEntity.setMedico(medicoEntity);
         receituarioEntity.setTipoReceita(tipoReceitaEntity);

@@ -1,6 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.repository;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Prontuario;
 import com.rd.projetointegrador.rdservicesapi.entity.AtendimentoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.ProntuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;

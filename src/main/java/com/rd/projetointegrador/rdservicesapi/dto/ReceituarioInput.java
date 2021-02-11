@@ -11,15 +11,15 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Receituario {
+public class ReceituarioInput {
 
     private BigInteger idReceituario;
 
-    //private Usuario paciente;
+    private Usuario paciente;
 
     private Prontuario prontuario;
 
-    private InputMedico medico;
+    private OutputMedico medico;
 
     private TipoReceita tipoReceita;
 

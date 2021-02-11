@@ -6,6 +6,7 @@ import com.rd.projetointegrador.rdservicesapi.entity.AtendimentoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.ProntuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.AtendimentoRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioG4Repository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,11 @@ public class AtendimentoService {
 
     @Autowired private UsuarioRepository usuarioRepository;
 
+    @Autowired private UsuarioG4Repository usuarioG4Repository;
+
     @Autowired private ProntuarioService prontuarioService;
 
-    @Autowired
-    private AtendimentoRepository repository;
+    @Autowired private AtendimentoRepository repository;
 
     public Atendimento buscarAtendimentoId(BigInteger id) {
         System.out.println("ID: " + id);
@@ -32,7 +34,6 @@ public class AtendimentoService {
         AtendimentoEntity entity = repository.findById(id).get();
 
         Atendimento a = new Atendimento();
-
 
         a.setIdAtendimento(entity.getIdAtendimento());
         a.setVlPeso(entity.getVlPeso());
@@ -42,7 +43,6 @@ public class AtendimentoService {
         a.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
         a.setDsProblemasSaude(entity.getDsProblemasSaude());
         a.setDtAtendimento(entity.getDtAtendimento());
-
 
         Prontuario prontuario = new Prontuario();
         prontuario.setIdProntuario(entity.getProntuario().getIdProntuario());
@@ -103,14 +103,12 @@ public class AtendimentoService {
         return "Cadastro realizado com sucesso!";
     }
 
-    //TODO: Rever?
     public List<AtendimentoEntity> consultarPorCpf(String cpf){
 
-        UsuarioEntity paciente = usuarioRepository.findOneByNrCpf(cpf);
+        UsuarioEntity paciente = usuarioG4Repository.findByNrCpf(cpf);
         List<AtendimentoEntity> atendimentos = repository.findByPaciente(paciente);
 
         return atendimentos;
-
     }
 
 }

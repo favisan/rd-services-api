@@ -52,4 +52,8 @@ public class AtendimentoEntity {
     @Column(name="DT_ATENDIMENTO")
     private Date dtAtendimento;
 
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name="ID_AG_PACIENTE")
+    private AgPacienteEntity agPaciente;
+
 }

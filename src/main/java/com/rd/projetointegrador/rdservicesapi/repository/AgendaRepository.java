@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface AgendaRepository extends JpaRepository<AgendaEntity, BigInteger> {
 
+    //Grupo 2
     List<AgendaEntity> findByTipoConsulta(TipoConsultaEntity tipoConsulta);
+
+    //Grupo 4
     List<Agenda> findByDiaDisponivel(Date diaDisponivel);
+
 }

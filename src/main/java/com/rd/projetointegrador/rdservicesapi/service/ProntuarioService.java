@@ -23,7 +23,6 @@ public class ProntuarioService {
 
         Prontuario p = new Prontuario();
 
-
         p.setIdProntuario(entity.getIdProntuario());
         p.setDsSubjetivo(entity.getDsSubjetivo());
         p.setDsAvaliacao(entity.getDsAvaliacao());
@@ -53,6 +52,7 @@ public class ProntuarioService {
 
         return prontuarios;
     }
+
     public ProntuarioEntity cadastrarProntuario(Prontuario prontuario) {
         ProntuarioEntity entity = new ProntuarioEntity();
         entity.setDsSubjetivo(prontuario.getDsSubjetivo());

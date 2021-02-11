@@ -11,10 +11,11 @@ import java.util.Date;
 @Table(name="TB_AGENDA")
 @Data
 public class AgendaEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_AGENDA")
-    private BigInteger agenda;
+    private BigInteger idAgenda;
 
     @OneToOne
     @JoinColumn(name="ID_MEDICO")

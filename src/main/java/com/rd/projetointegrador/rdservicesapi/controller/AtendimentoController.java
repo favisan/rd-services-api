@@ -9,32 +9,32 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.List;
+
 @RestController
 public class AtendimentoController {
 
-        @Autowired
-        AtendimentoService service;
+    @Autowired AtendimentoService service;
 
-        @GetMapping("/atendimento/{id}")
-        public ResponseEntity buscarAtendiementoId(@PathVariable("id") BigInteger id) {
+    @GetMapping("/atendimento/{id}")
+    public ResponseEntity buscarAtendiementoId(@PathVariable("id") BigInteger id) {
 
-            Atendimento a = service.buscarAtendimentoId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(a);
-        }
+        Atendimento a = service.buscarAtendimentoId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(a);
+    }
 
-        @GetMapping("/atendimento")
-        public ResponseEntity getAtendimento() {
+    @GetMapping("/atendimento")
+    public ResponseEntity getAtendimento() {
 
-            List<Atendimento> atendimentos = service.listarAtendimentos();
-            return ResponseEntity.status(HttpStatus.OK).body(atendimentos);
+        List<Atendimento> atendimentos = service.listarAtendimentos();
+        return ResponseEntity.status(HttpStatus.OK).body(atendimentos);
 
-        }
+    }
 
-        @PostMapping("/atendimento")
-        public ResponseEntity cadastrarAtendimento(@RequestBody Atendimento atendimento) {
+    @PostMapping("/atendimento")
+    public ResponseEntity cadastrarAtendimento(@RequestBody Atendimento atendimento) {
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAtendimento(atendimento));
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAtendimento(atendimento));
+    }
 
     @GetMapping("/atendimento/usuario/{cpf}")
     public ResponseEntity getAtendimento(@PathVariable("cpf") String cpf){

@@ -1,6 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Receituario;
+import com.rd.projetointegrador.rdservicesapi.dto.ReceituarioInput;
 import com.rd.projetointegrador.rdservicesapi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,7 @@ import java.math.BigInteger;
 @RestController
 public class ReceituarioController {
 
-    @Autowired
-    private ReceituarioService receituarioService;
+    @Autowired private ReceituarioService receituarioService;
 
     //BUSCAR RECEITUÁRIO POR ID
     @GetMapping("/receituario/{idReceituario}")
@@ -46,7 +45,7 @@ public class ReceituarioController {
 
     //CADASTRAR RECEITUÁRIO
     @PostMapping("/receituario")
-    public ResponseEntity setReceituario(@RequestBody Receituario receituario) {
+    public ResponseEntity setReceituario(@RequestBody ReceituarioInput receituario) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(receituarioService.inserirReceituario(receituario));
 
