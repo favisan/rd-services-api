@@ -14,7 +14,7 @@ public class SolicExame {
 
     private BigInteger idSolicExame;
     private Prontuario prontuario;
-    private InputMedico paciente;
+    private Usuario paciente;
     private InputMedico medico;
     private Date dtSolicitacao;
     private String dsIndicacaoClin;

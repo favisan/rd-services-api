@@ -70,8 +70,8 @@ public class SolicExameService {
 
     public List<SolicExame> listarSolicExamePorIdProntuario(BigInteger idProntuario) {
 
-      ProntuarioEntity prontuario = prontuarioRepository.findById(idProntuario).get();
-      List<SolicExameEntity> solicitacoes = repository.findByProntuario(prontuario);
+        ProntuarioEntity prontuario = prontuarioRepository.findById(idProntuario).get();
+        List<SolicExameEntity> solicitacoes = repository.findByProntuario(prontuario);
 
         List<SolicExame> lista = new ArrayList<>();
 
@@ -91,9 +91,9 @@ public class SolicExameService {
 
             solicitacao.setProntuario(pront);
 
-            InputMedico paciente = new InputMedico();
+            Usuario paciente = new Usuario();
             paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
-            paciente.setNome(solic.getPaciente().getNmNome());
+            paciente.setNmNome(solic.getPaciente().getNmNome());
 
             solicitacao.setPaciente(paciente);
 
@@ -119,9 +119,48 @@ public class SolicExameService {
         return lista;
     }
 
-    public SolicExameEntity exibirSolicExamePorIdSolicitacao(BigInteger idSolicExame){
+    public SolicExame exibirSolicExamePorIdSolicitacao(BigInteger idSolicExame){
 
-        SolicExameEntity solicitacao = repository.findById(idSolicExame).get();
+        SolicExameEntity solic = repository.findById(idSolicExame).get();
+
+        SolicExame solicitacao = new SolicExame();
+
+        solicitacao.setIdSolicExame(solic.getIdSolicExame());
+        solicitacao.setDtSolicitacao(solic.getDtSolicitacao());
+        solicitacao.setDsIndicacaoClin(solic.getDsIndicacaoClin());
+
+        Prontuario pront = new Prontuario();
+        pront.setIdProntuario(solic.getProntuario().getIdProntuario());
+        pront.setDsSubjetivo(solic.getProntuario().getDsSubjetivo());
+        pront.setDsObjetivo(solic.getProntuario().getDsObjetivo());
+        pront.setDsAvaliacao(solic.getProntuario().getDsAvaliacao());
+        pront.setDsPlano(solic.getProntuario().getDsPlano());
+        pront.setDsObservacoes(solic.getProntuario().getDsObservacoes());
+
+        solicitacao.setProntuario(pront);
+
+        Usuario paciente = new Usuario();
+        paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
+        paciente.setNmNome(solic.getPaciente().getNmNome());
+
+        solicitacao.setPaciente(paciente);
+
+        InputMedico medico = new InputMedico();
+        medico.setIdUsuario(solic.getMedico().getIdUsuario());
+        medico.setNome(solic.getMedico().getNmNome());
+
+        List<TipoExame> exam = new ArrayList<>();
+
+        for (TipoExameEntity exame : solic.getExames()) {
+
+            TipoExame tipo = new TipoExame();
+            tipo.setIdTipoExame(exame.getIdTipoExame());
+            tipo.setDsTipoExame(exame.getDsTipoExame());
+            exam.add(tipo);
+        }
+
+        solicitacao.setExames(exam);
+        solicitacao.setMedico(medico);
 
         return solicitacao;
 
@@ -138,56 +177,51 @@ public class SolicExameService {
 
     }
 
+  //MÉTODO PARA LISTAR É SÓ PARA TESTE
+    public List<SolicExame> listarSolicExame() {
+        List<SolicExameEntity> exames = repository.findAll();
+        List<SolicExame> listaExame = new ArrayList<>();
 
+        for(SolicExameEntity solic : exames){
+            SolicExame s = new SolicExame();
+            s.setIdSolicExame(solic.getIdSolicExame());
+            s.setDtSolicitacao(solic.getDtSolicitacao());
+            s.setDsIndicacaoClin(solic.getDsIndicacaoClin());
 
+            Prontuario p = new Prontuario();
+            p.setIdProntuario(solic.getProntuario().getIdProntuario());
+            p.setDsSubjetivo(solic.getProntuario().getDsSubjetivo());
+            p.setDsObjetivo(solic.getProntuario().getDsObjetivo());
+            p.setDsAvaliacao(solic.getProntuario().getDsAvaliacao());
+            p.setDsPlano(solic.getProntuario().getDsPlano());
+            p.setDsObservacoes(solic.getProntuario().getDsObservacoes());
 
+            s.setProntuario(p);
 
+            Usuario paciente = new Usuario();
+            paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
+            paciente.setNmNome(solic.getPaciente().getNmNome());
 
-//  MÉTODO PARA LISTAR É SÓ PARA TESTE
-//    public List<SolicExame> listarSolicExame() {
-//        List<SolicExameEntity> exames = repository.findAll();
-//        List<SolicExame> listaExame = new ArrayList<>();
-//
-//        for(SolicExameEntity solic : exames){
-//            SolicExame s = new SolicExame();
-//            s.setIdSolicExame(solic.getIdSolicExame());
-//            s.setDtSolicitacao(solic.getDtSolicitacao());
-//            s.setDsIndicacaoClin(solic.getDsIndicacaoClin());
-//
-//            Prontuario p = new Prontuario();
-//            p.setIdProntuario(solic.getProntuario().getIdProntuario());
-//            p.setDsSubjetivo(solic.getProntuario().getDsSubjetivo());
-//            p.setDsObjetivo(solic.getProntuario().getDsObjetivo());
-//            p.setDsAvaliacao(solic.getProntuario().getDsAvaliacao());
-//            p.setDsPlano(solic.getProntuario().getDsPlano());
-//            p.setDsObservacoes(solic.getProntuario().getDsObservacoes());
-//
-//            s.setProntuario(p);
-//
-//            InputMedico paciente = new InputMedico();
-//            paciente.setIdUsuario(solic.getPaciente().getIdUsuario());
-//            paciente.setNome(solic.getPaciente().getNome());
-//
-//            s.setPaciente(paciente);
-//
-//            InputMedico medico = new InputMedico();
-//            medico.setIdUsuario(solic.getMedico().getIdUsuario());
-//            medico.setNome(solic.getMedico().getNome());
-//
-//            List<TipoExame> exam = new ArrayList<>();
-//
-//            for (TipoExameEntity e : solic.getExames()) {
-//                TipoExame tipo = new TipoExame();
-//                tipo.setIdTipoExame(e.getIdTipoExame());
-//                tipo.setDsTipoExame(e.getDsTipoExame());
-//                exam.add(tipo);
-//            }
-//
-//            s.setExames(exam);
-//            s.setMedico(medico);
-//            listaExame.add(s);
-//        }
-//        return listaExame;
-//    }
+            s.setPaciente(paciente);
+
+            InputMedico medico = new InputMedico();
+            medico.setIdUsuario(solic.getMedico().getIdUsuario());
+            medico.setNome(solic.getMedico().getNmNome());
+
+            List<TipoExame> exam = new ArrayList<>();
+
+            for (TipoExameEntity e : solic.getExames()) {
+                TipoExame tipo = new TipoExame();
+                tipo.setIdTipoExame(e.getIdTipoExame());
+                tipo.setDsTipoExame(e.getDsTipoExame());
+                exam.add(tipo);
+            }
+
+            s.setExames(exam);
+            s.setMedico(medico);
+            listaExame.add(s);
+        }
+        return listaExame;
+    }
 
 }

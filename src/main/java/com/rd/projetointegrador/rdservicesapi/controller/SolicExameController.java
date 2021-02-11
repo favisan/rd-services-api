@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @RestController
 public class SolicExameController {
@@ -21,6 +22,7 @@ public class SolicExameController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.inserirSolicExame(solicExame));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao gravar solicitação de exame.");
         }
     }
@@ -53,10 +55,10 @@ public class SolicExameController {
     }
 
 
-//    @GetMapping("/solic_exame")
-//    public ResponseEntity getSolicExames() {
-//
-//        List<SolicExame> exames = service.listarSolicExame();
-//        return ResponseEntity.status(HttpStatus.OK).body(exames);
-//    }
+    @GetMapping("/solic_exame")
+    public ResponseEntity getSolicExames() {
+
+        List<SolicExame> exames = service.listarSolicExame();
+        return ResponseEntity.status(HttpStatus.OK).body(exames);
+    }
 }

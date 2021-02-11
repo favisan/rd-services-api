@@ -25,4 +25,5 @@ public class Agenda {
 
     private Integer flDisponivel;
 
+
 }

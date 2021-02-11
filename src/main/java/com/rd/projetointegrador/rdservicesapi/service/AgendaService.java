@@ -8,28 +8,31 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.Date;
 
 @Service
 public class AgendaService {
 
     //Repository
-    @Autowired private UsuarioRepository usuarioRepository;
-    @Autowired private AgendaRepository agendaRepository;
-    @Autowired private TipoConsultaRepository tipoConsultaRepository;
-    @Autowired private PeriodoRepository periodoRepository;
-    @Autowired private AgPacienteRepository agPacienteRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private AgendaRepository agendaRepository;
+    @Autowired
+    private TipoConsultaRepository tipoConsultaRepository;
+    @Autowired
+    private PeriodoRepository periodoRepository;
+    @Autowired
+    private AgPacienteRepository agPacienteRepository;
 
     //Service
-    @Autowired private PeriodoService periodoService;
+    @Autowired
+    private PeriodoService periodoService;
 
     //Grupo 2
     public Set<EspMedEntity> getEspByAgenda() {
@@ -52,7 +55,7 @@ public class AgendaService {
     //Grupo 2
     public List<AgendaEntity> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
-        if(idConsulta.intValue() == 2){
+        if (idConsulta.intValue() == 2) {
             agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
         } else {
             agendaPorTipoConsulta = agendaRepository.findAll();
@@ -67,6 +70,7 @@ public class AgendaService {
         return agendaFinal;
     }
 
+
     //Listar todas as agendas (Grupo 4)
     public List<AgendaEntity> getAgendas() {
 
@@ -80,7 +84,7 @@ public class AgendaService {
 
         List<Time> horarios = new ArrayList<>();
 
-        if (agendas == null){
+        if (agendas.size() == 0) {
             List<Periodo> periodos = periodoService.listarPeriodos();
 
             for (Periodo periodo : periodos) {
@@ -98,22 +102,22 @@ public class AgendaService {
     }
 
     //Listar agendas por data (Grupo 4)
-    public List<AgendaEntity> getAgendasPorData(Date diaDisponivel) throws Exception{
+    public List<AgendaEntity> getAgendasPorData(Date diaDisponivel) {
 
-            List<AgendaEntity> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
+        List<AgendaEntity> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
 
-            return agendas;
+        return agendas;
     }
 
     //Listar AgPaciente por data (Grupo 4)
-    public List<AgPacienteEntity> getAgendamentosPorData(Date dtSolicitacao) {
+    public List<AgPacienteEntity> getAgendamentosPorData(LocalDateTime dtSolicitacao) {
 
         List<AgPacienteEntity> agendamentos = new ArrayList<>();
         agendamentos = agPacienteRepository.findByDtSolicitacao(dtSolicitacao);
 
         for (AgPacienteEntity agPaciente : agendamentos) {
             BigInteger idStatus = agPaciente.getStatusConsulta().getIdStatusConsulta();
-            if (idStatus.equals(1)){
+            if (idStatus.equals(1)) {
                 agendamentos.add(agPaciente);
             }
         }
@@ -147,13 +151,16 @@ public class AgendaService {
 
     //Cadastrar lista de agendas (Grupo 4)
     @Transactional
-    public String cadastrarAgendaPorDia(Date data, List<Agenda> agendasNova) throws ParseException {
+    public String cadastrarAgendaPorDia(Date data, List<Agenda> agendasNova) {
 
         //a data tem que ser capturada do front e a partir dela que esse array de agendas será retornado
-        List<Agenda> agendasPorData = getAgendasPorData(data);
-        if (agendasPorData != null) {
+        List<AgendaEntity> agendasPorData = getAgendasPorData(data);
+        if (agendasPorData.size() > 0) {
 
-            excluirAgendas(agendasPorData);
+            //converter entity para dto
+            List<Agenda> agendaDTO = new ArrayList<>();
+
+            excluirAgendas(converterAgendasToDTO(agendasPorData, agendaDTO));
 
             for (Agenda agenda : agendasNova) {
                 AgendaEntity agendaEntity = new AgendaEntity();
@@ -170,34 +177,44 @@ public class AgendaService {
                 agendaEntity.setMedico(usuarioEntity);
                 agendaEntity.setTipoConsulta(tipoConsultaEntity);
                 agendaEntity.setPeriodo(periodoEntity);
-                agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
-                agendaEntity.setFlDisponivel(1);
+
+                Date dt = agenda.getDiaDisponivel();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dt);
+                cal.add(Calendar.DATE, 1);
+
+                agendaEntity.setDiaDisponivel(cal.getTime());
+                agendaEntity.setFlDisponivel(agenda.getFlDisponivel());
 
                 agendaRepository.save(agendaEntity);
 
                 return "Alteração realizada com sucesso!";
             }
+        } else {
+            for (Agenda agenda : agendasNova) {
+                AgendaEntity agendaEntity = new AgendaEntity();
+
+                BigInteger medico = agenda.getMedico().getIdUsuario();
+                UsuarioEntity usuarioEntity = usuarioRepository.findById(medico).get();
+
+                BigInteger tipoConsulta = agenda.getTipoConsulta().getIdTipoConsulta();
+                TipoConsultaEntity tipoConsultaEntity = tipoConsultaRepository.findById(tipoConsulta).get();
+
+                BigInteger periodo = agenda.getPeriodo().getIdPeriodo();
+                PeriodoEntity periodoEntity = periodoRepository.findById(periodo).get();
+
+                agendaEntity.setMedico(usuarioEntity);
+                agendaEntity.setTipoConsulta(tipoConsultaEntity);
+                agendaEntity.setPeriodo(periodoEntity);
+                agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
+                agendaEntity.setFlDisponivel(agenda.getFlDisponivel());
+
+                agendaRepository.save(agendaEntity);
+            }
+
+
         }
-        for (Agenda agenda : agendasNova) {
-            AgendaEntity agendaEntity = new AgendaEntity();
 
-            BigInteger medico = agenda.getMedico().getIdUsuario();
-            UsuarioEntity usuarioEntity = usuarioRepository.findById(medico).get();
-
-            BigInteger tipoConsulta = agenda.getTipoConsulta().getIdTipoConsulta();
-            TipoConsultaEntity tipoConsultaEntity = tipoConsultaRepository.findById(tipoConsulta).get();
-
-            BigInteger periodo = agenda.getPeriodo().getIdPeriodo();
-            PeriodoEntity periodoEntity = periodoRepository.findById(periodo).get();
-
-            agendaEntity.setMedico(usuarioEntity);
-            agendaEntity.setTipoConsulta(tipoConsultaEntity);
-            agendaEntity.setPeriodo(periodoEntity);
-            agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
-            agendaEntity.setFlDisponivel(1);
-
-            agendaRepository.save(agendaEntity);
-        }
 
         return "Cadastro realizado com sucesso!";
     }
@@ -205,12 +222,12 @@ public class AgendaService {
     //Excluir lista de agendas (Grupo 4)
     public String excluirAgendas(List<Agenda> agendas) {
 
-        for(Agenda agenda: agendas) {
+        for (Agenda agenda : agendas) {
 
             BigInteger id = agenda.getIdAgenda();
             Integer flag = agenda.getFlDisponivel();
 
-            if(!flag.equals(2) && !flag.equals(3)) {
+            if (!flag.equals(2) && !flag.equals(3) && !flag.equals(4)) {
                 agendaRepository.deleteById(id);
             }
         }
@@ -264,7 +281,7 @@ public class AgendaService {
     //Convertendo listaEntity para ListaDTO (Grupo 4)
     public List<Agenda> converterAgendasToDTO(List<AgendaEntity> agendasEntity, List<Agenda> agendas) {
 
-        for(AgendaEntity agendaEntity : agendasEntity) {
+        for (AgendaEntity agendaEntity : agendasEntity) {
             Agenda agenda = new Agenda();
             agenda = converterAgendaToDTO(agendaEntity, agenda);
 

@@ -16,6 +16,9 @@ import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +41,9 @@ public class AgendaController {
         return ResponseEntity.ok().body(agendaService.getAgendaByEspecialidade(idE, idC));
     }
 
+
+
+
     //LISTA TODAS AS AGENDAS (Grupo 4)
     @GetMapping("/agenda")
     public ResponseEntity getAgendas() {
@@ -49,7 +55,7 @@ public class AgendaController {
 
     //LISTA AS AGENDAS FILTRANDO POR DIA (Grupo 4)
     @GetMapping("/agendas")
-    public ResponseEntity getAgendasPorData(@RequestParam ("data") String diaDisponivel) throws ParseException {
+    public ResponseEntity getAgendasPorData(@RequestParam ("data") String diaDisponivel)  {
 
         try{
             Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
@@ -84,7 +90,9 @@ public class AgendaController {
     public ResponseEntity getAgendamentosPorData(@RequestParam("data") String dtSolicitacao) {
 
         try {
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dtSolicitacao);
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime data = LocalDateTime.parse(dtSolicitacao, formato);
+
             List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorData(data);
 
             return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
@@ -102,11 +110,13 @@ public class AgendaController {
     }
 
     //Cadastra uma agenda (Grupo 4)
-//    @PostMapping("/agendas")
-//    public ResponseEntity cadastrarAgendaPorDia(@RequestBody Date data, List<Agenda> agendas) throws ParseException {
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(data, agendas));
-//    }
+    @PostMapping("/agendas")
+    public ResponseEntity cadastrarAgendaPorDia(@RequestParam ("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
+
+        Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(dt, agendas));
+    }
 
     //Exclui lista de agendas (Grupo 4)
     @DeleteMapping("/agenda")

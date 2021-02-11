@@ -37,4 +37,5 @@ public class AgendaEntity implements Serializable {
     @Column(name="FL_DISPONIVEL")
     private Integer flDisponivel;
 
+
 }
