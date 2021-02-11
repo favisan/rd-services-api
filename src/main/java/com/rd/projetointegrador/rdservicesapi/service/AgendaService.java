@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -110,17 +111,18 @@ public class AgendaService {
     }
 
     //Listar AgPaciente por data (Grupo 4)
-    public List<AgPacienteEntity> getAgendamentosPorData(LocalDateTime dtSolicitacao) {
+    public List<AgPacienteEntity> getAgendamentosPorData(LocalDate dtSolicitacao) {
 
         List<AgPacienteEntity> agendamentos = new ArrayList<>();
         agendamentos = agPacienteRepository.findByDtSolicitacao(dtSolicitacao);
 
-        for (AgPacienteEntity agPaciente : agendamentos) {
-            BigInteger idStatus = agPaciente.getStatusConsulta().getIdStatusConsulta();
-            if (idStatus.equals(1)) {
-                agendamentos.add(agPaciente);
-            }
-        }
+//        for (AgPacienteEntity agPaciente : agendamentos) {
+//            BigInteger idStatus = agPaciente.getStatusConsulta().getIdStatusConsulta();
+//            if (idStatus.equals(1)) {
+//                agendamentos.add(agPaciente);
+//            }
+//        }
+
         return agendamentos;
     }
 

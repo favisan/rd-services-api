@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,15 @@ public interface AgPacienteRepository extends JpaRepository<AgPacienteEntity, Bi
     Optional<AgPacienteEntity> findByPaciente(UsuarioEntity paciente);
 
     //Grupo 4
-    List<AgPacienteEntity> findByDtSolicitacao(LocalDateTime dtSolicitacao);
+    //List<AgPacienteEntity> findByDtSolicitacao(LocalDateTime dtSolicitacao);
+
+    default List<AgPacienteEntity> findByDtSolicitacao(LocalDate dtSolicitacao) {
+        System.out.println(dtSolicitacao);
+
+       return findByDtSolicitacaoBetween(dtSolicitacao.atStartOfDay(), dtSolicitacao.plusDays(1).atStartOfDay());
+
+    }
+
+    List<AgPacienteEntity> findByDtSolicitacaoBetween(LocalDateTime from, LocalDateTime to);
 
 }

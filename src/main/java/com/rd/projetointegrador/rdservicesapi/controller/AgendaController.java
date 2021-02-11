@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 public class AgendaController {
@@ -90,15 +91,16 @@ public class AgendaController {
     public ResponseEntity getAgendamentosPorData(@RequestParam("data") String dtSolicitacao) {
 
         try {
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDateTime data = LocalDateTime.parse(dtSolicitacao, formato);
+            Locale locale = new Locale("pt", "BR");
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", locale);
+            LocalDate data = LocalDate.parse(dtSolicitacao, formato);
 
             List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorData(data);
 
             return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendamentos!");
         }
     }
