@@ -19,6 +19,9 @@ public class ServicoEntity {
     private String nome;
 
     @Column(name = "VL_PRECO")
-    private float preco;
+    private double preco;
 
+    @ManyToOne
+    @JoinColumn(name = "ID_SERVICO_PLANO")
+    private ServicoPlanoEntity plano;
 }
