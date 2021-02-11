@@ -72,7 +72,7 @@ public class LojaService {
 
             for(ContatoEntity contatoEntity : contatos){
                 Contato contato = new Contato();
-                contato.setNrDDD(contatoEntity.getNrDdd());
+                contato.setNrDdd(contatoEntity.getNrDdd());
                 contato.setDsContato(contatoEntity.getDsContato());
                 contatosDTO.add(contato);
             }
