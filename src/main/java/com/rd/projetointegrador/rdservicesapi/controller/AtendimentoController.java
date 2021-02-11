@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.List;
-
 @RestController
 public class AtendimentoController {
 
-    @Autowired AtendimentoService service;
+    @Autowired
+    AtendimentoService service;
 
     @GetMapping("/atendimento/{id}")
     public ResponseEntity buscarAtendiementoId(@PathVariable("id") BigInteger id) {
@@ -36,7 +36,7 @@ public class AtendimentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAtendimento(atendimento));
     }
 
-    @GetMapping("/atendimento/usuario/{cpf}")
+    @GetMapping("/atendimentoUsuario/{cpf}")
     public ResponseEntity getAtendimento(@PathVariable("cpf") String cpf){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.consultarPorCpf(cpf));

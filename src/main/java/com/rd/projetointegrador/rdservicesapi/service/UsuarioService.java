@@ -133,12 +133,12 @@ public class UsuarioService {
 
     //MÉTODOS RETORNANDO A DTO
     public Usuario getUsuarioDTO(BigInteger idUsuario) {
-            UsuarioEntity usuarioEntity = getUsuario(idUsuario);
-            Usuario usuario = new Usuario();
+        UsuarioEntity usuarioEntity = getUsuario(idUsuario);
+        Usuario usuario = new Usuario();
 
-            usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
+        usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
 
-            return usuario;
+        return usuario;
     }
     public List<Usuario> getUsuariosDTO() {
         List<UsuarioEntity> usuarioEntities = getUsuarios();
@@ -186,9 +186,9 @@ public class UsuarioService {
     }
 
 
-    //GRUPO4
+    //GRUPO4 --------------------------------------------------------------------------
 
-    //BUSCAR MEDICO POR ID
+    //BUSCAR MEDICO POR ID OK
     public OutputMedico getMedico(BigInteger id) {
         System.out.println("ID: " + id);
         UsuarioEntity entity = repository.findById(id).get();
@@ -244,13 +244,13 @@ public class UsuarioService {
         return user;
     }
 
-    //LISTAR TODOS OS MEDICOS
+    //LISTAR TODOS OS MEDICOS OK
     public List<UsuarioEntity> getMedicos() {
         return repository.findAll();
     }
 
 
-    //ALTERAR CADASTRO DE PERFIL DO MEDICO
+    //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional
     public String alterarMedico(InputMedico inputMedico, BigInteger id) {
 
@@ -297,10 +297,10 @@ public class UsuarioService {
 
         repository.save(entity);
 
-        return "Alteração realizada com sucesso";
+        return "Alteração realizado com sucesso";
     }
 
-    //CADASTRAR MEDICO
+    //CADASTRAR MEDICO OK
     @Transactional
     public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
 
@@ -328,6 +328,7 @@ public class UsuarioService {
         List<EnderecoEntity> enderecosEntity = new ArrayList<>();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
+            CidadeEntity cidadeEntity = new CidadeEntity();
             enderecoEntity.setIdCidade(endereco.getIdCidade());
             enderecoEntity.setDsComplemento(endereco.getDsComplemento());
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
@@ -354,7 +355,7 @@ public class UsuarioService {
 
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         LoginUsuario loginUsuario = inputMedico.getLogin();
-        
+
         loginUsuarioEntity.setIdUsuario(entity.getIdUsuario());
         loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
         loginUsuarioEntity.setDsSenha(loginUsuarioService.codificar(loginUsuario.getDsSenha()));
@@ -364,19 +365,19 @@ public class UsuarioService {
         return "Usuário cadastrado com sucesso";
     }
 
-    //EXIBIR TELA DE PERFIL DO MEDICO
+    //EXIBIR TELA DE PERFIL DO MEDICO OK
     public PerfilMedico mostrarTelaPerfil(BigInteger idMedico) {
         PerfilMedico perfilMedico = new PerfilMedico();
         perfilMedico.setMedico(getMedico(idMedico));
         perfilMedico.setDsEmail(loginUsuarioRepository.findOneByIdUsuario(idMedico).getDsEmail());
-        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(getMedico(idMedico).getUfCrm().getIdUf()));
+        perfilMedico.setCidades(cidadeService.listarCidade());
         perfilMedico.setEspecialidades(especialidadeRepository.findAll());
         perfilMedico.setUfs(ufRepository.findAll());
 
         return perfilMedico;
     }
 
-    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
+    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
     public CadastroMedico mostrarTelaCadastro(BigInteger idUf) {
         CadastroMedico cadastroMedico = new CadastroMedico();
         cadastroMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
@@ -386,4 +387,8 @@ public class UsuarioService {
         return cadastroMedico;
     }
 
+    //BUSCAR CPF PARA IMPEDIR CADATRO COM MESMO CPF OK
+    public UsuarioEntity consultarPorCpfMedico(String nrCpf) {
+        return repository.findOneByNrCpf(nrCpf);
+    }
 }

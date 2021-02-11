@@ -24,16 +24,6 @@ public class LoginUsuarioService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private UsuarioService usuarioService;
 
-    //CRIPTOGRAFAR SENHA USUARIO
-    public String codificar(String senha) throws NoSuchAlgorithmException {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
-            return hash.toString(1);
-        } catch (Exception e) {
-            return "";
-        }
-    }
 
     //MÉTODO: conversão de DTO para Entity
     public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity){
@@ -54,17 +44,17 @@ public class LoginUsuarioService {
     public LoginUsuario conversaoLoginUsuarioDTO(LoginUsuarioEntity loginUsuarioEntity, LoginUsuario loginUsuario) {
 
         try {
-        loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
-        loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
+            loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+            loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
 
-        //TODO: Preciso decoficar a senha?
-        loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
+            //TODO: Preciso decoficar a senha?
+            loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
 
-        return loginUsuario;
+            return loginUsuario;
 
         }catch (Exception e) {
-        System.out.print(e.getMessage());
-        return null;
+            System.out.print(e.getMessage());
+            return null;
         }
 
     }
@@ -150,52 +140,6 @@ public class LoginUsuarioService {
         return "Exclusão de login realizada com sucesso";
 
     }
-
-
-
-    //GRUPO4
-
-    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
-    @Transactional
-    public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
-
-        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
-
-        loginUsuarioEntity.setDsEmail(login.getDsEmail());
-        loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
-
-        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
-        loginUsuarioEntity.setUsuario(usuario);
-
-        loginUsuarioRepository.save(loginUsuarioEntity);
-        return "Alteração realizada com sucesso";
-    }
-
-    //VALIDAR DADOS ESQUECEU A SENHA
-    //TODO
-    @Transactional
-    public String acessoSemSenha(OutputMedico medico) {
-
-        String  nome = medico.getNome();
-        String  cpf = medico.getNrCpf();
-        String  crm = medico.getNrCrm();
-
-        //TODO: Consultar por CPF recebe uma lista de usuários
-//        UsuarioEntity medicoEnt = usuarioService.consultarPorCpf(cpf);
-//        String nomeBanco = medicoEnt.getNmNome();
-//        String cpfBanco = medicoEnt.getNrCpf();
-//        String crmBanco = medicoEnt.getNrCrm();
-
-//        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
-//            return " senha de acesso enviada para o email de cadastro";
-//        } else {
-//            return "acesso negado";
-//        }
-
-        return "";
-    }
-
-
     //---OBSOLETO---
     @Transactional
     public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
@@ -209,5 +153,52 @@ public class LoginUsuarioService {
     }
 
 
+    //GRUPO4
+
+    //CRIPTOGRAFAR SENHA USUARIO OK
+    public String codificar(String senha) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
+            return hash.toString(1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    //ALTERAR SENHA SE ACESSO TELA PERFIL DO MEDICO OK
+    @Transactional
+    public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
+
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
+
+        loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
+
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
+        loginUsuarioEntity.setUsuario(usuario);
+
+        loginUsuarioRepository.save(loginUsuarioEntity);
+        return "Alteração realizada com sucesso";
+    }
+
+    //VALIDAR DADOS ESQUECEU A SENHA OK
+    @Transactional
+    public String acessoSemSenha(OutputMedico medico) {
+
+        String  nome = medico.getNome();
+        String  cpf = medico.getNrCpf();
+        String  crm = medico.getNrCrm();
+
+        UsuarioEntity medicoEnt = usuarioService.consultarPorCpfMedico(cpf);
+        String nomeBanco = medicoEnt.getNmNome();
+        String cpfBanco = medicoEnt.getNrCpf();
+        String crmBanco = medicoEnt.getNrCrm();
+
+        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
+            return " senha de acesso enviada para o email de cadastro";
+        } else {
+            return "acesso negado";
+        }
+    }
 }
 

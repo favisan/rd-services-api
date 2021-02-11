@@ -66,27 +66,25 @@ public class LoginUsuarioController {
         }
     }
 
-
-
     //GRUPO4
-    //VALIDAR ACESSO
+    //VALIDAR ACESSO OK
     @GetMapping("/login/medico")
     public ResponseEntity getAcesso(@RequestBody LoginUsuario login) throws NoSuchAlgorithmException {
         try{
-        return ResponseEntity.status(HttpStatus.OK).body(service.validarAcesso(login));
+            return ResponseEntity.status(HttpStatus.OK).body(service.validarAcesso(login));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }
     }
 
-    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
+    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO OK
     @PutMapping("/login/{idUsuario}")
     public ResponseEntity alterarAcesso(@RequestBody LoginUsuario login, @PathVariable("idUsuario") BigInteger idUsuario) throws NoSuchAlgorithmException {
         String retorno = service.alterarDadosLogin(login, idUsuario);
         return ResponseEntity.ok().body(retorno);
     }
 
-    //ESQUECI A SENHA
+    //ESQUECI A SENHA OK
     @GetMapping("/esqueci")
     public ResponseEntity acessoSemSenha(@RequestBody OutputMedico medico) {
         try{
