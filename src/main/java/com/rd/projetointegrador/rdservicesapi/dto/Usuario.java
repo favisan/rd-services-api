@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +28,5 @@ public class Usuario {
     private String dsEndImg;
     private BigInteger idPreco;
 
-    //private List<Endereco> enderecos;
+    private List<Endereco> enderecos;
 }
