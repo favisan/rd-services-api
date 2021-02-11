@@ -83,7 +83,7 @@ public class CardapioService {
 
     }
 
-    //exclui um cardapio
+    //excluir um cardapio
     public String excluirCardapio(BigInteger idCardapio) {
       cardapioRepository.deleteById(idCardapio);
 
