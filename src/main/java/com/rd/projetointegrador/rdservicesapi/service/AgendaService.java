@@ -76,7 +76,7 @@ public class AgendaService {
     //Listar horários por data (Grupo 4)
     public List<Time> getHorarios(Date diaDisponivel) {
 
-        List<Agenda> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
+        List<AgendaEntity> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
 
         List<Time> horarios = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class AgendaService {
             return horarios;
         }
 
-        for (Agenda agenda : agendas) {
+        for (AgendaEntity agenda : agendas) {
             horarios.add(agenda.getPeriodo().getHoraInicial());
         }
 
@@ -98,11 +98,11 @@ public class AgendaService {
     }
 
     //Listar agendas por data (Grupo 4)
-    public List<Agenda> getAgendasPorData(Date diaDisponivel) throws ParseException {
+    public List<AgendaEntity> getAgendasPorData(Date diaDisponivel) throws Exception{
 
-        List<Agenda> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
+            List<AgendaEntity> agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
 
-        return agendas;
+            return agendas;
     }
 
     //Listar AgPaciente por data (Grupo 4)

@@ -49,15 +49,16 @@ public class AgendaController {
 
     //LISTA AS AGENDAS FILTRANDO POR DIA (Grupo 4)
     @GetMapping("/agendas")
-    public ResponseEntity getAgendasPorData(@RequestBody Date diaDisponivel) throws ParseException {
+    public ResponseEntity getAgendasPorData(@RequestParam ("data") String diaDisponivel) throws ParseException {
 
         try{
-            List<Agenda> agendas = agendaService.getAgendasPorData(diaDisponivel);
+            Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
+            List<AgendaEntity> agendas = agendaService.getAgendasPorData(dt);
 
             return ResponseEntity.status(HttpStatus.OK).body(agendas);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendas.");
         }
     }
@@ -101,11 +102,11 @@ public class AgendaController {
     }
 
     //Cadastra uma agenda (Grupo 4)
-    @PostMapping("/agendas")
-    public ResponseEntity cadastrarAgendaPorDia(@RequestBody Date data, List<Agenda> agendas) throws ParseException {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(data, agendas));
-    }
+//    @PostMapping("/agendas")
+//    public ResponseEntity cadastrarAgendaPorDia(@RequestBody Date data, List<Agenda> agendas) throws ParseException {
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(data, agendas));
+//    }
 
     //Exclui lista de agendas (Grupo 4)
     @DeleteMapping("/agenda")

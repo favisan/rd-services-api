@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -30,6 +31,7 @@ public class AgendaEntity implements Serializable {
     private PeriodoEntity periodo;
 
     @Column(name = "DT_DIA_DISPONIVEL")
+    @Temporal(value = TemporalType.DATE)
     private Date diaDisponivel;
 
     @Column(name="FL_DISPONIVEL")
