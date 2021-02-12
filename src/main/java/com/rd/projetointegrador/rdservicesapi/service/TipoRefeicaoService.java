@@ -64,7 +64,7 @@ public class TipoRefeicaoService {
    // lista todas as refeicoes cadastradas do cardapio de acordo com o id paciente
     public Map<TipoRefeicao, List<Cardapio>> listarRefeicoes( BigInteger idPaciente){
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(idPaciente).get();
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(idPaciente).get();
 
         List<CardapioEntity> lista = cardapioRepository.findByPaciente(usuarioEntity);
 
