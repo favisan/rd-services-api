@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 
-
 @Data
 @NoArgsConstructor
 public class Contato {
@@ -16,5 +15,6 @@ public class Contato {
     private String nrDdi;
     private String nrDdd;
     private String nrCep;
+    private String nrRamal;
     private String dsContato;
 }

@@ -18,10 +18,8 @@ import java.util.Optional;
 public class CartaoService {
     //GRUPO1
 
-    @Autowired
-    private CartaoRepository repository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    @Autowired private CartaoRepository repository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de DTO para Entity
     public CartaoEntity conversaoCartaoEntity(Cartao cartao, CartaoEntity cartaoEntity) {
@@ -76,12 +74,13 @@ public class CartaoService {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
 
-        repository.save(cartaoEntity);
+            if(usuarioRepository.existsById(cartao.getIdUsuario())) {
+                repository.save(cartaoEntity);
 
-        System.out.println(cartao.getIdCartao() + " . " + cartao.getNrCartao() + " . " + cartao.getCodSeguranca() + " . " + cartao.getDtValidade() + " . " + cartao.getDtEmissao());
+                return "Cartao Cadastrado com sucesso";
+            }
 
-        return "Cartao Cadastrado com sucesso";
-
+            return "Erro ao cadastrar cartão";
     }
 
     @Transactional

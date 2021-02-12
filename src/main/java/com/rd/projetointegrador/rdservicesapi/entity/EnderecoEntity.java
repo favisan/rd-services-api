@@ -31,5 +31,4 @@ public class EnderecoEntity implements Serializable  {
 
     @Column(name="NR_CEP")
     private String nrCep;
-
 }

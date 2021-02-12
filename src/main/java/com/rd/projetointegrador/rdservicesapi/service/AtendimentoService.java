@@ -90,7 +90,7 @@ public class AtendimentoService {
         entity.setVlAltura(atendimento.getVlAltura());
         entity.setVlPeso(atendimento.getVlPeso());
 
-        Optional<UsuarioEntity> user = usuarioRepository.findById(BigInteger.valueOf(1l));
+        Optional<UsuarioEntity> user = usuarioRepository.findById(BigInteger.valueOf(4l));
         UsuarioEntity usuario = user.get();
         entity.setMedico(usuario);
         entity.setPaciente(usuario);
