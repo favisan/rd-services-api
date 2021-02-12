@@ -30,12 +30,12 @@ public class AgendaEntity implements Serializable {
     @JoinColumn(name="ID_PERIODO")
     private PeriodoEntity periodo;
 
-    @Column(name = "DT_DIA_DISPONIVEL")
+    @Column(name = "DT_DATA")
     @Temporal(value = TemporalType.DATE)
-    private Date diaDisponivel;
+    private Date data;
 
-    @Column(name="FL_DISPONIVEL")
-    private Integer flDisponivel;
+    @Column(name="DISPONIBILIDADE")
+    private Integer disponibilidade;
 
 
 }

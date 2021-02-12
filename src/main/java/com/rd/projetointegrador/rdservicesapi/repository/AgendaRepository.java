@@ -15,6 +15,8 @@ public interface AgendaRepository extends JpaRepository<AgendaEntity, BigInteger
     List<AgendaEntity> findByTipoConsulta(TipoConsultaEntity tipoConsulta);
 
     //Grupo 4
-    List<AgendaEntity> findByDiaDisponivel(Date diaDisponivel);
+    List<AgendaEntity> findByData(Date data);
+
+    List<AgendaEntity> findByDataAndDisponibilidade(Date data, Integer disponibilidade);
 
 }

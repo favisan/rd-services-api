@@ -1,11 +1,13 @@
 package com.rd.projetointegrador.rdservicesapi.repository;
 
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,6 @@ public interface AgPacienteRepository extends JpaRepository<AgPacienteEntity, Bi
     Optional<AgPacienteEntity> findByPaciente(UsuarioEntity paciente);
 
     //Grupo 4
-    List<AgPacienteEntity> findByDtSolicitacao(LocalDateTime dtSolicitacao);
+    AgPacienteEntity findByAgenda(AgendaEntity agenda);
 
 }

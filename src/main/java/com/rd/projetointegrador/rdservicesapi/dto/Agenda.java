@@ -21,9 +21,9 @@ public class Agenda {
     private Periodo periodo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date diaDisponivel;
+    private Date data;
 
-    private Integer flDisponivel;
+    private Integer Disponibilidade;
 
 
 }
