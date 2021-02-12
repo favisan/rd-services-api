@@ -167,15 +167,22 @@ public class SolicExameService {
     }
 
     //FORMULÁRIO INICIAL
-    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico){
+    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico, BigInteger idPaciente){
         SolicExameOutput output = new SolicExameOutput();
         output.setListaTipoExame(tipoRepository.findAll());
         output.setMedico(usuarioService.getMedico(idMedico));
-        //output.setNomePaciente(....);
+
+        UsuarioEntity usuario = usuarioRepository.findById(idPaciente).get();
+        output.setNomePaciente(usuario.getNmNome());
 
         return output;
 
     }
+
+
+
+
+
 
   //MÉTODO PARA LISTAR É SÓ PARA TESTE
     public List<SolicExame> listarSolicExame() {
