@@ -49,6 +49,8 @@ public class ProntuarioService {
             p.setDsPlano(entity.getDsPlano());
             p.setDsObservacoes(entity.getDsObservacoes());
 
+            prontuarios.add(p);
+
         }
 
         return prontuarios;
