@@ -20,11 +20,14 @@ public class AgPacienteController {
     @Autowired private UsuarioRepository usuarioRepository;
 
     @PostMapping ("/agPaciente/cadastrar")
-    public ResponseEntity <String> cadastrarAgPaciente(@RequestBody AgPacienteEntity agPacienteEntity) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(agPacienteEntity));
+    public ResponseEntity <String> cadastrarAgPaciente(@RequestBody BigInteger idAgenda, BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(idAgenda, idUsuario));
 
     }
-   
+
+
+    @CrossOrigin
+
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
         return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(usuarioRepository.findById(idUsuario)));

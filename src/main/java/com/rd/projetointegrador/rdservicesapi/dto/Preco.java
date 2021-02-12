@@ -12,6 +12,6 @@ import java.math.BigInteger;
 public class Preco {
 
     private BigInteger idPreco;
-    private Float vlConsulta;
+    private Double vlConsulta;
 
 }

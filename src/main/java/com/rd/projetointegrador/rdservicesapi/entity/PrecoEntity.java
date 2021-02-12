@@ -15,5 +15,5 @@ public class PrecoEntity implements Serializable  {
     private BigInteger idPreco;
 
     @Column(name = "VL_CONSULTA")
-    private Float vlConsulta;
+    private Double vlConsulta;
 }
