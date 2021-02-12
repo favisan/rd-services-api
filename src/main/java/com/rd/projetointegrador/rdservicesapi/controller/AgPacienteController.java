@@ -27,12 +27,11 @@ public class AgPacienteController {
 
 
     @CrossOrigin
-
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
         return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(usuarioRepository.findById(idUsuario)));
     }
-
+    @CrossOrigin
     @PutMapping ("/agPaciente/mudar-status/{idAgPaciente}")
     public ResponseEntity cancelarConsulta(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
         return ResponseEntity.status(HttpStatus.OK).body(service.cancelarAgPaciente(idAgPaciente));
