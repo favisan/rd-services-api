@@ -81,21 +81,19 @@ public class AgendaController {
             return ResponseEntity.status(HttpStatus.OK).body(horarios);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de horários!");
         }
     }
 
-    //Lista AgPaciente por data (Grupo 4)
+    //Lista Agendamentos com status agendada e diponibilidade 2 por data (Grupo 4)
     @GetMapping("/agendamentos")
-    public ResponseEntity getAgendamentosPorData(@RequestParam("data") String dtSolicitacao) {
+    public ResponseEntity getAgendamentosPorData(@RequestParam("data") String dataAgendada) {
 
         try {
-            Locale locale = new Locale("pt", "BR");
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", locale);
-            LocalDate data = LocalDate.parse(dtSolicitacao, formato);
+            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
 
-            List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorData(data);
+            List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data);
 
             return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
 
