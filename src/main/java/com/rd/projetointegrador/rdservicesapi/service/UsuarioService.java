@@ -271,7 +271,7 @@ public class UsuarioService {
 
         UsuarioEntity entity = repository.findById(id).get();
 
-        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getIdEspMed().getIdEspMed()).get();
+        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
 
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
@@ -321,7 +321,7 @@ public class UsuarioService {
 
         UsuarioEntity entity = new UsuarioEntity();
 
-        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getIdEspMed().getIdEspMed()).get();
+        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
 
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();

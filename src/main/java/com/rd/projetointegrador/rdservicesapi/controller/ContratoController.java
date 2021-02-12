@@ -28,6 +28,14 @@ public class ContratoController {
                 .body(service.getContrato(idContrato));
 
     }
+    //Grupo2
+    @CrossOrigin
+    @GetMapping("/contrato/{idUsuario}") // BUSCA POR Usuario
+    public ResponseEntity getContratoByUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.getContratosByUsuario(idUsuario));
+    }
+
 
     @GetMapping("/contrato") //Busca de todos os Contratos
     public ResponseEntity getContratos(@PathParam("idContrato") BigInteger idContrato) {
@@ -35,18 +43,18 @@ public class ContratoController {
         return ResponseEntity.status(HttpStatus.OK).body(contratos);
     }
 
-    @PostMapping("/contrato") //Cadastrar Novo Contrato
-    public ResponseEntity cadastrarContrato(@RequestBody Contrato contrato) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarContrato(contrato));
+//    @PostMapping("/contrato") //Cadastrar Novo Contrato
+//    public ResponseEntity cadastrarContrato(@RequestBody Contrato contrato) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarContrato(contrato));
+//
+//    }
 
-    }
-
-    @PutMapping("/contrato/{idContrato}") // Alterar Plano
-    public ResponseEntity alterarContrato(@RequestBody Contrato contrato, @PathVariable("idContrato") BigInteger idContrato){
-        String retorno = service.alterarContrato(contrato, idContrato);
-        return ResponseEntity.ok().body(retorno);
-
-    }
+//    @PutMapping("/contrato/{idContrato}") // Alterar Plano
+//    public ResponseEntity alterarContrato(@RequestBody Contrato contrato, @PathVariable("idContrato") BigInteger idContrato){
+//        String retorno = service.alterarContrato(contrato, idContrato);
+//        return ResponseEntity.ok().body(retorno);
+//
+//    }
 
     //Confirmar se haverá ou não exclusão do contrato
     @DeleteMapping("/contrato/{idContrato}") //Excluir Contrato

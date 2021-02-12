@@ -59,6 +59,18 @@ public class PagamentoController {
         }
     }
 
+    //Grupo2
+    @PostMapping("/pagamento/cartao") //Cadastrar Novo PgtoCartao
+    public ResponseEntity setPagamentoCartao(@RequestBody BigInteger idCartao, BigInteger idAgPaciente, Integer parcelas) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(idCartao, idAgPaciente, parcelas));
+
+    }
+
+    @PostMapping("/pagamento/plano") //Cadastrar Novo PgtoPlano
+    public ResponseEntity setPagamentoPlano(@RequestBody BigInteger idContrato, BigInteger idAgPaciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(idContrato, idAgPaciente));
+
+    }
 
 }
 

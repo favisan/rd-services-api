@@ -58,7 +58,8 @@ public class AgendaService {
         List<AgendaEntity> agendaFinal = new ArrayList<>();
         for (AgendaEntity agenda : agendaPorTipoConsulta) {
             BigInteger espMedAgenda = agenda.getMedico().getEspMed().getIdEspMed();
-            if (espMedAgenda.equals(idEsp)) {
+            Integer disponibilidade = agenda.getDisponibilidade();
+            if (espMedAgenda.equals(idEsp) && disponibilidade==1 ) {
                 agendaFinal.add(agenda);
             }
         }
@@ -72,7 +73,7 @@ public class AgendaService {
     public List<Agenda> getAgendasPorData(Date diaDisponivel) throws ParseException {
         List<Agenda> agendas = new ArrayList<>();
 
-        agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
+        agendas = agendaRepository.findByData(diaDisponivel);
 
         return agendas;
     }
@@ -93,10 +94,10 @@ public class AgendaService {
         agendaEntity.setMedico(usuarioEntity);
         agendaEntity.setTipoConsulta(tipoConsultaEntity);
         agendaEntity.setPeriodo(periodoEntity);
-        agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
+        agendaEntity.setData(agenda.getData());
 //        agendaEntity.setHoraInicial(agenda.getHoraInicial());
 //        agendaEntity.setHoraFinal(agenda.getHoraFinal());
-        agendaEntity.setFlDisponivel(1);
+        agendaEntity.setDisponibilidade(1);
 
         agendaRepository.save(agendaEntity);
 
@@ -108,7 +109,7 @@ public class AgendaService {
 
         for(Agenda agenda: agendas) {
             AgendaEntity agendaEntity = new AgendaEntity();
-            List<Agenda> agendasPorData = getAgendasPorData(agenda.getDiaDisponivel());
+            List<Agenda> agendasPorData = getAgendasPorData(agenda.getData());
 
             if(agendasPorData != null) {
                 excluirAgendas(agendasPorData);
@@ -121,8 +122,8 @@ public class AgendaService {
 
                 agendaEntity.setMedico(usuarioEntity);
                 agendaEntity.setPeriodo(periodoEntity);
-                agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
-                agendaEntity.setFlDisponivel(1);
+                agendaEntity.setData(agenda.getData());
+                agendaEntity.setDisponibilidade(1);
 
                 agendaRepository.save(agendaEntity);
 
@@ -137,8 +138,8 @@ public class AgendaService {
 
             agendaEntity.setMedico(usuarioEntity);
             agendaEntity.setPeriodo(periodoEntity);
-            agendaEntity.setDiaDisponivel(agenda.getDiaDisponivel());
-            agendaEntity.setFlDisponivel(1);
+            agendaEntity.setData(agenda.getData());
+            agendaEntity.setDisponibilidade(1);
 
             agendaRepository.save(agendaEntity);
         }
@@ -149,7 +150,7 @@ public class AgendaService {
 
         for(Agenda agenda: agendas) {
             BigInteger id = agenda.getIdAgenda();
-            Integer flag = agenda.getFlDisponivel();
+            Integer flag = agenda.getDisponibilidade();
 
             if(!flag.equals(2) && !flag.equals(3)) {
                 agendaRepository.deleteById(id);

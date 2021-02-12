@@ -66,10 +66,10 @@ public class ClienteService {
             loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
             loginUsuarioRepository.save(loginUsuarioEntity);
 
-            //Entidade Contrato
-            inputUsuario.getContrato().setIdUsuario(novoId);
-            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
-            contratoRepository.save(contratoEntity);
+//            //Entidade Contrato
+//            inputUsuario.getContrato().setIdUsuario(novoId);
+//            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
+//            contratoRepository.save(contratoEntity);
 
             //Entidade Cartao
             inputUsuario.getCartao().setIdUsuario(novoId);
