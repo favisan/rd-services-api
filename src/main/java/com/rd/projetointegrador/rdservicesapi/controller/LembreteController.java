@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Lembrete;
+import com.rd.projetointegrador.rdservicesapi.dto.LembreteIntervalo;
 import com.rd.projetointegrador.rdservicesapi.entity.LembreteEntity;
 import com.rd.projetointegrador.rdservicesapi.service.LembreteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ public class LembreteController {
     @Autowired
     LembreteService service;
 
-
-
     @GetMapping("/lembrete/{idLembrete}") // BUSCA POR ID
     public ResponseEntity getLembrete(@PathVariable("idLembrete") BigInteger idLembrete) {
         return ResponseEntity.status(HttpStatus.OK)
@@ -40,7 +39,11 @@ public class LembreteController {
         return ResponseEntity.status(HttpStatus.OK).body(lembretes);
     }
 
-
+    @GetMapping("/lembrete/intervalos") //buscar intervalos para formulario
+    public ResponseEntity getLembreteIntervalos() {
+        List<LembreteIntervalo> lembretesIntervalo = service.getLembreteIntervalos();
+        return ResponseEntity.status(HttpStatus.OK).body(lembretesIntervalo);
+    }
 
 
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete
