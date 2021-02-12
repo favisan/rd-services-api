@@ -73,7 +73,7 @@ public class AgendaService {
     public List<Agenda> getAgendasPorData(Date diaDisponivel) throws ParseException {
         List<Agenda> agendas = new ArrayList<>();
 
-        agendas = agendaRepository.findByDiaDisponivel(diaDisponivel);
+        agendas = agendaRepository.findByData(diaDisponivel);
 
         return agendas;
     }
