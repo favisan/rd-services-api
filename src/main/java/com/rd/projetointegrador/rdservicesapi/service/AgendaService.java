@@ -214,11 +214,7 @@ public class AgendaService {
 
                 agendaRepository.save(agendaEntity);
             }
-
-
         }
-
-
         return "Cadastro realizado com sucesso!";
     }
 

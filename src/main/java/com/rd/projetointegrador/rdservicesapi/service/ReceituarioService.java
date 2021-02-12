@@ -36,6 +36,8 @@ public class ReceituarioService {
 
     @Autowired private UsuarioService usuarioService;
 
+    @Autowired private EnderecoService enderecoService;
+
     //Consultar receituário por Id
     public ReceituarioEntity exibirReceituarioPorId(BigInteger idReceituario){
 
@@ -108,10 +110,6 @@ public class ReceituarioService {
         prontuario.setDsPlano(receituarioEntity.getProntuario().getDsPlano());
         prontuario.setDsObservacoes(receituarioEntity.getProntuario().getDsObservacoes());
 
-        //PEGAR A DTO InputMedico medico
-        BigInteger idMedico = receituarioEntity.getMedico().getIdUsuario();
-        OutputMedico medico = (usuarioG4Repository.findByIdUsuario(idMedico));
-
         //PEGAR A DTO Tipo de receita
         TipoReceita tipoReceita = new TipoReceita();
         tipoReceita.setIdTipoReceita(receituarioEntity.getTipoReceita().getIdTipoReceita());
@@ -137,7 +135,8 @@ public class ReceituarioService {
         receituario.setIdReceituario(receituarioEntity.getIdReceituario());
         receituario.setPaciente(paciente);
         receituario.setProntuario(prontuario);
-        receituario.setMedico(medico);
+        //falta pegar o objeto medico
+        //receituario.setMedico(usuarioService.getMedico(receituarioEntity.getMedico().getIdUsuario()));
         receituario.setTipoReceita(tipoReceita);
         receituario.setDtEmissao(receituarioEntity.getDtEmissao());
         receituario.setDsEndImgAssMed(receituarioEntity.getDsEndImgAssMed());

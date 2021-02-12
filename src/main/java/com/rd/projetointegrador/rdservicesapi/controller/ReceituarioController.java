@@ -21,6 +21,7 @@ public class ReceituarioController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(receituarioService.exibirReceituarioPorId(idReceituario));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar receituário.");
         }
     }
@@ -31,6 +32,7 @@ public class ReceituarioController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(receituarioService.listarReceituarioPorIdProntuario(idProntuario));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar receituários.");
         }
     }
@@ -39,15 +41,24 @@ public class ReceituarioController {
     @GetMapping("/receituario/{idMedico}/{idPaciente}")
     public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
-
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar dados!");
+        }
     }
 
     //CADASTRAR RECEITUÁRIO
     @PostMapping("/receituario")
     public ResponseEntity setReceituario(@RequestBody ReceituarioInput receituario) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(receituarioService.inserirReceituario(receituario));
-
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(receituarioService.inserirReceituario(receituario));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar receituário!");
+        }
     }
+
 }

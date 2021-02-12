@@ -23,7 +23,7 @@ public class Agenda {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date data;
 
-    private Integer Disponibilidade;
+    private Integer disponibilidade;
 
 
 }

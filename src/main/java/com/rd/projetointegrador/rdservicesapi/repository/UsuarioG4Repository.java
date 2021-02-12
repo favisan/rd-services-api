@@ -10,6 +10,4 @@ public interface UsuarioG4Repository extends JpaRepository<UsuarioEntity, BigInt
 
     UsuarioEntity findByNrCpf(String cpf);
 
-    OutputMedico findByIdUsuario(BigInteger idUsuario);
-
 }
