@@ -18,5 +18,6 @@ public interface AtendimentoRepository extends JpaRepository<AtendimentoEntity, 
 
     //Grupo3
      List<AtendimentoEntity> findByPacienteOrderByDtAtendimento(UsuarioEntity usuarioEntity);
+     List<AtendimentoEntity>  findByMedicoOrderByDtAtendimentoDesc(UsuarioEntity medico);
 
 }

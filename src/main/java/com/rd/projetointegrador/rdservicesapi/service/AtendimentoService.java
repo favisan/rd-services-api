@@ -2,11 +2,11 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Atendimento;
 import com.rd.projetointegrador.rdservicesapi.dto.Prontuario;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.AtendimentoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.ProntuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.AtendimentoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioG4Repository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,6 @@ import java.util.Optional;
 public class AtendimentoService {
 
     @Autowired private UsuarioRepository usuarioRepository;
-
-    @Autowired private UsuarioG4Repository usuarioG4Repository;
 
     @Autowired private ProntuarioService prontuarioService;
 
@@ -33,23 +32,25 @@ public class AtendimentoService {
 
         AtendimentoEntity entity = repository.findById(id).get();
 
-        Atendimento a = new Atendimento();
+        Atendimento atend = new Atendimento();
 
-        a.setIdAtendimento(entity.getIdAtendimento());
-        a.setVlPeso(entity.getVlPeso());
-        a.setVlAltura(entity.getVlAltura());
-        a.setDsHabitosVicios(entity.getDsHabitosVicios());
-        a.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
-        a.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
-        a.setDsProblemasSaude(entity.getDsProblemasSaude());
-        a.setDtAtendimento(entity.getDtAtendimento());
+
+        atend.setIdAtendimento(entity.getIdAtendimento());
+        atend.setVlPeso(entity.getVlPeso());
+        atend.setVlAltura(entity.getVlAltura());
+        atend.setDsHabitosVicios(entity.getDsHabitosVicios());
+        atend.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
+        atend.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
+        atend.setDsProblemasSaude(entity.getDsProblemasSaude());
+        atend.setDtAtendimento(entity.getDtAtendimento());
+
 
         Prontuario prontuario = new Prontuario();
         prontuario.setIdProntuario(entity.getProntuario().getIdProntuario());
 
-        a.setProntuario(prontuario);
+        atend.setProntuario(prontuario);
 
-        return a;
+        return atend;
 
     }
 
@@ -58,22 +59,21 @@ public class AtendimentoService {
         List<Atendimento> atendimentos = new ArrayList<>();
 
         for (AtendimentoEntity entity : atendimentoEntity) {
-            Atendimento a = new Atendimento();
+            Atendimento atend = new Atendimento();
 
-            a.setIdAtendimento(entity.getIdAtendimento());
-            a.setVlPeso(entity.getVlPeso());
-            a.setVlAltura(entity.getVlAltura());
-            a.setDsHabitosVicios(entity.getDsHabitosVicios());
-            a.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
-            a.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
-            a.setDsProblemasSaude(entity.getDsProblemasSaude());
-            a.setDtAtendimento(entity.getDtAtendimento());
+            atend.setIdAtendimento(entity.getIdAtendimento());
+            atend.setVlPeso(entity.getVlPeso());
+            atend.setVlAltura(entity.getVlAltura());
+            atend.setDsHabitosVicios(entity.getDsHabitosVicios());
+            atend.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
+            atend.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
+            atend.setDsProblemasSaude(entity.getDsProblemasSaude());
+            atend.setDtAtendimento(entity.getDtAtendimento());
 
             Prontuario prontuario = new Prontuario();
-            prontuario.setIdProntuario(entity.getProntuario().getIdProntuario());
-
-            a.setProntuario(prontuario);
-            atendimentos.add(a);
+            prontuario = prontuarioService.conversaoProntuarioDto(entity.getProntuario());
+            atend.setProntuario(prontuario);
+            atendimentos.add(atend);
         }
         return atendimentos;
 
@@ -90,12 +90,13 @@ public class AtendimentoService {
         entity.setVlAltura(atendimento.getVlAltura());
         entity.setVlPeso(atendimento.getVlPeso());
 
-        Optional<UsuarioEntity> user = usuarioRepository.findById(BigInteger.valueOf(4l));
-        UsuarioEntity usuario = user.get();
-        entity.setMedico(usuario);
-        entity.setPaciente(usuario);
+        UsuarioEntity paciente = usuarioRepository.findById(atendimento.getPaciente().getIdUsuario()).get();
+        UsuarioEntity medico = usuarioRepository.findById(atendimento.getMedico().getIdUsuario()).get();
 
-        ProntuarioEntity p = prontuarioService.cadastrarProntuario(atendimento.getProntuario());
+        entity.setMedico(medico);
+        entity.setPaciente(paciente);
+
+        ProntuarioEntity p = prontuarioService.conversaoProntuarioEntity(atendimento.getProntuario());
         entity.setProntuario(p);
 
         repository.save(entity);
@@ -103,12 +104,57 @@ public class AtendimentoService {
         return "Cadastro realizado com sucesso!";
     }
 
+
+
+    public List<Atendimento> consultarPorIdMedico(BigInteger id){
+
+        UsuarioEntity medico = usuarioRepository.findById(id).get();
+        //List<AtendimentoEntity> atendimentos = repository.findByMedico(medico);
+        List<AtendimentoEntity>  atendData = repository.findByMedicoOrderByDtAtendimentoDesc(medico);
+        List<Atendimento> atendList = converterEntityToDTO(atendData);
+
+        return atendList;
+    }
+
+    private List<Atendimento> converterEntityToDTO(List<AtendimentoEntity> atendimentoEntities){
+        List<Atendimento> atendimentosDto = new ArrayList<>();
+
+        for(AtendimentoEntity atendimentoEntity : atendimentoEntities){
+            Atendimento atendimentoDto = new Atendimento();
+            atendimentoDto.setDtAtendimento(atendimentoEntity.getDtAtendimento());
+            atendimentoDto.setDsProblemasSaude(atendimentoEntity.getDsProblemasSaude());
+            atendimentoDto.setDsMedicacaoUsoContinuo(atendimentoEntity.getDsMedicacaoUsoContinuo());
+            atendimentoDto.setDsAlergiasRestricoes(atendimentoEntity.getDsAlergiasRestricoes());
+            atendimentoDto.setDsHabitosVicios(atendimentoEntity.getDsHabitosVicios());
+            atendimentoDto.setVlAltura(atendimentoEntity.getVlAltura());
+            atendimentoDto.setVlPeso(atendimentoEntity.getVlPeso());
+
+
+           Prontuario prontuario = prontuarioService.conversaoProntuarioDto(atendimentoEntity.getProntuario());
+
+            atendimentoDto.setProntuario(prontuario);
+            atendimentosDto.add(atendimentoDto);
+
+        }
+        return atendimentosDto;
+    }
+
     public List<AtendimentoEntity> consultarPorCpf(String cpf){
 
-        UsuarioEntity paciente = usuarioG4Repository.findByNrCpf(cpf);
+        UsuarioEntity paciente = usuarioRepository.findOneByNrCpf(cpf);
         List<AtendimentoEntity> atendimentos = repository.findByPaciente(paciente);
 
         return atendimentos;
     }
 
+//    @Transactional
+//    public String alterarStatusAgPaciente(BigInteger idAgPaciente){
+//        StatusConsultaEntity status = new StatusConsultaEntity();
+//        status.setIdStatusConsulta(BigInteger.valueOf(2));
+//        AgPacienteEntity agPaciente = repository.findById(idAgPaciente).get();
+//        agPaciente.setStatusConsulta(status);
+//        agPacienteEntity = agPacienteRepository.save(agPacienteEntity);
+//
+//        return "Consulta Realizada";
+//    }
 }

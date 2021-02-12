@@ -42,4 +42,8 @@ public class AtendimentoController {
                 .body(service.consultarPorCpf(cpf));
     }
 
+    @GetMapping("atendimento/medico/{id}")
+    public ResponseEntity consultarPorIdMedico(@PathVariable("id") BigInteger id){
+        return ResponseEntity.status(HttpStatus.OK).body(service.consultarPorIdMedico(id));
+    }
 }
