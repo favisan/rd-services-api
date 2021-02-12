@@ -47,10 +47,14 @@ public class AgPacienteService {
             agenda.setMedico(medicoDto);
 
             //data
-            agenda.setDiaDisponivel(agPacienteEntity.getAgenda().getDiaDisponivel());
+            agenda.setData(agPacienteEntity.getAgenda().getData());
 
             //horaInicial
-            agenda.setHoraInicial(agPacienteEntity.getAgenda().getPeriodo().getHoraInicial());
+            PeriodoEntity periodoEntity = agPacienteEntity.getAgenda().getPeriodo();
+            Periodo periodo = new Periodo();
+            periodo.setIdPeriodo(periodoEntity.getIdPeriodo());
+            periodo.setHoraInicial(periodoEntity.getHoraInicial());
+            agenda.setPeriodo(periodo);
 
             //statusConsulta
             StatusConsulta status = new StatusConsulta();
@@ -78,6 +82,7 @@ public class AgPacienteService {
         agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
+        agPacienteEntity.getAgenda().setDisponibilidade(2);
 
         repository.save(agPacienteEntity);
 
@@ -90,6 +95,7 @@ public class AgPacienteService {
         status.setIdStatusConsulta(BigInteger.valueOf(3));
         AgPacienteEntity agPaciente = repository.findByIdAgPaciente(idAgPaciente).get();
         agPaciente.setStatusConsulta(status);
+        agPaciente.getAgenda().setDisponibilidade(1);
 
         return "Consulta cancelada com sucesso";
     }
