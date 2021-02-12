@@ -46,7 +46,6 @@ public class LembreteController {
     }
 
 
-
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete
     public ResponseEntity cadastrarLembrete(@RequestBody Lembrete Lembrete) {
         String retorno = service.cadastrarLembrete(Lembrete);
