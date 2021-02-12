@@ -126,6 +126,7 @@ public class PagamentoService {
 
     }
 
+
     @Transactional
     public String alterarPagamento(Pagamento pagamento, BigInteger idPagamento){
 
@@ -141,6 +142,22 @@ public class PagamentoService {
         repository.deleteById(idPagamento);
         return "Exclusão de pagamento realizada com sucesso";
 
+    }
+
+    //Grupo2
+
+    @Transactional
+    public String setPagamentoComCartao(PagamentoEntity pagamentoEntity){
+
+        repository.save(pagamentoEntity);
+        return "Pagamento cadastrado com sucesso";
+    }
+
+    @Transactional
+    public String getSetPagamentoComPlano(PagamentoEntity pagamentoEntity){
+
+        repository.save(pagamentoEntity);
+        return "Pagamento cadastrado com sucesso";
     }
 
 

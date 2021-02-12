@@ -3,6 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.service;
 import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class AgPacienteService {
 
     @Autowired private AgPacienteRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private AgendaRepository agendaRepository;
 
     public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
         List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
@@ -72,15 +74,15 @@ public class AgPacienteService {
     };
 
     @Transactional
-    public String setAgPaciente (AgPacienteEntity agPacienteEntity){
+    public String setAgPaciente (BigInteger idAgenda, BigInteger idPaciente){
+        AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(1));
         LocalDateTime data = LocalDateTime.now();
 
-        agPacienteEntity.setAgenda(agPacienteEntity.getAgenda());
-        agPacienteEntity.setPaciente(agPacienteEntity.getPaciente());
+        agPacienteEntity.setAgenda(agendaRepository.findById(idAgenda).get());
+        agPacienteEntity.setPaciente(usuarioRepository.findById(idPaciente).get());
         agPacienteEntity.setDtSolicitacao(data);
-        agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
         agPacienteEntity.getAgenda().setDisponibilidade(2);
 
