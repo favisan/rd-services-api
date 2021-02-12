@@ -24,7 +24,7 @@ public class AgPacienteController {
         return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(agPacienteEntity));
 
     }
-
+   
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
         return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(usuarioRepository.findById(idUsuario)));
