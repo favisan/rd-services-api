@@ -34,7 +34,7 @@ public class AgPacienteService {
 //        agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
         agPacienteEntity.setStatusConsulta(status);
-        agPacienteEntity.getAgenda().setFlDisponivel(2);
+        agPacienteEntity.getAgenda().setDisponibilidade(2);
 
         repository.save(agPacienteEntity);
 
@@ -47,7 +47,7 @@ public class AgPacienteService {
         status.setIdStatusConsulta(BigInteger.valueOf(3));
         AgPacienteEntity agPaciente = repository.findByIdAgPaciente(idAgPaciente).get();
         agPaciente.setStatusConsulta(status);
-        agPaciente.getAgenda().setFlDisponivel(3);
+        agPaciente.getAgenda().setDisponibilidade(3);
 
         return "Consulta cancelada com sucesso";
     }
