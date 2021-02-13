@@ -96,32 +96,37 @@ public class AgendaService {
         return horarios;
     }
 
-    //Listar agendas por data (Grupo 4)
     public List<AgendaEntity> getAgendasPorData(Date data) {
 
+        //Pegando todas as agendas por data
         List<AgendaEntity> agendas = agendaRepository.findByData(data);
 
         return agendas;
     }
 
-    //Listar Agendas com disponibilidade 2 por data (Grupo 4)
+    //Listar agendas com disponibilidade 2 por data (Grupo 4)
     public List<AgendaEntity> getAgendasPorDataDisponibilidade(Date data) {
 
-        List<AgendaEntity> agendamentos = new ArrayList<>();
-        agendamentos = agendaRepository.findByDataAndDisponibilidade(data, 2);
+        //Pegando todas as agendas do dia com disponibilidade 2
+        List<AgendaEntity> agendas = agendaRepository.findByDataAndDisponibilidade(data, 2);
 
-        return agendamentos;
+        return agendas;
     }
 
     //Listar Agendamentos por agenda (Grupo 4)
-    public List<AgPacienteEntity> getAgendamentosPorAgenda(Date data) {
+    public List<AgPacienteEntity> getAgendamentosPorAgenda(Date data, BigInteger idMedico) {
         List<AgPacienteEntity> agendamentos = new ArrayList<>();
 
+        //Pegandos todas as agendas do dia com disponibilidade 2
         List<AgendaEntity> agendas = getAgendasPorDataDisponibilidade(data);
 
-        for(AgendaEntity agenda : agendas){
-            AgPacienteEntity agendamento = agPacienteRepository.findByAgenda(agenda);
-            agendamentos.add(agendamento);
+        //Pegandos todas as agendas do dia com disponibilidade 2 por idMedico
+        for (AgendaEntity agenda : agendas){
+            BigInteger idMedicoAgenda = agenda.getMedico().getIdUsuario();
+            if (idMedicoAgenda.equals(idMedico)) {
+                AgPacienteEntity agendamento = agPacienteRepository.findByAgenda(agenda);
+                agendamentos.add(agendamento);
+            }
         }
 
         return agendamentos;
