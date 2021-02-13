@@ -1,8 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 
-import com.rd.projetointegrador.rdservicesapi.dto.Contrato;
-import com.rd.projetointegrador.rdservicesapi.dto.Pagamento;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,29 +147,39 @@ public class PagamentoService {
     //Grupo2
 
     @Transactional
-    public String setPagamentoComCartao(BigInteger idCartao, BigInteger idAgPaciente, Integer parcelas){
+    public RespostaString setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        AgPacienteEntity agPaciente = agPacienteRepository.findById(idAgPaciente).get();
-        pagamentoEntity.setIdCartao(idCartao);
-        pagamentoEntity.setIdAgPaciente(idAgPaciente);
+        AgPacienteEntity agPaciente = agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get();
+        pagamentoEntity.setIdCartao(pagtoCartao.getIdCartao());
+        pagamentoEntity.setIdAgPaciente(pagtoCartao.getIdAgPaciente());
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
-        pagamentoEntity.setNrParcela(parcelas);
+        pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
 
         repository.save(pagamentoEntity);
-        return "Pagamento com cartão cadastrado com sucesso";
+
+        RespostaString respostaPagtoCartao = new RespostaString();
+        respostaPagtoCartao.setResposta("Pagamento com cartão cadastrado com sucesso");
+
+        return respostaPagtoCartao;
+
     }
 
     @Transactional
-    public String setPagamentoComPlano(BigInteger idUsuario, BigInteger idAgPaciente){
+    public RespostaString setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
-        ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(idUsuario).get());
+        ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(pagtoPlano.getIdUsuario()).get());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
-        pagamentoEntity.setIdAgPaciente(idAgPaciente);
+        pagamentoEntity.setIdAgPaciente(pagtoPlano.getIdAgPaciente());
 
         repository.save(pagamentoEntity);
-        return "Pagamento com plano cadastrado com sucesso";
+
+        RespostaString respostaPagtoPlano = new RespostaString();
+        respostaPagtoPlano.setResposta("Pagamento com plano cadastrado com sucesso");
+
+        return respostaPagtoPlano;
+       
     }
 
 

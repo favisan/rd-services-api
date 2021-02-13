@@ -1,6 +1,8 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Pagamento;
+import com.rd.projetointegrador.rdservicesapi.dto.PagamentoCartao;
+import com.rd.projetointegrador.rdservicesapi.dto.PagamentoPlano;
 import com.rd.projetointegrador.rdservicesapi.entity.PagamentoEntity;
 import com.rd.projetointegrador.rdservicesapi.service.CartaoService;
 import com.rd.projetointegrador.rdservicesapi.service.PagamentoService;
@@ -61,14 +63,14 @@ public class PagamentoController {
 
     //Grupo2
     @PostMapping("/pagamento/cartao") //Cadastrar Novo PgtoCartao
-    public ResponseEntity setPagamentoCartao(@RequestBody BigInteger idCartao, BigInteger idAgPaciente, Integer parcelas) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(idCartao, idAgPaciente, parcelas));
+    public ResponseEntity setPagamentoCartao(@RequestBody PagamentoCartao pagtoCartao) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(pagtoCartao));
 
     }
 
     @PostMapping("/pagamento/plano") //Cadastrar Novo PgtoPlano
-    public ResponseEntity setPagamentoPlano(@RequestBody BigInteger idUsuario, BigInteger idAgPaciente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(idUsuario, idAgPaciente));
+    public ResponseEntity setPagamentoPlano(@RequestBody PagamentoPlano pagtoPlano) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(pagtoPlano));
 
     }
 
