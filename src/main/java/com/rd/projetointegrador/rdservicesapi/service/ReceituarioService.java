@@ -21,8 +21,6 @@ public class ReceituarioService {
 
     @Autowired private UsuarioRepository usuarioRepository;
 
-    @Autowired private UsuarioG4Repository usuarioG4Repository;
-
     @Autowired private TipoReceitaRepository tipoReceitaRepository;
 
     //Service
