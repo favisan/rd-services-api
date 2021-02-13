@@ -92,14 +92,18 @@ public class AgPacienteService {
     }
 
     @Transactional
-    public String cancelarAgPaciente(BigInteger idAgPaciente){
+    public RespostaString cancelarAgPaciente(BigInteger idAgPaciente){
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(3));
         AgPacienteEntity agPaciente = repository.findByIdAgPaciente(idAgPaciente).get();
         agPaciente.setStatusConsulta(status);
         agPaciente.getAgenda().setDisponibilidade(1);
 
-        return "Consulta cancelada com sucesso";
+        RespostaString respostaMudarStatus = new RespostaString();
+        respostaMudarStatus.setResposta("Consulta cancelada com sucesso");
+
+        return respostaMudarStatus;
+
     }
 
 }
