@@ -1,12 +1,10 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 
+import com.rd.projetointegrador.rdservicesapi.dto.Contrato;
 import com.rd.projetointegrador.rdservicesapi.dto.Pagamento;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
-import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.ContratoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.PagamentoRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +22,7 @@ public class PagamentoService {
     @Autowired private CartaoRepository cartaoRepository;
     @Autowired private ContratoRepository contratoRepository;
     @Autowired private AgPacienteRepository agPacienteRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     //MÉTODO: conversão de DTO para Entity
     public PagamentoEntity conversaoPagamentoEntity(Pagamento pagamento, PagamentoEntity pagamentoEntity) {
@@ -163,10 +162,11 @@ public class PagamentoService {
     }
 
     @Transactional
-    public String setPagamentoComPlano(BigInteger idContrato, BigInteger idAgPaciente){
+    public String setPagamentoComPlano(BigInteger idUsuario, BigInteger idAgPaciente){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
-        pagamentoEntity.setIdContrato(idContrato);
+        ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(idUsuario).get());
+        pagamentoEntity.setIdContrato(contrato.getIdContrato());
         pagamentoEntity.setIdAgPaciente(idAgPaciente);
 
         repository.save(pagamentoEntity);

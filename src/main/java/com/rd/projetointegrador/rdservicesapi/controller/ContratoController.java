@@ -30,7 +30,7 @@ public class ContratoController {
     }
     //Grupo2
     @CrossOrigin
-    @GetMapping("/contrato/{idUsuario}") // BUSCA POR Usuario
+    @GetMapping("/contrato-usuario/{idUsuario}") // BUSCA POR Usuario
     public ResponseEntity getContratoByUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getContratosByUsuario(idUsuario));
