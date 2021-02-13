@@ -91,6 +91,7 @@ public class AgendaService {
             agendaDto.setIdAgenda(agendaEntity.getIdAgenda());
             InputMedico medicoDto = new InputMedico();
             medicoDto.setNome(agendaEntity.getMedico().getNmNome());
+            medicoDto.setDsEndImg(agendaEntity.getMedico().getDsEndImg());
             Preco precoDto = new Preco();
             precoDto.setVlConsulta(agendaEntity.getMedico().getPreco().getVlConsulta());
             medicoDto.setPreco(precoDto);
@@ -100,6 +101,7 @@ public class AgendaService {
             agendaDto.setMedico(medicoDto);
             Periodo periodoDto = new Periodo();
             periodoDto.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
+            periodoDto.setDsPerido(agendaEntity.getPeriodo().getDsPeriodo());
             agendaDto.setPeriodo(periodoDto);
             agendaDto.setData(agendaEntity.getData());
 
