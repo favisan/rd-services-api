@@ -26,7 +26,7 @@ public class ClienteService {
     @Autowired private CartaoRepository cartaoRepository;
 
     //services
-    //@Autowired private UfService ufService;
+    @Autowired private UfService ufService;
     @Autowired private UsuarioService usuarioService;
     @Autowired private GeneroService generoService;
     @Autowired private PlanosService planosService;
@@ -95,7 +95,7 @@ public class ClienteService {
     public FormularioCadastro getFormularioCadastro() {
         FormularioCadastro formularioCadastro = new FormularioCadastro();
 
-        //formularioCadastro.setUfs(ufService.getUfsDTO());
+        formularioCadastro.setUfs(ufService.getUfsDTO());
         formularioCadastro.setGenero(generoService.getGenerosDTO());
         formularioCadastro.setPlanos(planosService.getPlanosDTO());
         return formularioCadastro;

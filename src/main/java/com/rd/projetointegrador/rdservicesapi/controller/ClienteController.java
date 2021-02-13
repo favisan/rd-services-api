@@ -21,6 +21,7 @@ public class ClienteController {
     private ClienteService service;
 
     //PÁGINA DE CADASTRO
+    @CrossOrigin
     @GetMapping("/cliente/cadastro")
     public ResponseEntity getFormularioCadastro(){
         FormularioCadastro formularioCadastro = service.getFormularioCadastro();
