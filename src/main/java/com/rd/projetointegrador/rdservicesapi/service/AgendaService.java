@@ -1,6 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.EspMed;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import com.rd.projetointegrador.rdservicesapi.dto.Agenda;
+
 import com.rd.projetointegrador.rdservicesapi.entity.PeriodoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.TipoConsultaEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.PeriodoRepository;
@@ -69,14 +69,16 @@ public class AgendaService {
 
 
 
-    public List<AgendaEntity> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
+    public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
+
         if(idConsulta.intValue() == 2){
             agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
         } else {
             agendaPorTipoConsulta = agendaRepository.findAll();
         }
         List<AgendaEntity> agendaFinal = new ArrayList<>();
+        List<Agenda> agendasDto =  new ArrayList<>();
         for (AgendaEntity agenda : agendaPorTipoConsulta) {
             BigInteger espMedAgenda = agenda.getMedico().getEspMed().getIdEspMed();
             Integer disponibilidade = agenda.getDisponibilidade();
@@ -84,7 +86,26 @@ public class AgendaService {
                 agendaFinal.add(agenda);
             }
         }
-        return agendaFinal;
+        for (AgendaEntity agendaEntity : agendaFinal){
+            Agenda agendaDto = new Agenda();
+            agendaDto.setIdAgenda(agendaEntity.getIdAgenda());
+            InputMedico medicoDto = new InputMedico();
+            medicoDto.setNome(agendaEntity.getMedico().getNmNome());
+            Preco precoDto = new Preco();
+            precoDto.setVlConsulta(agendaEntity.getMedico().getPreco().getVlConsulta());
+            medicoDto.setPreco(precoDto);
+            EspMed espMedDto = new EspMed();
+            espMedDto.setDsEspMed(agendaEntity.getMedico().getEspMed().getDsEspMed());
+            medicoDto.setEspMed(espMedDto);
+            agendaDto.setMedico(medicoDto);
+            Periodo periodoDto = new Periodo();
+            periodoDto.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
+            agendaDto.setPeriodo(periodoDto);
+            agendaDto.setData(agendaEntity.getData());
+
+            agendasDto.add(agendaDto);
+        }
+        return agendasDto;
     }
 
     public List<AgendaEntity> getAgendas() {
