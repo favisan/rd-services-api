@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.EspMed;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
@@ -32,22 +33,42 @@ public class AgendaService {
     @Autowired private TipoConsultaRepository tipoConsultaRepository;
     @Autowired private PeriodoRepository periodoRepository;
 
-    public Set<EspMedEntity> getEspByAgenda() {
+    public Set<EspMed> getEspByAgenda() {
         List<AgendaEntity> agendas = agendaRepository.findAll();
+        List<AgendaEntity> agendasDisponiveis = new ArrayList<>();
+        for (AgendaEntity agendaEntity : agendas){
+            if (agendaEntity.getDisponibilidade() == 1){
+                agendasDisponiveis.add(agendaEntity);
+            }
+        }
+
         List<UsuarioEntity> usuarios = new ArrayList<>();
-        for (AgendaEntity agendaEntity : agendas) {
+        for (AgendaEntity agendaEntity : agendasDisponiveis) {
             UsuarioEntity usuario = agendaEntity.getMedico();
             usuarios.add(usuario);
         }
-        Set<EspMedEntity> especialidades = new HashSet<>();
+        Set<EspMedEntity> especialidadesEntity = new HashSet<>();
         for (UsuarioEntity usuarioEntity : usuarios) {
             EspMedEntity especialidade = usuarioEntity.getEspMed();
             if (especialidade != null) {
-                especialidades.add(especialidade);
+                especialidadesEntity.add(especialidade);
             }
         }
-        return especialidades;
+        Set<EspMed> especialidadesDto = new HashSet<>();
+        for (EspMedEntity espMedEntity : especialidadesEntity){
+            EspMed espMedDto = new EspMed();
+            espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
+            espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
+            especialidadesDto.add(espMedDto);
+        }
+        return especialidadesDto;
     }
+
+
+
+
+
+
     public List<AgendaEntity> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
         if(idConsulta.intValue() == 2){

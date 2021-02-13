@@ -22,14 +22,12 @@ public class Lembrete {
     private String nmTitulo;
     private String dsLembrete;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtLembrete;
+    private String dtLembrete;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtCriacao;
+    private String dtCriacao;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private Date hrHora;
     private Integer nrRepeticao;
     private Boolean vencido;
 
-    //private UsuarioEntity paciente;
-    //private String lembreteIntervalo;
 }
