@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,18 +79,23 @@ public class ContratoService {
     }
 
     //Grupo2
-    public Contrato getContratoDTOByUsuario(BigInteger idUsuario) {
+    public List<Contrato> getContratoDTOByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
-        ContratoEntity contratoByUser = repository.findOneByUsuario(usuarioEntity);
-        Planos plano = new Planos();
-        plano.setIdPlano(contratoByUser.getPlanosEntity().getIdPlano());
-        plano.setNmPlano(contratoByUser.getPlanosEntity().getNmPlano());
-        plano.setDsPlano(contratoByUser.getPlanosEntity().getDsPlano());
-        Contrato contrato = new Contrato();
-        contrato.setIdContrato(contratoByUser.getIdContrato());
-        contrato.setDtVigencia(contratoByUser.getDtVigencia());
-        contrato.setPlano(plano);
-        return contrato;
+        List <ContratoEntity> contratoByUser = repository.findByUsuario(usuarioEntity);
+        List <Contrato> contratoDTO = new ArrayList<>();
+        for (ContratoEntity contratoEntity : contratoByUser) {
+            Planos plano = new Planos();
+            plano.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
+            plano.setNmPlano(contratoEntity.getPlanosEntity().getNmPlano());
+            plano.setDsPlano(contratoEntity.getPlanosEntity().getDsPlano());
+            Contrato contrato = new Contrato();
+            contrato.setIdContrato(contratoEntity.getIdContrato());
+            contrato.setDtVigencia(contratoEntity.getDtVigencia());
+            contrato.setPlano(plano);
+
+            contratoDTO.add(contrato);
+        }
+        return contratoDTO;
     }
 
 //    @Transactional

@@ -67,8 +67,8 @@ public class PagamentoController {
     }
 
     @PostMapping("/pagamento/plano") //Cadastrar Novo PgtoPlano
-    public ResponseEntity setPagamentoPlano(@RequestBody BigInteger idContrato, BigInteger idAgPaciente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(idContrato, idAgPaciente));
+    public ResponseEntity setPagamentoPlano(@RequestBody BigInteger idUsuario, BigInteger idAgPaciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(idUsuario, idAgPaciente));
 
     }
 
