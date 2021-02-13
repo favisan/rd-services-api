@@ -13,5 +13,5 @@ import java.util.List;
 public interface AgendaRepository extends JpaRepository<AgendaEntity, BigInteger> {
 
     List<AgendaEntity> findByTipoConsulta(TipoConsultaEntity tipoConsulta);
-    List<Agenda> findByDiaDisponivel(Date diaDisponivel);
+    List<Agenda> findByData(Date diaDisponivel);
 }

@@ -20,7 +20,7 @@ public class PedidoEntity {
     private BigInteger idPaciente;
 
     @Column(name = "VL_TOTAL")
-    private Float vlTotal;
+    private Double vlTotal;
 
     //relacionamento Bi-direcional
     @OneToMany(mappedBy = "pedido")

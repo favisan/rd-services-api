@@ -5,14 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Servico {
-
-    private Long id;
-    private String nome;
-    private Double preco;
-    private BigInteger plano;
+public class PedidoInput {
+    private BigInteger idUsuario;
+    private List<AgServico> agendamentos;
+    private Cartao cartao;
 }

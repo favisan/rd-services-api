@@ -1,6 +1,8 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.service.AgPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,16 +17,18 @@ import java.util.Date;
 public class AgPacienteController {
 
     @Autowired private AgPacienteService service;
+    @Autowired private UsuarioRepository usuarioRepository;
 
     @PostMapping ("/agPaciente/cadastrar")
-    public ResponseEntity <String> cadastrarAgPaciente(@RequestBody AgPacienteEntity agPacienteEntity) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(agPacienteEntity));
+    public ResponseEntity <String> cadastrarAgPaciente(@RequestBody BigInteger idAgenda, BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(idAgenda, idUsuario));
 
     }
 
-    @GetMapping("/agPaciente/{id}")
-    public ResponseEntity listarAgPaciente(@PathVariable("id") BigInteger idUsuario){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(idUsuario));
+    @CrossOrigin
+    @GetMapping("/agPaciente/{idUsuario}")
+    public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(usuarioRepository.findById(idUsuario)));
     }
 
     @PutMapping ("/agPaciente/mudar-status/{idAgPaciente}")

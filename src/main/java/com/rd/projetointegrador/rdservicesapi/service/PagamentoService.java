@@ -3,6 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Pagamento;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.ContratoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.PagamentoRepository;
@@ -22,6 +23,7 @@ public class PagamentoService {
     @Autowired private PagamentoRepository repository;
     @Autowired private CartaoRepository cartaoRepository;
     @Autowired private ContratoRepository contratoRepository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
 
     //MÉTODO: conversão de DTO para Entity
     public PagamentoEntity conversaoPagamentoEntity(Pagamento pagamento, PagamentoEntity pagamentoEntity) {
@@ -126,6 +128,7 @@ public class PagamentoService {
 
     }
 
+
     @Transactional
     public String alterarPagamento(Pagamento pagamento, BigInteger idPagamento){
 
@@ -141,6 +144,33 @@ public class PagamentoService {
         repository.deleteById(idPagamento);
         return "Exclusão de pagamento realizada com sucesso";
 
+    }
+
+    //Grupo2
+
+    @Transactional
+    public String setPagamentoComCartao(BigInteger idCartao, BigInteger idAgPaciente, Integer parcelas){
+        PagamentoEntity pagamentoEntity = new PagamentoEntity();
+        AgPacienteEntity agPaciente = agPacienteRepository.findById(idAgPaciente).get();
+        pagamentoEntity.setIdCartao(idCartao);
+        pagamentoEntity.setIdAgPaciente(idAgPaciente);
+        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
+        pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
+        pagamentoEntity.setNrParcela(parcelas);
+
+        repository.save(pagamentoEntity);
+        return "Pagamento com cartão cadastrado com sucesso";
+    }
+
+    @Transactional
+    public String setPagamentoComPlano(BigInteger idContrato, BigInteger idAgPaciente){
+        PagamentoEntity pagamentoEntity = new PagamentoEntity();
+        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
+        pagamentoEntity.setIdContrato(idContrato);
+        pagamentoEntity.setIdAgPaciente(idAgPaciente);
+
+        repository.save(pagamentoEntity);
+        return "Pagamento com plano cadastrado com sucesso";
     }
 
 

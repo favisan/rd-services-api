@@ -13,4 +13,5 @@ public interface ContatoRepository extends JpaRepository<ContatoEntity, BigInteg
 
     List<ContatoEntity> findByLoja(LojaEntity lojaEntity); // SELECT * FROM TB_CONTATO WHERE ID_LOJA = id
 
+    List<ContatoEntity> findByIdUsuario(BigInteger idUsuario);
 }

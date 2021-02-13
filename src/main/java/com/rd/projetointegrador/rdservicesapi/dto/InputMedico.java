@@ -18,7 +18,7 @@ public class InputMedico {
 
     private Uf uf;
 
-    private EspMed IdEspMed;
+    private EspMed espMed;
 
     private Preco preco;
 

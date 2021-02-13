@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Servico {
-
-    private Long id;
-    private String nome;
-    private Double preco;
-    private BigInteger plano;
+@AllArgsConstructor
+public class StatusConsulta {
+    private BigInteger idStatusConsulta;
+    private String dsStatusConsulta;
 }

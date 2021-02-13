@@ -17,21 +17,13 @@ public class CardapioEntity implements Serializable {
    @Column (name = "ID_CARDAPIO")
    private BigInteger idCardapio;
 
-   // @ManyToOne
-   // @JoinColumn (name = "ID_PACIENTE")
-   // private IdPaciente idPaciente;
-    //ID_PACIENTE              BIGINT (FK) (TB_USUARIO.ID_USUARIO COM TIPO PACIENTE)
+    @ManyToOne
+   @JoinColumn(name="ID_PACIENTE")
+    private UsuarioEntity paciente;
 
-    @Column (name = "ID_PACIENTE")
-    private BigInteger idPaciente;
-
-    @Column (name = "ID_MEDICO")
-    private BigInteger idMedico;
-
-
-    // @ManyToOne
-    // @JoinColumn (name = "ID_MEDICO")
-    // private IdMedico idMedico;
+    @ManyToOne
+    @JoinColumn(name="ID_MEDICO")
+    private UsuarioEntity medico;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_REFEICAO")

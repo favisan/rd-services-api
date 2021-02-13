@@ -14,6 +14,5 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, BigInteg
     List<UsuarioEntity> findByNrCpf(String nrCpf);
     UsuarioEntity findOneByNrCpf(String nrCpf);
 
-    //GRUPO2
-    Optional<UsuarioEntity> findByIdUsuario(BigInteger idUsuario);
+
 }
