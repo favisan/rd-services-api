@@ -100,10 +100,10 @@ public class UsuarioController {
 
     //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
     @CrossOrigin
-    @GetMapping("/cadastroMedico/{idUf}")
-    public ResponseEntity mostrarTelaCadastro(@PathVariable("idUf") BigInteger idUf){
+    @GetMapping("/cadastroMedico")
+    public ResponseEntity mostrarTelaCadastro(){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaCadastro(idUf));
+                .body(service.mostrarTelaCadastro());
     }
 
     //CADASTRAR MEDICO Ok

@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.rd.projetointegrador.rdservicesapi.entity.CidadeEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UfEntity;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CadastroMedico {
 
-    private List<Cidade> cidades;
+    private List<CidadeEntity> cidades;
     private List<UfEntity> ufs;
     private List<EspMedEntity> Especialidades;
 }

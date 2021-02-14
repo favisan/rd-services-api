@@ -29,6 +29,8 @@ public class UsuarioService {
     @Autowired private TipoContatoRepository tipoContatoRepository;
     @Autowired private LoginUsuarioRepository loginUsuarioRepository;
     @Autowired private PrecoRepository precoRepository;
+    @Autowired private CidadeRepository cidadeRepository;
+
 
     //services
     //@Autowired private UfService ufService;
@@ -393,9 +395,9 @@ public class UsuarioService {
     }
 
     //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
-    public CadastroMedico mostrarTelaCadastro(BigInteger idUf) {
+    public CadastroMedico mostrarTelaCadastro() {
         CadastroMedico cadastroMedico = new CadastroMedico();
-        cadastroMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
+        cadastroMedico.setCidades(cidadeRepository.findAll());
         cadastroMedico.setEspecialidades(especialidadeRepository.findAll());
         cadastroMedico.setUfs(ufRepository.findAll());
 
@@ -406,4 +408,5 @@ public class UsuarioService {
     public UsuarioEntity consultarPorCpfMedico(String nrCpf) {
         return repository.findOneByNrCpf(nrCpf);
     }
+
 }
