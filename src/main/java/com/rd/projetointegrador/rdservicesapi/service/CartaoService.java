@@ -9,10 +9,12 @@ import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CartaoService {
@@ -64,10 +66,18 @@ public class CartaoService {
     }
 
     //GRUPO2
-    public List<CartaoEntity> getCartaobyUsuario(UsuarioEntity usuario) {
+
+    public List<Cartao> getCartaobyUsuario(UsuarioEntity usuario) {
         List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
-        return listaCartoes;
-    }
+        List<Cartao> listaCartaoDTO = new ArrayList<>();
+        for (CartaoEntity cartaoEntity: listaCartoes){
+            Cartao cartaoDTO = new Cartao();
+            Cartao cartaoConversao = conversaoCartaoDTO(cartaoEntity, cartaoDTO);
+            listaCartaoDTO.add(cartaoConversao);
+        }
+        return listaCartaoDTO;
+   }
+
 
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
