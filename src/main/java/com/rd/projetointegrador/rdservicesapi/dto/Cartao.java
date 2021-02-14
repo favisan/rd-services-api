@@ -16,7 +16,7 @@ public class Cartao {
     //GRUPO1
 
     private BigInteger idCartao;
-    private BigInteger idUsuario;
+    private Usuario usuario;
     private String nrCartao;
     private String codSeguranca;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

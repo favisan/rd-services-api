@@ -64,7 +64,7 @@ public class LembreteController {
 
     }
 
-    @PutMapping("/lembrete/{idLembrete}") // Alterar Plano
+    @PutMapping("/lembrete/{idLembrete}")
     public ResponseEntity alterarLembrete(@RequestBody Lembrete Lembrete, @PathVariable("idLembrete") BigInteger idLembrete){
         String retorno = service.alterarLembrete(Lembrete, idLembrete);
         return ResponseEntity.ok().body(retorno);
