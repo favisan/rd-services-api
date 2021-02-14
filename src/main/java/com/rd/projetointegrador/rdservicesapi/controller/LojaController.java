@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Loja;
+import com.rd.projetointegrador.rdservicesapi.entity.ReceitaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.ContatoService;
 import com.rd.projetointegrador.rdservicesapi.service.LojaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,12 @@ public class LojaController {
         List<Loja> lojas = service.getLojas();
         return ResponseEntity.ok(lojas);
     }//Retorna todas as lojas e seus respectivos endereços e contatos
+
+    @GetMapping("/lojas/{localidade}")
+    public ResponseEntity consultarLojasPorLocalidade(@PathVariable("localidade") String localidade){
+        List <Loja> lojas = service.getLojasPorLocalidade(localidade);
+        return ResponseEntity.status(HttpStatus.OK).body(lojas);
+    }
+
 
 }
