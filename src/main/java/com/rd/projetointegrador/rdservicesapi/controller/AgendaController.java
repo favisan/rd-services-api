@@ -86,14 +86,14 @@ public class AgendaController {
         }
     }
 
-    //Lista Agendamentos com status agendada e diponibilidade 2 por data (Grupo 4)
-    @GetMapping("/agendamentos")
-    public ResponseEntity getAgendamentosPorData(@RequestParam("data") String dataAgendada) {
+    //Lista Agendamentos com status agendada e diponibilidade 2 por data e medico(Grupo 4)
+    @GetMapping("/agendamentos/{data}/{idMedico}")
+    public ResponseEntity getAgendamentosPorData(@PathVariable("data") String dataAgendada, @PathVariable ("idMedico") BigInteger idMedico) {
 
         try {
             Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
 
-            List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data);
+            List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
 
             return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
 
