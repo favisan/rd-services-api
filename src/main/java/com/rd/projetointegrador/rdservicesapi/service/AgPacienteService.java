@@ -7,14 +7,12 @@ import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class AgPacienteService {
@@ -23,10 +21,12 @@ public class AgPacienteService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
 
+    //Grupo 2 - Listas as agendas do paciente pela idUsuario
     public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
         List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
         List<AgPaciente> agPacientes = new ArrayList<>();
 
+        //Convertendo AgPacienteEntity para AgPacienteDTO
         for (AgPacienteEntity agPacienteEntity : listaAgendas){
             AgPaciente agPaciente = new AgPaciente();
             agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
@@ -66,31 +66,33 @@ public class AgPacienteService {
 
             //passando agendaDTO para agPacienteDTO
             agPaciente.setAgenda(agenda);
-
             agPacientes.add(agPaciente);
         }
-
         return agPacientes;
     };
 
+    //Grupo 2 - Cadastrar nova Agenda de Paciente
     @Transactional
-    public String setAgPaciente (BigInteger idAgenda, BigInteger idPaciente){
+    public RespostaString setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
+        //mudando status da consulta para agendada
         status.setIdStatusConsulta(BigInteger.valueOf(1));
         LocalDateTime data = LocalDateTime.now();
-
-        agPacienteEntity.setAgenda(agendaRepository.findById(idAgenda).get());
-        agPacienteEntity.setPaciente(usuarioRepository.findById(idPaciente).get());
+        agPacienteEntity.setAgenda(agendaRepository.findById(cadastroAgPaciente.getIdAgenda()).get());
+        agPacienteEntity.setPaciente(usuarioRepository.findById(cadastroAgPaciente.getIdUsuario()).get());
         agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setStatusConsulta(status);
+        //mudando disponibilidade da agenda médica para agendada
         agPacienteEntity.getAgenda().setDisponibilidade(2);
-
         repository.save(agPacienteEntity);
+        RespostaString resposta = new RespostaString();
+        resposta.setResposta("Consulta agendada com sucesso!");
 
-        return "Consulta agendada com sucesso!";
+        return resposta;
     }
 
+    //Grupo 2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
     @Transactional
     public RespostaString cancelarAgPaciente(BigInteger idAgPaciente){
         StatusConsultaEntity status = new StatusConsultaEntity();

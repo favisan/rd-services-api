@@ -56,15 +56,15 @@ public class ClienteService {
 
         if(usuarioExistente.isEmpty() && loginExistente == null) {
 
-            //Passando dados do Usuário
-            usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
-            usuarioEntity = usuarioRepository.save(usuarioEntity);
-            BigInteger novoId = usuarioEntity.getIdUsuario();
+//            //Passando dados do Usuário
+//            usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
+//            usuarioEntity = usuarioRepository.save(usuarioEntity);
+//            BigInteger novoId = usuarioEntity.getIdUsuario();
 
-            //Entidade LoginUsuario
-            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
-            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
-            loginUsuarioRepository.save(loginUsuarioEntity);
+//            //Entidade LoginUsuario
+//            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
+//            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
+//            loginUsuarioRepository.save(loginUsuarioEntity);
 
 //            //Entidade Contrato
 //            inputUsuario.getContrato().setIdUsuario(novoId);
@@ -76,12 +76,12 @@ public class ClienteService {
 //            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
 //            cartaoRepository.save(cartaoEntity);
 
-            //Entidade Contato
-            ContatoEntity contatoEntity = new ContatoEntity();
-            contatoEntity.setIdUsuario(novoId);
-            contatoEntity.setNrDdd(inputUsuario.getDdd());
-            contatoEntity.setDsContato(inputUsuario.getCelular());
-            contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
+//            //Entidade Contato
+//            ContatoEntity contatoEntity = new ContatoEntity();
+//            contatoEntity.setIdUsuario(novoId);
+//            contatoEntity.setNrDdd(inputUsuario.getDdd());
+//            contatoEntity.setDsContato(inputUsuario.getCelular());
+//            contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
 
             //Entidade Endereço
 //          List<Endereco> enderecos = inputUsuario.getUsuario().getEnderecos();

@@ -69,11 +69,11 @@ public class CartaoService {
 
     }
 
-    //GRUPO2
-
+    //Grupo2 - Listar os cartões pela id do Usuario
     public List<Cartao> getCartaobyUsuario(UsuarioEntity usuario) {
         List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
         List<Cartao> listaCartaoDTO = new ArrayList<>();
+        //Convertendo CartaoEntity em CartaoDTO
         for (CartaoEntity cartaoEntity: listaCartoes){
             Cartao cartaoDTO = new Cartao();
             Cartao cartaoConversao = conversaoCartaoDTO(cartaoEntity, cartaoDTO);
@@ -81,7 +81,6 @@ public class CartaoService {
         }
         return listaCartaoDTO;
    }
-
 
     @Transactional
     public String cadastrarCartao(Cartao cartao) {

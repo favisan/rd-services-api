@@ -86,20 +86,20 @@ public class ReceituarioService {
 
     }
 
-    //Preenchendo a tela Receituário com listas para os selects do front e e dados que são fixos na tela
-    public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente){
-
-        ReceituarioOutput receituarioOutput = new ReceituarioOutput();
-        receituarioOutput.setListaTipoReceita(tipoReceitaService.listarTiposDeReceita());
-//        receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente).getNmNome());
-        receituarioOutput.setListaMedicacao(medicacaoService.listarMedicacoes());
-        receituarioOutput.setListaViaAdm(viaAdmService.listarViasAdm());
-        receituarioOutput.setListaFormaFarmac(formaFarmacService.listarFormasFarmac());
-        receituarioOutput.setMedico(usuarioService.getMedico(idMedico));
-
-        return receituarioOutput;
-
-    }
+//    //Preenchendo a tela Receituário com listas para os selects do front e e dados que são fixos na tela
+//    public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente){
+//
+//        ReceituarioOutput receituarioOutput = new ReceituarioOutput();
+//        receituarioOutput.setListaTipoReceita(tipoReceitaService.listarTiposDeReceita());
+////        receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente).getNmNome());
+//        receituarioOutput.setListaMedicacao(medicacaoService.listarMedicacoes());
+//        receituarioOutput.setListaViaAdm(viaAdmService.listarViasAdm());
+//        receituarioOutput.setListaFormaFarmac(formaFarmacService.listarFormasFarmac());
+//        receituarioOutput.setMedico(usuarioService.getMedico(idMedico));
+//
+//        return receituarioOutput;
+//
+//    }
 
     //Convertendo de Entity para DTO
     public Receituario converterReceituarioToDTO(ReceituarioEntity receituarioEntity, Receituario receituario) {

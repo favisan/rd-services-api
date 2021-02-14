@@ -28,18 +28,17 @@ public class ContratoController {
                 .body(service.getContrato(idContrato));
 
     }
-    //Grupo2
-    @GetMapping("/contrato-usuario/{idUsuario}") // BUSCA POR Usuario
-    public ResponseEntity getContratoByUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getContratoDTOByUsuario(idUsuario));
-    }
-
 
     @GetMapping("/contrato") //Busca de todos os Contratos
     public ResponseEntity getContratos(@PathParam("idContrato") BigInteger idContrato) {
         List<ContratoEntity> contratos = service.getContratos(idContrato);
         return ResponseEntity.status(HttpStatus.OK).body(contratos);
+    }
+
+    //Grupo2 - Listar os contratos pela id do Usuario
+    @GetMapping("/contrato-usuario/{idUsuario}")
+    public ResponseEntity getContratoByUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getContratoDTOByUsuario(idUsuario));
     }
 
 //    @PostMapping("/contrato") //Cadastrar Novo Contrato

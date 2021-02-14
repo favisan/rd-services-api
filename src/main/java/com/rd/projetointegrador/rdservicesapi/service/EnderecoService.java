@@ -1,7 +1,9 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.Cidade;
 import com.rd.projetointegrador.rdservicesapi.dto.Endereco;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.entity.CidadeEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EnderecoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.EnderecoRepository;
@@ -28,18 +30,23 @@ public class EnderecoService {
 //        return enderecoEntity;
 //    }
 
-//    //MÉTODO: conversão de Entity para DTO
-//    public Endereco conversaoEnderecoDTO(EnderecoEntity enderecoEntity, Endereco endereco) {
-//
-//        endereco.setIdEndereco(enderecoEntity.getIdEndereco());
-//        endereco.setDsEndereco(enderecoEntity.getDsEndereco());
-//        endereco.setDsBairro(enderecoEntity.getDsBairro());
-//        endereco.setDsComplemento(enderecoEntity.getDsComplemento());
-//        endereco.setIdCidade(enderecoEntity.getIdCidade());
-//        endereco.setNrCep(enderecoEntity.getNrCep());
-//
-//        return endereco;
-//    }
+    //MÉTODO: conversão de Entity para DTO
+    public Endereco conversaoEnderecoDTO(EnderecoEntity enderecoEntity, Endereco endereco) {
+
+        endereco.setIdEndereco(enderecoEntity.getIdEndereco());
+        endereco.setDsEndereco(enderecoEntity.getDsEndereco());
+        endereco.setDsBairro(enderecoEntity.getDsBairro());
+        endereco.setDsComplemento(enderecoEntity.getDsComplemento());
+        endereco.setNrCep(enderecoEntity.getNrCep());
+
+        CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+        Cidade cidade = new Cidade();
+        cidade.setIdCidade(cidadeEntity.getIdCidade());
+        cidade.setDsCidade(cidadeEntity.getDsCidade());
+        endereco.setCidade(cidade);
+
+        return endereco;
+    }
 
 //    //MÉTODO: conversão ListaDTO para ListaEntity
 //    public List<EnderecoEntity> conversaoEnderecosEntities(List<Endereco> enderecos, List<EnderecoEntity> enderecosEntities){
@@ -54,27 +61,27 @@ public class EnderecoService {
 //        return enderecosEntities;
 //    }
 
-//    //MÉTODO: conversão listaEntity para ListaDTO
-//    public List<Endereco> conversaoEnderecosDTO(List<EnderecoEntity> enderecosEntities, List<Endereco> enderecos){
-//
-//        for(EnderecoEntity enderecoEntity: enderecosEntities) {
-//            Endereco endereco = new Endereco();
-//            endereco = conversaoEnderecoDTO(enderecoEntity, endereco);
-//
-//            enderecos.add(endereco);
-//        }
-//        return enderecos;
-//    }
-//}
-//    //MÉTODO: conversão listaEntity para ListaDTO
-//    public List<Endereco> conversaoEnderecosDTO(List<EnderecoEntity> enderecosEntities, List<Endereco> enderecos){
-//
-//        for(EnderecoEntity enderecoEntity: enderecosEntities) {
-//            Endereco endereco = new Endereco();
-//            endereco = conversaoEnderecoDTO(enderecoEntity, endereco);
-//
-//            enderecos.add(endereco);
-//        }
-//        return enderecos;
-//    }
+    //MÉTODO: conversão listaEntity para ListaDTO
+    public List<Endereco> conversaoEnderecosDTO(List<EnderecoEntity> enderecosEntities, List<Endereco> enderecos){
+
+        for(EnderecoEntity enderecoEntity: enderecosEntities) {
+            Endereco endereco = new Endereco();
+            endereco = conversaoEnderecoDTO(enderecoEntity, endereco);
+
+            enderecos.add(endereco);
+        }
+        return enderecos;
+    }
 }
+//    //MÉTODO: conversão listaEntity para ListaDTO
+//    public List<Endereco> conversaoEnderecosDTO(List<EnderecoEntity> enderecosEntities, List<Endereco> enderecos){
+//
+//        for(EnderecoEntity enderecoEntity: enderecosEntities) {
+//            Endereco endereco = new Endereco();
+//            endereco = conversaoEnderecoDTO(enderecoEntity, endereco);
+//
+//            enderecos.add(endereco);
+//        }
+//        return enderecos;
+//    }
+

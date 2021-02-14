@@ -144,8 +144,7 @@ public class PagamentoService {
 
     }
 
-    //Grupo2
-
+    //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
     public RespostaString setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
@@ -155,16 +154,14 @@ public class PagamentoService {
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
-
         repository.save(pagamentoEntity);
 
         RespostaString respostaPagtoCartao = new RespostaString();
         respostaPagtoCartao.setResposta("Pagamento com cartão cadastrado com sucesso");
-
         return respostaPagtoCartao;
-
     }
 
+    //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
     @Transactional
     public RespostaString setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
@@ -172,14 +169,11 @@ public class PagamentoService {
         ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(pagtoPlano.getIdUsuario()).get());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
         pagamentoEntity.setIdAgPaciente(pagtoPlano.getIdAgPaciente());
-
         repository.save(pagamentoEntity);
 
         RespostaString respostaPagtoPlano = new RespostaString();
         respostaPagtoPlano.setResposta("Pagamento com plano cadastrado com sucesso");
-
         return respostaPagtoPlano;
-       
     }
 
 

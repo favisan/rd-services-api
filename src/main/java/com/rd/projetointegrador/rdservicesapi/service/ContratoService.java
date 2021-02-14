@@ -78,11 +78,12 @@ public class ContratoService {
         return contratosByUser;
     }
 
-    //Grupo2
+    //Grupo2 - Listar os contratos pela id do usuário
     public List<Contrato> getContratoDTOByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
         List <ContratoEntity> contratoByUser = repository.findByUsuario(usuarioEntity);
         List <Contrato> contratoDTO = new ArrayList<>();
+        //convertendo ContratoEntity em ContratoDTO
         for (ContratoEntity contratoEntity : contratoByUser) {
             Planos plano = new Planos();
             plano.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());

@@ -37,36 +37,36 @@ public class UsuarioService {
     @Autowired private LoginUsuarioService loginUsuarioService;
 
 
-    //MÉTODO: conversão de DTO para Entity
-    public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
-
-        GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
-        usuarioEntity.setGenero(genero);
-
-        EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
-        usuarioEntity.setEspMed(espMedEntity);
-
-        UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
-        usuarioEntity.setUf(ufEntity);
-
-        PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
-        usuarioEntity.setPreco(precoEntity);
-
-        List<EnderecoEntity> enderecosEntities = new ArrayList();
-        enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
-        usuarioEntity.setEnderecos(enderecosEntities);
-
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
-        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
-
-        usuarioEntity.setNmNome(usuario.getNmNome());
-        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
-        usuarioEntity.setNrCpf(usuario.getNrCpf());
-        usuarioEntity.setNrCrm(usuario.getNrCrm());
-        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
-
-        return usuarioEntity;
-    }
+//    //MÉTODO: conversão de DTO para Entity
+//    public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
+//
+//        GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
+//        usuarioEntity.setGenero(genero);
+//
+//        EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
+//        usuarioEntity.setEspMed(espMedEntity);
+//
+//        UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
+//        usuarioEntity.setUf(ufEntity);
+//
+//        PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
+//        usuarioEntity.setPreco(precoEntity);
+//
+//        List<EnderecoEntity> enderecosEntities = new ArrayList();
+//        enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
+//        usuarioEntity.setEnderecos(enderecosEntities);
+//
+//        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
+//        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+//
+//        usuarioEntity.setNmNome(usuario.getNmNome());
+//        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
+//        usuarioEntity.setNrCpf(usuario.getNrCpf());
+//        usuarioEntity.setNrCrm(usuario.getNrCrm());
+//        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+//
+//        return usuarioEntity;
+//    }
     //MÉTODO: conversão de Entity para DTO
     public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
 
@@ -105,18 +105,18 @@ public class UsuarioService {
 
         return usuario;
     }
-    //MÉTODO: conversão ListaDTO para ListaEntity
-    public List<UsuarioEntity> conversaoUsuariosEntity(List<Usuario> usuarios, List<UsuarioEntity> usuariosEntity) {
-
-        for(Usuario usuario: usuarios) {
-            UsuarioEntity usuarioEntity = new UsuarioEntity();
-            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
-
-            usuariosEntity.add(usuarioEntity);
-        }
-
-        return usuariosEntity;
-    }
+//    //MÉTODO: conversão ListaDTO para ListaEntity
+//    public List<UsuarioEntity> conversaoUsuariosEntity(List<Usuario> usuarios, List<UsuarioEntity> usuariosEntity) {
+//
+//        for(Usuario usuario: usuarios) {
+//            UsuarioEntity usuarioEntity = new UsuarioEntity();
+//            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+//
+//            usuariosEntity.add(usuarioEntity);
+//        }
+//
+//        return usuariosEntity;
+//    }
     //MÉTODO: conversão listaEntity para ListaDTO
     public List<Usuario> conversaoUsuariosDTO(List<UsuarioEntity> usuariosEntities, List<Usuario> usuarios) {
 
@@ -146,59 +146,59 @@ public class UsuarioService {
         return repository.findByNrCpf(nrCpf);
     }
 
-    //MÉTODOS RETORNANDO A DTO
-    public Usuario getUsuarioDTO(BigInteger idUsuario) {
-            UsuarioEntity usuarioEntity = getUsuario(idUsuario);
-            Usuario usuario = new Usuario();
+//    //MÉTODOS RETORNANDO A DTO
+//    public Usuario getUsuarioDTO(BigInteger idUsuario) {
+//            UsuarioEntity usuarioEntity = getUsuario(idUsuario);
+//            Usuario usuario = new Usuario();
+//
+//            usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
+//
+//            return usuario;
+//    }
+//    public List<Usuario> getUsuariosDTO() {
+//        List<UsuarioEntity> usuarioEntities = getUsuarios();
+//        List<Usuario> usuarios = new ArrayList<>();
+//
+//        usuarios = conversaoUsuariosDTO(usuarioEntities, usuarios);
+//
+//        return usuarios;
+//    }
 
-            usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
+//    @Transactional
+//    public String cadastrarUsuario(Usuario usuario){
+//
+//        UsuarioEntity usuarioEntity = new UsuarioEntity();
+//
+//        String cpf = usuarioEntity.getNrCpf();
+//        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
+//
+//        if(usuarioExistente.isEmpty()) {
+//
+//            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+//            repository.save(usuarioEntity);
+//
+//            return "Usuário cadastrado com sucesso";
+//        }
+//
+//        return "Erro. Cpf já utilizado.";
+//    }
 
-            return usuario;
-    }
-    public List<Usuario> getUsuariosDTO() {
-        List<UsuarioEntity> usuarioEntities = getUsuarios();
-        List<Usuario> usuarios = new ArrayList<>();
-
-        usuarios = conversaoUsuariosDTO(usuarioEntities, usuarios);
-
-        return usuarios;
-    }
-
-    @Transactional
-    public String cadastrarUsuario(Usuario usuario){
-
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-
-        String cpf = usuarioEntity.getNrCpf();
-        List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
-
-        if(usuarioExistente.isEmpty()) {
-
-            usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
-            repository.save(usuarioEntity);
-
-            return "Usuário cadastrado com sucesso";
-        }
-
-        return "Erro. Cpf já utilizado.";
-    }
-
-    @Transactional
-    public String alterarUsuario(Usuario usuario, BigInteger idUsuario){
-
-        UsuarioEntity usuarioEntity = getUsuario(idUsuario);
-        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
-
-        usuarioEntity = repository.save(usuarioEntity);
-        return "Alteração realizada com sucesso";
-    }
-
-    //EXCLUSÃO OU BLOQUEIO????
-    public String excluirUsuario(BigInteger idUsuario){
-        repository.deleteById(idUsuario);
-        return "Exclusão de usuário realizada com sucesso";
-
-    }
+//    @Transactional
+//    public String alterarUsuario(Usuario usuario, BigInteger idUsuario){
+//
+//        UsuarioEntity usuarioEntity = getUsuario(idUsuario);
+//        usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
+//
+//        usuarioEntity = repository.save(usuarioEntity);
+//        return "Alteração realizada com sucesso";
+//    }
+//
+//    //EXCLUSÃO OU BLOQUEIO????
+//    public String excluirUsuario(BigInteger idUsuario){
+//        repository.deleteById(idUsuario);
+//        return "Exclusão de usuário realizada com sucesso";
+//
+//    }
 
 
     //GRUPO4 --------------------------------------------------------------------------

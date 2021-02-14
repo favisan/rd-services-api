@@ -2,6 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
+import com.rd.projetointegrador.rdservicesapi.service.EspMedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rd.projetointegrador.rdservicesapi.dto.Agenda;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
@@ -22,11 +22,7 @@ public class AgendaController {
     @Autowired
     private AgendaService agendaService;
 
-    @GetMapping("/agenda/especialidade")
-    public ResponseEntity getEspByAgenda (){
-        return ResponseEntity.ok().body(agendaService.getEspByAgenda());
-    }
-
+    //Grupo2 - Consulta às agendas médicas disponíveis filtradas por especialidade médica e por tipo de consulta (presencial ou online)
     @GetMapping("agenda/{idTipoConsulta}/{idEspecialidade}")
     public ResponseEntity getAgendaByEsp (@PathVariable("idTipoConsulta") BigInteger idC, @PathVariable("idEspecialidade") BigInteger idE){
         return ResponseEntity.ok().body(agendaService.getAgendaByEspecialidade(idE, idC));
