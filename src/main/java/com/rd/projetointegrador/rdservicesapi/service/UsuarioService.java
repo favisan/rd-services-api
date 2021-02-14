@@ -237,6 +237,7 @@ public class UsuarioService {
         for (ContatoEntity contatoEntity : contatosEntity) {
             Contato contato = new Contato();
             contato.setDsContato(contatoEntity.getDsContato());
+            contato.setNrDdd(contatoEntity.getNrDdd());
 
             contatos.add(contato);
         }

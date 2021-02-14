@@ -109,7 +109,7 @@ public class AgendaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgenda(agenda));
     }
 
-    //Cadastra uma agenda (Grupo 4)
+    //Cadastra uma lista de agendas (Grupo 4)
     @PostMapping("/agendas")
     public ResponseEntity cadastrarAgendaPorDia(@RequestParam ("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
 
