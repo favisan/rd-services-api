@@ -8,13 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 
 @Service
 public class AgendaService {
@@ -186,17 +183,10 @@ public class AgendaService {
                 agendaEntity.setTipoConsulta(tipoConsultaEntity);
                 agendaEntity.setPeriodo(periodoEntity);
 
-                Date dt = agenda.getData();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(dt);
-                cal.add(Calendar.DATE, 1);
-
-                agendaEntity.setData(cal.getTime());
+                agendaEntity.setData(data);
                 agendaEntity.setDisponibilidade(agenda.getDisponibilidade());
 
                 agendaRepository.save(agendaEntity);
-
-                return "Alteração realizada com sucesso!";
             }
         } else {
             for (Agenda agenda : agendasNova) {
@@ -214,7 +204,8 @@ public class AgendaService {
                 agendaEntity.setMedico(usuarioEntity);
                 agendaEntity.setTipoConsulta(tipoConsultaEntity);
                 agendaEntity.setPeriodo(periodoEntity);
-                agendaEntity.setData(agenda.getData());
+
+                agendaEntity.setData(data);
                 agendaEntity.setDisponibilidade(agenda.getDisponibilidade());
 
                 agendaRepository.save(agendaEntity);
@@ -273,6 +264,7 @@ public class AgendaService {
         periodo.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
 
         //SETANDO OS VALORES NA DTO Agenda
+        agenda.setIdAgenda(agendaEntity.getIdAgenda());
         agenda.setMedico(medico);
         agenda.setTipoConsulta(tipoConsulta);
         agenda.setPeriodo(periodo);
