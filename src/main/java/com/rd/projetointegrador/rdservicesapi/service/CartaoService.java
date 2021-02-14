@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,12 @@ public class CartaoService {
 
     @Autowired private CartaoRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private UsuarioService usuarioService;
 
     //MÉTODO: conversão de DTO para Entity
     public CartaoEntity conversaoCartaoEntity(Cartao cartao, CartaoEntity cartaoEntity) {
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getIdUsuario()).get();
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
 
         cartaoEntity.setNrCartao(cartao.getNrCartao());
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
@@ -43,7 +45,9 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
-        cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
+        Usuario usuario = new Usuario();
+        usuario = usuarioService.conversaoUsuarioDTO(cartaoEntity.getUsuario(), usuario);
+        cartao.setUsuario(usuario);
 
         return cartao;
     }
@@ -84,7 +88,7 @@ public class CartaoService {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
 
-            if(usuarioRepository.existsById(cartao.getIdUsuario())) {
+            if(usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
                 repository.save(cartaoEntity);
 
                 return "Cartao Cadastrado com sucesso";
