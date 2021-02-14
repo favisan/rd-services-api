@@ -16,5 +16,5 @@ public class CadastroMedico {
 
     private List<CidadeEntity> cidades;
     private List<UfEntity> ufs;
-    private List<EspMedEntity> Especialidades;
+    private List<EspMedEntity> especialidades;
 }
