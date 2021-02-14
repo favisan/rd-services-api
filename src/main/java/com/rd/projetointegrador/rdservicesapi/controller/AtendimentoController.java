@@ -18,8 +18,12 @@ public class AtendimentoController {
     @GetMapping("/atendimento/{id}")
     public ResponseEntity buscarAtendiementoId(@PathVariable("id") BigInteger id) {
 
-        Atendimento a = service.buscarAtendimentoId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(a);
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.buscarAtendimentoId(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body("Erro ao buscar atendimento.");
+        }
     }
 
     @GetMapping("/atendimento")
@@ -33,17 +37,33 @@ public class AtendimentoController {
     @PostMapping("/atendimento")
     public ResponseEntity cadastrarAtendimento(@RequestBody Atendimento atendimento) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAtendimento(atendimento));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAtendimento(atendimento));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body("Erro ao cadastrar atendimento.");
+        }
     }
 
     @GetMapping("/atendimentoUsuario/{cpf}")
-    public ResponseEntity getAtendimento(@PathVariable("cpf") String cpf){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.consultarPorCpf(cpf));
+    public ResponseEntity getAtendimentoCpf(@PathVariable("cpf") String cpf){
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.consultarPorCpf(cpf));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body("Erro ao buscar atendimento por cpf.");
+        }
+
     }
 
     @GetMapping("atendimento/medico/{id}")
     public ResponseEntity consultarPorIdMedico(@PathVariable("id") BigInteger id){
-        return ResponseEntity.status(HttpStatus.OK).body(service.consultarPorIdMedico(id));
+
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.consultarPorIdMedico(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body("Erro ao buscar atendimento pelo id do médico.");
+        }
     }
 }
