@@ -71,10 +71,10 @@ public class ClienteService {
 //            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
 //            contratoRepository.save(contratoEntity);
 
-            //Entidade Cartao
-            inputUsuario.getCartao().setIdUsuario(novoId);
-            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-            cartaoRepository.save(cartaoEntity);
+//            //Entidade Cartao
+//            inputUsuario.getCartao().setIdUsuario(novoId);
+//            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+//            cartaoRepository.save(cartaoEntity);
 
             //Entidade Contato
             ContatoEntity contatoEntity = new ContatoEntity();
