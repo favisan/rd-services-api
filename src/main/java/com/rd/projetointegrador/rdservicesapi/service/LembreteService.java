@@ -175,7 +175,7 @@ public class LembreteService {
         return lembretesPorData;
     }
     public List<Lembrete> getLembretesOrderByDataCriacao(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtCriacao(idPaciente);
+        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtCriacaoDesc(idPaciente);
         List<Lembrete> lembretesPorData = new ArrayList<>();
 
         lembretesPorData = conversaoLembretesDTO(lembretesEntities, lembretesPorData);

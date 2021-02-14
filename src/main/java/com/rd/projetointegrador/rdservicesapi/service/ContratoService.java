@@ -28,35 +28,41 @@ public class ContratoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-//    //MÉTODO: conversão de Entity para DTO
-//    public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
-//
-//        contrato.setIdContrato(contratoEntity.getIdContrato());
-//        contrato.setDsContrato(contratoEntity.getDsContrato());
-//        contrato.setDtVigencia(contratoEntity.getDtVigencia());
-//        contrato.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
-//        contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
-//
-//        return contrato;
-//    }
+    @Autowired PlanosService planosService;
 
-//    //MÉTODO: conversão de DTO para Entity
-//    public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
-//
-//        //pegar plano
-//        PlanosEntity planosEntity = planosRepository.findById(contrato.getIdPlano()).get();
-//
-//        //pegar usuario
-//        UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
-//
-//
-//        contratoEntity.setDsContrato(contrato.getDsContrato());
-//        contratoEntity.setDtVigencia(contrato.getDtVigencia());
-//        contratoEntity.setPlanosEntity(planosEntity);
-//        contratoEntity.setUsuario(usuarioEntity);
-//
-//        return contratoEntity;
-//    }
+    //MÉTODO: conversão de Entity para DTO
+    public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
+
+        contrato.setIdContrato(contratoEntity.getIdContrato());
+        contrato.setDsContrato(contratoEntity.getDsContrato());
+        contrato.setDtVigencia(contratoEntity.getDtVigencia());
+
+        Planos plano = new Planos();
+        plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
+        contrato.setPlano(plano);
+
+        contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
+
+        return contrato;
+    }
+
+    //MÉTODO: conversão de DTO para Entity
+    public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
+
+        //pegar plano
+        PlanosEntity planosEntity = planosRepository.findById(contrato.getPlano().getIdPlano()).get();
+
+        //pegar usuario
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
+
+
+        contratoEntity.setDsContrato(contrato.getDsContrato());
+        contratoEntity.setDtVigencia(contrato.getDtVigencia());
+        contratoEntity.setPlanosEntity(planosEntity);
+        contratoEntity.setUsuario(usuarioEntity);
+
+        return contratoEntity;
+    }
 
     //MÉTODOS RETORNANDO A ENTITY
     public ContratoEntity getContrato(BigInteger idContrato) {
