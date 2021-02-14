@@ -222,7 +222,7 @@ public class UsuarioService {
         EspMedEntity espMedEntity = entity.getEspMed();
         EspMed espMed = new EspMed();
         espMed.setDsEspMed(espMedEntity.getDsEspMed());
-        user.setIdEspMed(espMed);
+        user.setEspMed(espMed);
 
         user.setNome(entity.getNmNome());
         user.setDtNascimento(entity.getDtNascimento());

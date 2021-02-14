@@ -18,7 +18,7 @@ public class OutputMedico {
 
     private Uf ufCrm;
 
-    private EspMed IdEspMed;
+    private EspMed espMed;
 
     private Preco preco;
 
