@@ -16,112 +16,111 @@ import java.math.BigInteger;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-@RestController
-public class AgendaController {
+    @RestController
+    public class AgendaController {
 
-    @Autowired private AgendaService agendaService;
+        @Autowired private AgendaService agendaService;
 
-    //Grupo 2
-    @GetMapping("/agenda/especialidade")
-    public ResponseEntity getEspByAgenda() {
+        //Grupo 2
+        @GetMapping("/agenda/especialidade")
+        public ResponseEntity getEspByAgenda() {
 
-        return ResponseEntity.ok().body(agendaService.getEspByAgenda());
-    }
+            return ResponseEntity.ok().body(agendaService.getEspByAgenda());
+        }
 
-    //Grupo 2
-    @GetMapping("agenda/{idTipoConsulta}/{idEspecialidade}")
-    public ResponseEntity getAgendaByEsp(@PathVariable("idTipoConsulta") BigInteger idC, @PathVariable("idEspecialidade") BigInteger idE){
+        //Grupo 2
+        @GetMapping("agenda/{idTipoConsulta}/{idEspecialidade}")
+        public ResponseEntity getAgendaByEsp(@PathVariable("idTipoConsulta") BigInteger idC, @PathVariable("idEspecialidade") BigInteger idE){
 
-        return ResponseEntity.ok().body(agendaService.getAgendaByEspecialidade(idE, idC));
-    }
+            return ResponseEntity.ok().body(agendaService.getAgendaByEspecialidade(idE, idC));
+        }
 
+        //LISTA TODAS AS AGENDAS (Grupo 4)
+        @GetMapping("/agenda")
+        public ResponseEntity getAgendas() {
 
-
-
-    //LISTA TODAS AS AGENDAS (Grupo 4)
-    @GetMapping("/agenda")
-    public ResponseEntity getAgendas() {
-
-        List<AgendaEntity> agendas = agendaService.getAgendas();
-
-        return ResponseEntity.status(HttpStatus.OK).body(agendas);
-    }
-
-    //LISTA AS AGENDAS FILTRANDO POR DIA (Grupo 4)
-    @GetMapping("/agendas")
-    public ResponseEntity getAgendasPorData(@RequestParam ("data") String diaDisponivel)  {
-
-        try{
-            Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
-            List<AgendaEntity> agendas = agendaService.getAgendasPorData(dt);
+            List<AgendaEntity> agendas = agendaService.getAgendas();
 
             return ResponseEntity.status(HttpStatus.OK).body(agendas);
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendas.");
+        //LISTA AS AGENDAS FILTRANDO POR DIA (Grupo 4)
+        @GetMapping("/agendas/{data}")
+        public ResponseEntity getAgendasPorData(@PathVariable ("data") String diaDisponivel)  {
+
+            try{
+                Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
+                List<AgendaEntity> agendas = agendaService.getAgendasPorData(dt);
+
+                return ResponseEntity.status(HttpStatus.OK).body(agendas);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendas.");
+            }
+        }
+
+        //LISTA OS HORARIOS FILTRANDO POR DIA (Grupo 4)
+        @GetMapping("/horarios/{data}")
+        public ResponseEntity getHorarios(@PathVariable ("data") String diaDisponivel) {
+
+            try {
+                Date data = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
+                List<Time> horarios = agendaService.getHorarios(data);
+
+                return ResponseEntity.status(HttpStatus.OK).body(horarios);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de horários!");
+            }
+        }
+
+        //Lista Agendamentos com status agendada e diponibilidade 2 por data e medico(Grupo 4)
+        @GetMapping("/agendamentos/{data}/{idMedico}")
+        public ResponseEntity getAgendamentosPorData(@PathVariable("data") String dataAgendada, @PathVariable ("idMedico") BigInteger idMedico) {
+
+            try {
+                Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
+
+                List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
+
+                return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendamentos!");
+            }
+        }
+
+        //Cadastra uma agenda (Grupo 4)
+        @PostMapping("/agenda")
+        public ResponseEntity cadastrarAgenda(@RequestBody Agenda agenda) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgenda(agenda));
+        }
+
+        //Cadastra uma lista de agendas (Grupo 4)
+        @PostMapping("/agendas/{data}")
+        public ResponseEntity cadastrarAgendasPorDia(@PathVariable ("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
+
+            try {
+                Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
+                return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(dt, agendas));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inserir lista de agendamentos!");
+            }
+        }
+
+        //Exclui lista de agendas (Grupo 4)
+        @DeleteMapping("/agenda")
+        public ResponseEntity excluirAgendas(@RequestBody List<Agenda> agendas) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(agendaService.excluirAgendas(agendas));
         }
     }
 
-    //LISTA OS HORARIOS FILTRANDO POR DIA (Grupo 4)
-    @GetMapping("/horarios")
-    public ResponseEntity getHorarios(@RequestParam ("data") String diaDisponivel) {
-
-        try {
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
-            List<Time> horarios = agendaService.getHorarios(data);
-
-            return ResponseEntity.status(HttpStatus.OK).body(horarios);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de horários!");
-        }
-    }
-
-    //Lista Agendamentos com status agendada e diponibilidade 2 por data e medico(Grupo 4)
-    @GetMapping("/agendamentos/{data}/{idMedico}")
-    public ResponseEntity getAgendamentosPorData(@PathVariable("data") String dataAgendada, @PathVariable ("idMedico") BigInteger idMedico) {
-
-        try {
-            Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
-
-            List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
-
-            return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de agendamentos!");
-        }
-    }
-
-    //Cadastra uma agenda (Grupo 4)
-    @PostMapping("/agenda")
-    public ResponseEntity cadastrarAgenda(@RequestBody Agenda agenda) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgenda(agenda));
-    }
-
-    //Cadastra uma lista de agendas (Grupo 4)
-    @PostMapping("/agendas")
-    public ResponseEntity cadastrarAgendaPorDia(@RequestParam ("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
-
-        Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(data);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(dt, agendas));
-    }
-
-    //Exclui lista de agendas (Grupo 4)
-    @DeleteMapping("/agenda")
-    public ResponseEntity excluirAgendas(@RequestBody List<Agenda> agendas) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(agendaService.excluirAgendas(agendas));
-    }
-}
