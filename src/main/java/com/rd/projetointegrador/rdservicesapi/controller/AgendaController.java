@@ -96,12 +96,6 @@ import java.util.List;
             }
         }
 
-        //Cadastra uma agenda (Grupo 4)
-        @PostMapping("/agenda")
-        public ResponseEntity cadastrarAgenda(@RequestBody Agenda agenda) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgenda(agenda));
-        }
-
         //Cadastra uma lista de agendas (Grupo 4)
         @PostMapping("/agendas/{data}")
         public ResponseEntity cadastrarAgendasPorDia(@PathVariable ("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
@@ -112,15 +106,9 @@ import java.util.List;
                 return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(dt, agendas));
             } catch (Exception e) {
                 e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inserir lista de agendamentos!");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inserir lista de agendas!");
             }
         }
 
-        //Exclui lista de agendas (Grupo 4)
-        @DeleteMapping("/agenda")
-        public ResponseEntity excluirAgendas(@RequestBody List<Agenda> agendas) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(agendaService.excluirAgendas(agendas));
-        }
     }
 

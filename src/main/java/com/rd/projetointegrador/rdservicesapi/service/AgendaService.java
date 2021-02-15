@@ -129,31 +129,6 @@ public class AgendaService {
         return agendamentos;
     }
 
-    //Cadastrar uma agenda (Grupo 4)
-    @Transactional
-    public String cadastrarAgenda(Agenda agenda) {
-        AgendaEntity agendaEntity = new AgendaEntity();
-
-        BigInteger medico = agenda.getMedico().getIdUsuario();
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(medico).get();
-
-        BigInteger tipoConsulta = agenda.getTipoConsulta().getIdTipoConsulta();
-        TipoConsultaEntity tipoConsultaEntity = tipoConsultaRepository.findById(tipoConsulta).get();
-
-        BigInteger periodo = agenda.getPeriodo().getIdPeriodo();
-        PeriodoEntity periodoEntity = periodoRepository.findById(periodo).get();
-
-        agendaEntity.setMedico(usuarioEntity);
-        agendaEntity.setTipoConsulta(tipoConsultaEntity);
-        agendaEntity.setPeriodo(periodoEntity);
-        agendaEntity.setData(agenda.getData());
-        agendaEntity.setDisponibilidade(1);
-
-        agendaRepository.save(agendaEntity);
-
-        return "Agenda cadastrada com sucesso!";
-    }
-
     //Cadastrar lista de agendas (Grupo 4)
     @Transactional
     public String cadastrarAgendaPorDia(Date data, List<Agenda> agendasNova) {
