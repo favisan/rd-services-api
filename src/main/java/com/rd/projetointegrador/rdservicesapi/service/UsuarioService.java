@@ -336,7 +336,7 @@ public class UsuarioService {
 
     //CADASTRAR MEDICO OK
     @Transactional
-    public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
+    public boolean cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
 
         UsuarioEntity entity = new UsuarioEntity();
 
@@ -402,7 +402,7 @@ public class UsuarioService {
 
         loginUsuarioRepository.save(loginUsuarioEntity);
 
-        return "Usuário cadastrado com sucesso";
+        return true;
     }
 
     //EXIBIR TELA DE PERFIL DO MEDICO OK
