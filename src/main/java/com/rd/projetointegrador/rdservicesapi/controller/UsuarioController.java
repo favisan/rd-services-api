@@ -111,8 +111,6 @@ public class UsuarioController {
     public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {
         if (service.consultarPorCpfMedico(inputMedico.getNrCpf()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
-        }else if (loginUsuarioRepository.findByDsEmail(inputMedico.getLogin().getDsEmail()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(inputMedico));
         }
