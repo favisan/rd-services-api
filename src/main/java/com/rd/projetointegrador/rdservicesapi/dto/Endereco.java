@@ -20,4 +20,6 @@ public class Endereco {
 
     private BigInteger idCidade;
 
+    private BigInteger idUf;
+
 }

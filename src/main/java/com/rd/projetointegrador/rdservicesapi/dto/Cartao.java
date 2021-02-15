@@ -23,5 +23,6 @@ public class Cartao {
     private Date dtValidade;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtEmissao;
+    private String nmNome;
     //private BigInteger idPaciente;
 }
