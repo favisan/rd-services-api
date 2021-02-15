@@ -82,32 +82,28 @@ public class AgendaService {
         List<Agenda> agendas = new ArrayList<>();
         agendas = converterAgendasToDTO(agendasEntity, agendas);
 
-        List<AgendaOutput> horarios = new ArrayList<>();
-        //AgendaOutput agendaOutput = new AgendaOutput();
+        List<AgendaOutput> agendasOutput = new ArrayList<>();
 
         if (agendas.size() == 0) {
             List<Periodo> periodos = periodoService.listarPeriodos();
 
-            for (AgendaOutput agendaOutput : horarios){
                 for (Periodo periodo : periodos) {
+                    AgendaOutput agendaOutput = new AgendaOutput();
                     agendaOutput.setPeriodo(periodo);
+                    agendaOutput.setDisponibilidade(1);
+                    agendasOutput.add(agendaOutput);
                 }
-                agendaOutput.setDisponibilidade(1);
-                horarios.add(agendaOutput);
-            }
-
-
-            return horarios;
+            return agendasOutput;
         }
 
-//        for (Agenda agenda : agendas) {
-//
-//            agendaOutput.setPeriodo(agenda.getPeriodo());
-//            agendaOutput.setDisponibilidade(agenda.getDisponibilidade());
-//            horarios.add(agendaOutput);
-//        }
+        for (Agenda agenda : agendas) {
+            AgendaOutput agendaOutput = new AgendaOutput();
+            agendaOutput.setPeriodo(agenda.getPeriodo());
+            agendaOutput.setDisponibilidade(agenda.getDisponibilidade());
+            agendasOutput.add(agendaOutput);
+        }
 
-        return horarios;
+        return agendasOutput;
     }
 
     public List<Agenda> getAgendasPorData(Date data) {

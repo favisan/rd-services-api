@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
+import com.rd.projetointegrador.rdservicesapi.dto.Periodo;
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
