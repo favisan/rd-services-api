@@ -73,7 +73,7 @@ public class AgPacienteService {
 
     //Grupo 2 - Cadastrar nova Agenda de Paciente
     @Transactional
-    public RespostaString setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
+    public BigInteger setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
         //mudando status da consulta para agendada
@@ -86,10 +86,8 @@ public class AgPacienteService {
         //mudando disponibilidade da agenda médica para agendada
         agPacienteEntity.getAgenda().setDisponibilidade(2);
         repository.save(agPacienteEntity);
-        RespostaString resposta = new RespostaString();
-        resposta.setResposta("Consulta agendada com sucesso!");
 
-        return resposta;
+        return agPacienteEntity.getIdAgPaciente();
     }
 
     //Grupo 2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
