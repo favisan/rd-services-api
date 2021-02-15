@@ -32,21 +32,29 @@ public class LoginUsuarioController {
                 .body(service.getAcessoByEmail(email));
     }
 
-    @GetMapping("/login/esqueceu-senha/{email}") // BUSCA POR E-MAIL
-    public ResponseEntity esqueceuASenha(@PathVariable("email") String email) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.esqueceuASenha(email));
-    }
-
     @GetMapping("/login") //Busca de todos os logins
     public ResponseEntity getAcessos() {
         List<LoginUsuarioEntity> acessos = service.getAcessos();
         return ResponseEntity.status(HttpStatus.OK).body(acessos);
     }
 
+    //PÁGINA LOGIN CLIENTE -------------------------------------------------------------------------------
+    @PostMapping("/login/cliente")
+    public ResponseEntity getAcessoCliente(@RequestBody LoginUsuario login) throws NoSuchAlgorithmException {
+        return service.validarAcessoCliente(login);
+    }
+
+    @PostMapping("/login/esqueceu-senha") // BUSCA POR E-MAIL
+    public ResponseEntity esqueceuASenha(@RequestBody String email) {
+        return service.esqueceuASenha(email);
+    }
+
+    //-----------------------------------------------------------------------------------------------------
+
+
     @PostMapping("/login") //Cadastrar Novo Login
-    public ResponseEntity cadastrarAcesso(@RequestBody LoginUsuario login, BigInteger idUsuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAcesso(login, idUsuario));
+    public ResponseEntity cadastrarAcesso(@RequestBody LoginUsuario login) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAcesso(login));
 
     }
 
@@ -66,25 +74,28 @@ public class LoginUsuarioController {
         }
     }
 
+
+
     //GRUPO4
-    //VALIDAR ACESSO OK
+    //VALIDAR ACESSO
     @GetMapping("/login/medico")
     public ResponseEntity getAcesso(@RequestBody LoginUsuario login) throws NoSuchAlgorithmException {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.validarAcesso(login));
+            String retorno = service.validarAcesso(login);
+            return ResponseEntity.status(HttpStatus.OK).body(retorno);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }
     }
 
-    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO OK
+    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
     @PutMapping("/login/{idUsuario}")
     public ResponseEntity alterarAcesso(@RequestBody LoginUsuario login, @PathVariable("idUsuario") BigInteger idUsuario) throws NoSuchAlgorithmException {
         String retorno = service.alterarDadosLogin(login, idUsuario);
         return ResponseEntity.ok().body(retorno);
     }
 
-    //ESQUECI A SENHA OK
+    //ESQUECI A SENHA
     @GetMapping("/esqueci")
     public ResponseEntity acessoSemSenha(@RequestBody OutputMedico medico) {
         try{

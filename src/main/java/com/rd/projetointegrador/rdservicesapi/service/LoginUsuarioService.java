@@ -1,12 +1,15 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
+import com.rd.projetointegrador.rdservicesapi.dto.ResultData;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +27,16 @@ public class LoginUsuarioService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private UsuarioService usuarioService;
 
+    //CRIPTOGRAFAR SENHA USUARIO
+    public String codificar(String senha) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
+            return hash.toString(1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
     //MÉTODO: conversão de DTO para Entity
     public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity){
@@ -84,40 +97,55 @@ public class LoginUsuarioService {
         return loginUsuario;
     }
 
-    //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
+    //PÁGINA DE LOGIN CLIENTE ------------------------------------------------------------------------
+    //VALIDAR LOGIN E SENHA DE ACESSO (CLIENTE)
     @Transactional
-    public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
+    public ResponseEntity validarAcessoCliente(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
 
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
-        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
-        String login = loginUsuarioEntity.getDsEmail();
-        String senha = loginUsuarioEntity.getDsSenha();
+        try {
+            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+            String login = loginUsuarioEntity.getDsEmail();
+            String senha = loginUsuarioEntity.getDsSenha();
 
-        if (emailTela.equals(login) && senhaTela.equals(senha)) {
-            return " acesso permitido";
-        } else {
-            return "acesso negado";
+            if (emailTela.equals(login) && senhaTela.equals(senha)) {
+
+                loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Acesso Permitido", loginUsuario);
+                return ResponseEntity.status(HttpStatus.OK).body(resultData);
+            } else {
+                ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário ou Senha incorretos!");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+            }
+
+        } catch(Exception e) {
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Acesso inexistente.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
+
     }
 
     //MÉTODO ESQUECI A SENHA
-    public String esqueceuASenha(String email) {
+    public ResponseEntity esqueceuASenha(String email) {
 
         try {
             LoginUsuarioEntity loginExistente = getAcessoByEmail(email);
-            System.out.println(loginExistente.getDsSenha() + loginExistente.getDsEmail());
 
             //TOOO: envio de email para o endereço escolhido?
-            return " Senha de acesso enviada para o email de cadastro";
+            ResultData resultData = new ResultData(HttpStatus.OK.value(), "Senha de acesso enviada para o email de cadastro");
+            return ResponseEntity.status(HttpStatus.OK).body(resultData);
 
         } catch(Exception e) {
-            System.out.println(e.getMessage());
-            return "Não há usuário cadastrado para este e-mail.";
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Não há usuário cadastrado para este e-mail.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
 
     }
+
+    //------------------------------------------------------------------------------------------------
 
     @Transactional
     public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
@@ -140,38 +168,35 @@ public class LoginUsuarioService {
         return "Exclusão de login realizada com sucesso";
 
     }
-    //---OBSOLETO---
-    @Transactional
-    public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
-
-        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-        loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
-
-        loginUsuarioRepository.save(loginUsuarioEntity);
-
-        return "Contrato cadastrado com sucesso";
-    }
 
 
     //GRUPO4
 
-    //CRIPTOGRAFAR SENHA USUARIO OK
-    public String codificar(String senha) throws NoSuchAlgorithmException {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
-            return hash.toString(1);
-        } catch (Exception e) {
-            return "";
+    //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
+    @Transactional
+    public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
+
+        String emailTela = loginUsuario.getDsEmail();
+        String senhaTela = codificar(loginUsuario.getDsSenha());
+
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+        String login = loginUsuarioEntity.getDsEmail();
+        String senha = loginUsuarioEntity.getDsSenha();
+
+        if (emailTela.equals(login) && senhaTela.equals(senha)) {
+            return " acesso permitido";
+        } else {
+            return "acesso negado";
         }
     }
 
-    //ALTERAR SENHA SE ACESSO TELA PERFIL DO MEDICO OK
+    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
     public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
 
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
+        loginUsuarioEntity.setDsEmail(login.getDsEmail());
         loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
 
         UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
@@ -181,7 +206,8 @@ public class LoginUsuarioService {
         return "Alteração realizada com sucesso";
     }
 
-    //VALIDAR DADOS ESQUECEU A SENHA OK
+    //VALIDAR DADOS ESQUECEU A SENHA
+    //TODO
     @Transactional
     public String acessoSemSenha(OutputMedico medico) {
 
@@ -189,16 +215,40 @@ public class LoginUsuarioService {
         String  cpf = medico.getNrCpf();
         String  crm = medico.getNrCrm();
 
-        UsuarioEntity medicoEnt = usuarioService.consultarPorCpfMedico(cpf);
-        String nomeBanco = medicoEnt.getNmNome();
-        String cpfBanco = medicoEnt.getNrCpf();
-        String crmBanco = medicoEnt.getNrCrm();
+        //TODO: Consultar por CPF recebe uma lista de usuários
+//        UsuarioEntity medicoEnt = usuarioService.consultarPorCpf(cpf);
+//        String nomeBanco = medicoEnt.getNmNome();
+//        String cpfBanco = medicoEnt.getNrCpf();
+//        String crmBanco = medicoEnt.getNrCrm();
 
-        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
-            return " senha de acesso enviada para o email de cadastro";
-        } else {
-            return "acesso negado";
-        }
+//        if (nome.equals(nomeBanco) && cpf.equals(cpfBanco) && crm.equals(crmBanco)) {
+//            return " senha de acesso enviada para o email de cadastro";
+//        } else {
+//            return "acesso negado";
+//        }
+
+        return "";
     }
-}
 
+
+    //---OBSOLETO---
+    @Transactional
+    public String cadastrarAcesso(LoginUsuario login){
+
+        LoginUsuarioEntity loginUsuarioEntityEx = loginUsuarioRepository.findById(login.getIdUsuario()).get();
+
+        if(loginUsuarioEntityEx == null) {
+            LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+            loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
+
+            loginUsuarioEntity = loginUsuarioRepository.save(loginUsuarioEntity);
+
+            return "Login cadastrado com sucesso. Id: " + loginUsuarioEntity.getIdUsuario();
+        }
+
+        return "Login já existe";
+
+    }
+
+
+}
