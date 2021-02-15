@@ -127,16 +127,16 @@ public class SolicExameService {
 
     }
 
-    //FORMULÁRIO INICIAL
-    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico){
-        SolicExameOutput output = new SolicExameOutput();
-        output.setListaTipoExame(tipoRepository.findAll());
-        output.setMedico(usuarioService.getMedico(idMedico));
-        //output.setNomePaciente(....);
-
-        return output;
-
-    }
+//    //FORMULÁRIO INICIAL
+//    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico){
+//        SolicExameOutput output = new SolicExameOutput();
+//        output.setListaTipoExame(tipoRepository.findAll());
+//        output.setMedico(usuarioService.getMedico(idMedico));
+//        //output.setNomePaciente(....);
+//
+//        return output;
+//
+//    }
 
 
 

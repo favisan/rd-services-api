@@ -22,47 +22,47 @@ public class UsuarioController {
     @Autowired
     UsuarioService service;
 
-    @GetMapping("/usuario/{idUsuario}") // BUSCA POR ID
-    public ResponseEntity getUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.getUsuarioDTO(idUsuario));
-    }
+//    @GetMapping("/usuario/{idUsuario}") // BUSCA POR ID
+//    public ResponseEntity getUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(service.getUsuarioDTO(idUsuario));
+//    }
 
-    @GetMapping("/usuario")
-    public ResponseEntity getUsuarios(@PathParam("idUsuario") BigInteger idUsuario){
-        List<Usuario> usuarios = service.getUsuariosDTO();
-        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
-    }
+//    @GetMapping("/usuario")
+//    public ResponseEntity getUsuarios(@PathParam("idUsuario") BigInteger idUsuario){
+//        List<Usuario> usuarios = service.getUsuariosDTO();
+//        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+//    }
 
-    @PostMapping("/usuario") //Cadastrar Novo Usuario
-    public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(usuario));
-    }
+//    @PostMapping("/usuario") //Cadastrar Novo Usuario
+//    public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(usuario));
+//    }
 
-    @PutMapping("/usuario/{idUsuario}") // Alterar Usuario
-    public ResponseEntity alterarUsuario(@RequestBody Usuario usuario, @PathVariable("idUsuario") BigInteger idUsuario){
-        String retorno = service.alterarUsuario(usuario, idUsuario);
-        return ResponseEntity.ok().body(retorno);
+//    @PutMapping("/usuario/{idUsuario}") // Alterar Usuario
+//    public ResponseEntity alterarUsuario(@RequestBody Usuario usuario, @PathVariable("idUsuario") BigInteger idUsuario){
+//        String retorno = service.alterarUsuario(usuario, idUsuario);
+//        return ResponseEntity.ok().body(retorno);
+//
+//    }
 
-    }
+//    @DeleteMapping("/usuario/{idUsuario}") //Excluir Usuario
+//    public ResponseEntity excluirUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.excluirUsuario(idUsuario));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir usuário");
+//        }
+//    }
 
-    @DeleteMapping("/usuario/{idUsuario}") //Excluir Usuario
-    public ResponseEntity excluirUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.excluirUsuario(idUsuario));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir usuário");
-        }
-    }
-
-    @GetMapping("/medico/{id}")
-    public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.getMedico(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar médico");
-        }
-    }
+//    @GetMapping("/medico/{id}")
+//    public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.getMedico(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar médico");
+//        }
+//    }
 
     //GRUPO4
     //LISTAR TODOS OS MEDICOS
@@ -76,22 +76,22 @@ public class UsuarioController {
         }
     }
 
-    //EXIBIR TELA DE PERFIL DO MEDICO
-    @GetMapping("/perfilMedico/{idMedico}")
-    public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idUf") BigInteger idUf){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaPerfil(idMedico));
-    }
+//    //EXIBIR TELA DE PERFIL DO MEDICO
+//    @GetMapping("/perfilMedico/{idMedico}")
+//    public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idUf") BigInteger idUf){
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(service.mostrarTelaPerfil(idMedico));
+//    }
 
-    //ALTERAR CADASTRO DE PERFIL DO MEDICO
-    @PutMapping("/medico/{idUsuario}")
-    public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
-        try{ String retorno = service.alterarMedico(inputMedico, id);
-            return ResponseEntity.ok().body(retorno);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar dados");
-        }
-    }
+//    //ALTERAR CADASTRO DE PERFIL DO MEDICO
+//    @PutMapping("/medico/{idUsuario}")
+//    public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
+//        try{ String retorno = service.alterarMedico(inputMedico, id);
+//            return ResponseEntity.ok().body(retorno);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar dados");
+//        }
+//    }
 
     //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
     @GetMapping("/cadastroMedico/{idUf}")
@@ -100,13 +100,13 @@ public class UsuarioController {
                 .body(service.mostrarTelaCadastro(idUf));
     }
 
-    //CADASTRAR MEDICO
-    @PostMapping("/medico")
-    public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {
-        if (service.consultarPorCpf(inputMedico.getNrCpf()) != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
-        } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(inputMedico));
-        }
-    }
+//    //CADASTRAR MEDICO
+//    @PostMapping("/medico")
+//    public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {
+//        if (service.consultarPorCpf(inputMedico.getNrCpf()) != null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(inputMedico));
+//        }
+//    }
 }

@@ -43,14 +43,14 @@ public class SolicExameController {
         }
     }
 
-    @GetMapping("/solic_exame/{idMedico}")
-    public ResponseEntity preencherSolicitacaoInicial(@PathVariable("idMedico") BigInteger idMedico) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao recuperar informações pré cadastradas no formulário.");
-        }
-    }
+//    @GetMapping("/solic_exame/{idMedico}")
+//    public ResponseEntity preencherSolicitacaoInicial(@PathVariable("idMedico") BigInteger idMedico) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.preencherSolicitacaoInicial(idMedico));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao recuperar informações pré cadastradas no formulário.");
+//        }
+//    }
 
 
 //    @GetMapping("/solic_exame")

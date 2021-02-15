@@ -1,27 +1,15 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.*;
-import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.TipoConsultaRepository;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import com.rd.projetointegrador.rdservicesapi.entity.PeriodoEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.TipoConsultaEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.PeriodoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 
 import org.springframework.transaction.annotation.Transactional;
-
 import java.text.ParseException;
 import java.util.Date;
 
@@ -32,46 +20,12 @@ public class AgendaService {
     @Autowired private AgendaRepository agendaRepository;
     @Autowired private TipoConsultaRepository tipoConsultaRepository;
     @Autowired private PeriodoRepository periodoRepository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
 
-    public Set<EspMed> getEspByAgenda() {
-        List<AgendaEntity> agendas = agendaRepository.findAll();
-        List<AgendaEntity> agendasDisponiveis = new ArrayList<>();
-        for (AgendaEntity agendaEntity : agendas){
-            if (agendaEntity.getDisponibilidade() == 1){
-                agendasDisponiveis.add(agendaEntity);
-            }
-        }
-
-        List<UsuarioEntity> usuarios = new ArrayList<>();
-        for (AgendaEntity agendaEntity : agendasDisponiveis) {
-            UsuarioEntity usuario = agendaEntity.getMedico();
-            usuarios.add(usuario);
-        }
-        Set<EspMedEntity> especialidadesEntity = new HashSet<>();
-        for (UsuarioEntity usuarioEntity : usuarios) {
-            EspMedEntity especialidade = usuarioEntity.getEspMed();
-            if (especialidade != null) {
-                especialidadesEntity.add(especialidade);
-            }
-        }
-        Set<EspMed> especialidadesDto = new HashSet<>();
-        for (EspMedEntity espMedEntity : especialidadesEntity){
-            EspMed espMedDto = new EspMed();
-            espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
-            espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
-            especialidadesDto.add(espMedDto);
-        }
-        return especialidadesDto;
-    }
-
-
-
-
-
-
-    public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
+    //Grupo2 - Lista de agendas médicas disponíveis por especialidade e por tipo de consulta
+     public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
-
+        //Se consulta=2, retornar as agendas com status presencial; se consulta=1(online), traz todas as agendas
         if(idConsulta.intValue() == 2){
             agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
         } else {
@@ -82,10 +36,12 @@ public class AgendaService {
         for (AgendaEntity agenda : agendaPorTipoConsulta) {
             BigInteger espMedAgenda = agenda.getMedico().getEspMed().getIdEspMed();
             Integer disponibilidade = agenda.getDisponibilidade();
+            //filtra pela especialidade escolhida e pela disponibilidade
             if (espMedAgenda.equals(idEsp) && disponibilidade==1 ) {
                 agendaFinal.add(agenda);
             }
         }
+        //convertendo a lista de agendaEntity em agendaDTO
         for (AgendaEntity agendaEntity : agendaFinal){
             Agenda agendaDto = new Agenda();
             agendaDto.setIdAgenda(agendaEntity.getIdAgenda());
@@ -108,6 +64,16 @@ public class AgendaService {
             agendasDto.add(agendaDto);
         }
         return agendasDto;
+    }
+
+    //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada
+    @Transactional
+    public RespostaString mudarDisponibilidadeParaAgendada(BigInteger idAgPaciente){
+        AgPacienteEntity agPaciente = agPacienteRepository.findByIdAgPaciente(idAgPaciente).get();
+        agPaciente.getAgenda().setDisponibilidade(2);
+        RespostaString resposta = new RespostaString();
+        resposta.setResposta("Consulta agendada");
+        return resposta;
     }
 
     public List<AgendaEntity> getAgendas() {

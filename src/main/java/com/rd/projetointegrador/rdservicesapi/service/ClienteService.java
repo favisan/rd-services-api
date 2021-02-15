@@ -56,32 +56,32 @@ public class ClienteService {
 
         if(usuarioExistente.isEmpty() && loginExistente == null) {
 
-            //Passando dados do Usuário
-            usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
-            usuarioEntity = usuarioRepository.save(usuarioEntity);
-            BigInteger novoId = usuarioEntity.getIdUsuario();
+//            //Passando dados do Usuário
+//            usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
+//            usuarioEntity = usuarioRepository.save(usuarioEntity);
+//            BigInteger novoId = usuarioEntity.getIdUsuario();
 
-            //Entidade LoginUsuario
-            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
-            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
-            loginUsuarioRepository.save(loginUsuarioEntity);
+//            //Entidade LoginUsuario
+//            inputUsuario.getLoginUsuario().setIdUsuario(novoId);
+//            loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
+//            loginUsuarioRepository.save(loginUsuarioEntity);
 
 //            //Entidade Contrato
 //            inputUsuario.getContrato().setIdUsuario(novoId);
 //            contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
 //            contratoRepository.save(contratoEntity);
 
-            //Entidade Cartao
-            inputUsuario.getCartao().setIdUsuario(novoId);
-            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-            cartaoRepository.save(cartaoEntity);
+//            //Entidade Cartao
+//            inputUsuario.getCartao().setIdUsuario(novoId);
+//            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+//            cartaoRepository.save(cartaoEntity);
 
-            //Entidade Contato
-            ContatoEntity contatoEntity = new ContatoEntity();
-            contatoEntity.setIdUsuario(novoId);
-            contatoEntity.setNrDdd(inputUsuario.getDdd());
-            contatoEntity.setDsContato(inputUsuario.getCelular());
-            contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
+//            //Entidade Contato
+//            ContatoEntity contatoEntity = new ContatoEntity();
+//            contatoEntity.setIdUsuario(novoId);
+//            contatoEntity.setNrDdd(inputUsuario.getDdd());
+//            contatoEntity.setDsContato(inputUsuario.getCelular());
+//            contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
 
             //Entidade Endereço
 //          List<Endereco> enderecos = inputUsuario.getUsuario().getEnderecos();

@@ -34,7 +34,7 @@ public class CartaoController {
                 .body(service.getCartao(idCartao));
     }
 
-    //GRUPO2
+    //GRUPO2 - Listar cartões pela Id do Usuario
     @GetMapping("/cartoes/{idUsuario}")
     public ResponseEntity verCartaoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getCartaobyUsuario(usuarioService.getUsuario(idUsuario)));

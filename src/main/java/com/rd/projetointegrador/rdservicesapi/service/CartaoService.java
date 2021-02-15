@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CartaoService {
@@ -20,11 +23,12 @@ public class CartaoService {
 
     @Autowired private CartaoRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private UsuarioService usuarioService;
 
     //MÉTODO: conversão de DTO para Entity
     public CartaoEntity conversaoCartaoEntity(Cartao cartao, CartaoEntity cartaoEntity) {
 
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getIdUsuario()).get();
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
 
         cartaoEntity.setNrCartao(cartao.getNrCartao());
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
@@ -41,7 +45,9 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
-        cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
+        Usuario usuario = new Usuario();
+        usuario = usuarioService.conversaoUsuarioDTO(cartaoEntity.getUsuario(), usuario);
+        cartao.setUsuario(usuario);
 
         return cartao;
     }
@@ -63,18 +69,25 @@ public class CartaoService {
 
     }
 
-    //GRUPO2
-    public List<CartaoEntity> getCartaobyUsuario(UsuarioEntity usuario) {
+    //Grupo2 - Listar os cartões pela id do Usuario
+    public List<Cartao> getCartaobyUsuario(UsuarioEntity usuario) {
         List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
-        return listaCartoes;
-    }
+        List<Cartao> listaCartaoDTO = new ArrayList<>();
+        //Convertendo CartaoEntity em CartaoDTO
+        for (CartaoEntity cartaoEntity: listaCartoes){
+            Cartao cartaoDTO = new Cartao();
+            Cartao cartaoConversao = conversaoCartaoDTO(cartaoEntity, cartaoDTO);
+            listaCartaoDTO.add(cartaoConversao);
+        }
+        return listaCartaoDTO;
+   }
 
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
 
-            if(usuarioRepository.existsById(cartao.getIdUsuario())) {
+            if(usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
                 repository.save(cartaoEntity);
 
                 return "Cartao Cadastrado com sucesso";
