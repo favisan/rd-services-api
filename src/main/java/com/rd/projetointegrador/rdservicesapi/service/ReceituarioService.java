@@ -21,7 +21,6 @@ public class ReceituarioService {
 
     @Autowired private UsuarioRepository usuarioRepository;
 
-
     @Autowired private TipoReceitaRepository tipoReceitaRepository;
 
     //Service
@@ -36,6 +35,8 @@ public class ReceituarioService {
     @Autowired private UsuarioService usuarioService;
 
     @Autowired private EnderecoService enderecoService;
+
+    @Autowired private MedicoService medicoService;
 
     //Consultar receituário por Id
     public ReceituarioEntity exibirReceituarioPorId(BigInteger idReceituario){
@@ -97,8 +98,7 @@ public class ReceituarioService {
 
         //PEGAR A DTO Usuario paciente
         Usuario paciente = new Usuario();
-        paciente.setIdUsuario(receituarioEntity.getPaciente().getIdUsuario());
-        paciente.setNmNome(receituarioEntity.getPaciente().getNmNome());
+        paciente = usuarioService.conversaoUsuarioDTO(receituarioEntity.getPaciente(), paciente);
 
         //PEGAR A DTO Prontuario
         Prontuario prontuario = new Prontuario();
@@ -108,6 +108,10 @@ public class ReceituarioService {
         prontuario.setDsAvaliacao(receituarioEntity.getProntuario().getDsAvaliacao());
         prontuario.setDsPlano(receituarioEntity.getProntuario().getDsPlano());
         prontuario.setDsObservacoes(receituarioEntity.getProntuario().getDsObservacoes());
+
+        //PEGAR A DTO OutputMedico medico
+        OutputMedico medico = new OutputMedico();
+        medico = medicoService.conversaoOutputMedicoDTO(receituarioEntity.getMedico(), medico);
 
         //PEGAR A DTO Tipo de receita
         TipoReceita tipoReceita = new TipoReceita();
@@ -134,8 +138,7 @@ public class ReceituarioService {
         receituario.setIdReceituario(receituarioEntity.getIdReceituario());
         receituario.setPaciente(paciente);
         receituario.setProntuario(prontuario);
-        //falta pegar o objeto medico
-        //receituario.setMedico(usuarioService.getMedico(receituarioEntity.getMedico().getIdUsuario()));
+        receituario.setMedico(medico);
         receituario.setTipoReceita(tipoReceita);
         receituario.setDtEmissao(receituarioEntity.getDtEmissao());
         receituario.setDsEndImgAssMed(receituarioEntity.getDsEndImgAssMed());
