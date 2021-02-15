@@ -10,6 +10,9 @@ import com.rd.projetointegrador.rdservicesapi.entity.CartaoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
@@ -24,28 +27,41 @@ public class CartaoService {
 
     @Autowired private UsuarioService usuarioService;
 
+    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+
     //MÉTODO: conversão de DTO para Entity
     public CartaoEntity conversaoCartaoEntity(Cartao cartao, CartaoEntity cartaoEntity) {
 
         UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
 
+        try {
         cartaoEntity.setNrCartao(cartao.getNrCartao());
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-        cartaoEntity.setDtValidade(cartao.getDtValidade());
-        cartaoEntity.setDtEmissao(cartao.getDtEmissao());
+
+        Date dataValidade = SDF2.parse(cartao.getDtValidade());
+        cartaoEntity.setDtValidade(dataValidade);
+        Date dataEmissao = SDF2.parse(cartao.getDtEmissao());
+        cartaoEntity.setDtEmissao(dataEmissao);
+
         cartaoEntity.setNmNome(cartao.getNmNome());
         cartaoEntity.setUsuario(usuarioEntity);
-
-
-        return cartaoEntity;
+            return cartaoEntity;
+        } catch(ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
     //MÉTODO: conversão de Entity para DTO
     public Cartao conversaoCartaoDTO(CartaoEntity cartaoEntity, Cartao cartao) {
 
         cartao.setNrCartao(cartaoEntity.getNrCartao());
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
-        cartao.setDtValidade(cartaoEntity.getDtValidade());
-        cartao.setDtEmissao(cartaoEntity.getDtEmissao());
+
+        String dtValidade = SDF.format(cartaoEntity.getDtValidade());
+        cartao.setDtValidade(dtValidade);
+        String dtEmissao = SDF.format(cartaoEntity.getDtEmissao());
+        cartao.setDtEmissao(dtEmissao);
         cartao.setNmNome( cartaoEntity.getNmNome());
 
         Usuario usuario = new Usuario();

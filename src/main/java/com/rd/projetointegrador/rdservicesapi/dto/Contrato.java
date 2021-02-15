@@ -17,7 +17,7 @@ public class Contrato {
     private BigInteger idContrato;
     private String dsContrato;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtVigencia;
+    private String dtVigencia;
     private Planos plano;
     private BigInteger idUsuario;
 

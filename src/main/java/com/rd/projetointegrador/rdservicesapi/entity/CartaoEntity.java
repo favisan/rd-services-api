@@ -13,7 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 
 @Entity
-
 @Table (name="TB_CARTAO")
 @Data
 public class CartaoEntity implements Serializable{

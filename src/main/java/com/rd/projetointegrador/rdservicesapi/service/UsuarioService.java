@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -36,36 +39,53 @@ public class UsuarioService {
     @Autowired private CidadeService cidadeService;
     @Autowired private LoginUsuarioService loginUsuarioService;
 
+    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+
 
     //MÉTODO: conversão de DTO para Entity
     public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
 
-        GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
-        usuarioEntity.setGenero(genero);
+        try {
+            GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
+            usuarioEntity.setGenero(genero);
 
-        EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
-        usuarioEntity.setEspMed(espMedEntity);
+            if(usuario.getIdEspMedica() != null) {
+                EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
+                usuarioEntity.setEspMed(espMedEntity);
+            }
 
-        UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
-        usuarioEntity.setUf(ufEntity);
+            if(usuario.getIdUfCrm() != null) {
+                UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
+                usuarioEntity.setUf(ufEntity);
+            }
 
-        PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
-        usuarioEntity.setPreco(precoEntity);
+            if(usuario.getIdPreco() != null) {
+                PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
+                usuarioEntity.setPreco(precoEntity);
+            }
 
-        List<EnderecoEntity> enderecosEntities = new ArrayList();
-        enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
-        usuarioEntity.setEnderecos(enderecosEntities);
+            List<EnderecoEntity> enderecosEntities = new ArrayList();
+            enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
+            usuarioEntity.setEnderecos(enderecosEntities);
 
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
-        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+            TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
+            usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
 
-        usuarioEntity.setNmNome(usuario.getNmNome());
-        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
-        usuarioEntity.setNrCpf(usuario.getNrCpf());
-        usuarioEntity.setNrCrm(usuario.getNrCrm());
-        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+            usuarioEntity.setNmNome(usuario.getNmNome());
+            Date dataNascimento = SDF2.parse(usuario.getDtNascimento());
+            usuarioEntity.setDtNascimento(dataNascimento);
+            usuarioEntity.setNrCpf(usuario.getNrCpf());
+            usuarioEntity.setNrCrm(usuario.getNrCrm());
+            usuarioEntity.setDsEndImg(usuario.getDsEndImg());
 
-        return usuarioEntity;
+            return usuarioEntity;
+
+        } catch(ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
     //MÉTODO: conversão de Entity para DTO
     public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
@@ -98,7 +118,8 @@ public class UsuarioService {
 
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
         usuario.setNmNome(usuarioEntity.getNmNome());
-        usuario.setDtNascimento(usuarioEntity.getDtNascimento());
+        String dtNascimento = SDF.format(usuarioEntity.getDtNascimento());
+        usuario.setDtNascimento(dtNascimento);
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
