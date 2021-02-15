@@ -25,6 +25,7 @@ public class ClienteService {
     @Autowired private ContatoRepository contatoRepository;
     @Autowired private TipoContatoRepository tipoContatoRepository;
     @Autowired private EnderecoRepository enderecoRepository;
+    @Autowired private PlanosRepository planosRepository;
 
     //services
     @Autowired private UfService ufService;
@@ -129,10 +130,10 @@ public class ClienteService {
             //buscar lista de contatos
             List<ContatoEntity> contatosEntities = contatoRepository.findByIdUsuario(id);
 
-            formularioMeusDados.setUsuario(usuario);
-            formularioMeusDados.setDsEmail(email);
-            formularioMeusDados.setContatos(null); //TODO!!!
-            formularioMeusDados.setIdPlano(idPlanoVigente);
+//            formularioMeusDados.setUsuario(usuario);
+//            formularioMeusDados.setDsEmail(email);
+//            formularioMeusDados.setContatos(null); //TODO!!!
+//            formularioMeusDados.setIdPlano(idPlanoVigente);
 
         }
 
@@ -147,13 +148,19 @@ public class ClienteService {
         AreaDoCliente areaDoCliente = new AreaDoCliente();
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
 
+        //TODO
+        //  Contrato contratoEntitiy = contratoRepository.findByUsuario(usuarioEntity);
+        //Planos plano = planosRepository.findById(usuarioEntity.get)
+
         areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
         areaDoCliente.setNmNome( usuarioEntity.getNmNome());
 
         List<Lembrete> lembretes = lembreteService.getLembretesIdPaciente(idUsuario);
-        areaDoCliente.setLembrete(lembretes);
+        areaDoCliente.setLembretes(lembretes);
 
         return areaDoCliente;
     }
+
+
 
 }
