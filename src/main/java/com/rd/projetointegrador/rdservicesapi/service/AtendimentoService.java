@@ -109,7 +109,6 @@ public class AtendimentoService {
     public List<Atendimento> consultarPorIdMedico(BigInteger id){
 
         UsuarioEntity medico = usuarioRepository.findById(id).get();
-        //List<AtendimentoEntity> atendimentos = repository.findByMedico(medico);
         List<AtendimentoEntity>  atendData = repository.findByMedicoOrderByDtAtendimentoDesc(medico);
         List<Atendimento> atendList = converterEntityToDTO(atendData);
 

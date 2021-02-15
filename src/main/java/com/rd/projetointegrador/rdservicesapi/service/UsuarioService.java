@@ -251,7 +251,16 @@ public class UsuarioService {
             Endereco endereco = new Endereco();
             endereco.setDsEndereco(enderecoEntity.getDsEndereco());
             endereco.setDsBairro(enderecoEntity.getDsBairro());
-            endereco.setIdCidade(enderecoEntity.getIdCidade());
+            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+            Cidade cidade = new Cidade();
+            cidade.setIdCidade(cidadeEntity.getIdCidade());
+            cidade.setDsCidade(cidadeEntity.getDsCidade());
+            UfEntity ufEntity1 = enderecoEntity.getCidade().getUf();
+            Uf uf1 = new Uf();
+            uf.setIdUf(ufEntity1.getIdUf());
+            uf.setDsUf(ufEntity1.getDsUf());
+            cidade.setUf(uf);
+            endereco.setCidade(cidade);
             endereco.setDsComplemento(enderecoEntity.getDsComplemento());
             endereco.setNrCep(enderecoEntity.getNrCep());
 
@@ -296,7 +305,11 @@ public class UsuarioService {
         List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
-            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+            Cidade cidade = new Cidade();
+            cidade.setIdCidade(cidadeEntity.getIdCidade());
+            cidade.setDsCidade(cidadeEntity.getDsCidade());
+            endereco.setCidade(cidade);
             enderecoEntity.setDsComplemento(endereco.getDsComplemento());
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
             enderecoEntity.setDsBairro(endereco.getDsBairro());
@@ -346,8 +359,11 @@ public class UsuarioService {
         List<EnderecoEntity> enderecosEntity = new ArrayList<>();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
-            CidadeEntity cidadeEntity = new CidadeEntity();
-            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+            Cidade cidade = new Cidade();
+            cidade.setIdCidade(cidadeEntity.getIdCidade());
+            cidade.setDsCidade(cidadeEntity.getDsCidade());
+            endereco.setCidade(cidade);
             enderecoEntity.setDsComplemento(endereco.getDsComplemento());
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
             enderecoEntity.setDsBairro(endereco.getDsBairro());

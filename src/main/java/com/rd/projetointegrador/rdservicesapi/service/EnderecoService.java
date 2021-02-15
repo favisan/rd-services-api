@@ -1,7 +1,9 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.rd.projetointegrador.rdservicesapi.dto.Cidade;
 import com.rd.projetointegrador.rdservicesapi.dto.Endereco;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
+import com.rd.projetointegrador.rdservicesapi.entity.CidadeEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EnderecoEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.EnderecoRepository;
@@ -22,7 +24,11 @@ public class EnderecoService {
         enderecoEntity.setDsEndereco(endereco.getDsEndereco());
         enderecoEntity.setDsBairro(endereco.getDsBairro());
         enderecoEntity.setDsComplemento(endereco.getDsComplemento());
-        enderecoEntity.setIdCidade(endereco.getIdCidade());
+        CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+        Cidade cidade = new Cidade();
+        cidadeEntity.setIdCidade(cidade.getIdCidade());
+        cidadeEntity.setDsCidade(cidade.getDsCidade());
+        enderecoEntity.setCidade(cidadeEntity);
         enderecoEntity.setNrCep(endereco.getNrCep());
 
         return enderecoEntity;
@@ -35,7 +41,11 @@ public class EnderecoService {
         endereco.setDsEndereco(enderecoEntity.getDsEndereco());
         endereco.setDsBairro(enderecoEntity.getDsBairro());
         endereco.setDsComplemento(enderecoEntity.getDsComplemento());
-        endereco.setIdCidade(enderecoEntity.getIdCidade());
+        CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+        Cidade cidade = new Cidade();
+        cidade.setIdCidade(cidadeEntity.getIdCidade());
+        cidade.setDsCidade(cidadeEntity.getDsCidade());
+        endereco.setCidade(cidade);
         endereco.setNrCep(enderecoEntity.getNrCep());
 
         return endereco;
