@@ -103,7 +103,6 @@ public class AgPacienteService {
         respostaMudarStatus.setResposta("Consulta cancelada com sucesso");
 
         return respostaMudarStatus;
-
     }
 
 }

@@ -146,7 +146,7 @@ public class PagamentoService {
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
-    public RespostaString setPagamentoComCartao(PagamentoCartao pagtoCartao){
+    public BigInteger setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         AgPacienteEntity agPaciente = agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get();
         pagamentoEntity.setIdCartao(pagtoCartao.getIdCartao());
@@ -156,14 +156,12 @@ public class PagamentoService {
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
         repository.save(pagamentoEntity);
 
-        RespostaString respostaPagtoCartao = new RespostaString();
-        respostaPagtoCartao.setResposta("Pagamento com cartão cadastrado com sucesso");
-        return respostaPagtoCartao;
+        return pagamentoEntity.getIdPagamento();
     }
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
     @Transactional
-    public RespostaString setPagamentoComPlano(PagamentoPlano pagtoPlano){
+    public BigInteger setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
         ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(pagtoPlano.getIdUsuario()).get());
@@ -171,9 +169,7 @@ public class PagamentoService {
         pagamentoEntity.setIdAgPaciente(pagtoPlano.getIdAgPaciente());
         repository.save(pagamentoEntity);
 
-        RespostaString respostaPagtoPlano = new RespostaString();
-        respostaPagtoPlano.setResposta("Pagamento com plano cadastrado com sucesso");
-        return respostaPagtoPlano;
+        return pagamentoEntity.getIdPagamento();
     }
 
 

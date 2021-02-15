@@ -23,13 +23,13 @@ public class AgPacienteController {
     //Grupo2 - Alterar a disponibilidade da agenda médica para disponível quando o paciente cancela a consulta
     @GetMapping ("/agPaciente/mudar-status/{idAgPaciente}")
     public ResponseEntity cancelarConsulta(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
-        return ResponseEntity.status(HttpStatus.OK).body(service.cancelarAgPaciente(idAgPaciente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cancelarAgPaciente(idAgPaciente));
     }
 
     //Grupo2 - Cadastrar nova Agenda do Paciente
     @PostMapping ("/agPaciente/cadastrar")
     public ResponseEntity cadastrarAgPaciente(@RequestBody CadastroAgPaciente cadastroAgPaciente) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(cadastroAgPaciente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setAgPaciente(cadastroAgPaciente));
     }
 
 }
