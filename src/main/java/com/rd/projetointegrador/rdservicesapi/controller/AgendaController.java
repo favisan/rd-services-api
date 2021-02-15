@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
+import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
@@ -42,7 +43,7 @@ import java.util.List;
         @GetMapping("/agenda")
         public ResponseEntity getAgendas() {
 
-            List<AgendaEntity> agendas = agendaService.getAgendas();
+            List<Agenda> agendas = agendaService.getAgendas();
 
             return ResponseEntity.status(HttpStatus.OK).body(agendas);
         }
@@ -53,7 +54,7 @@ import java.util.List;
 
             try{
                 Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
-                List<AgendaEntity> agendas = agendaService.getAgendasPorData(dt);
+                List<Agenda> agendas = agendaService.getAgendasPorData(dt);
 
                 return ResponseEntity.status(HttpStatus.OK).body(agendas);
 
@@ -69,7 +70,7 @@ import java.util.List;
 
             try {
                 Date data = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
-                List<Time> horarios = agendaService.getHorarios(data);
+                List<AgendaOutput> horarios = agendaService.getHorarios(data);
 
                 return ResponseEntity.status(HttpStatus.OK).body(horarios);
 

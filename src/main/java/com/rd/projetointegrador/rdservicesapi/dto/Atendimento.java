@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -35,7 +36,7 @@ public class Atendimento {
 
     private String dsProblemasSaude;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", locale="pt-BR", timezone = "Brazil/East")
     private Date dtAtendimento;
 
 }

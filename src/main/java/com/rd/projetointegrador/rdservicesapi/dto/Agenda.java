@@ -14,7 +14,7 @@ public class Agenda {
 
     private BigInteger idAgenda;
 
-    private InputMedico medico;
+    private OutputMedico medico;
 
     private TipoConsulta tipoConsulta;
 
