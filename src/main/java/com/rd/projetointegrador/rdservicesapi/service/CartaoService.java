@@ -33,7 +33,9 @@ public class CartaoService {
         cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
         cartaoEntity.setDtValidade(cartao.getDtValidade());
         cartaoEntity.setDtEmissao(cartao.getDtEmissao());
+        cartaoEntity.setNmNome(cartao.getNmNome());
         cartaoEntity.setUsuario(usuarioEntity);
+
 
         return cartaoEntity;
     }
@@ -44,6 +46,7 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
+        cartao.setNmNome( cartaoEntity.getNmNome());
         cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
 
         return cartao;
@@ -73,7 +76,7 @@ public class CartaoService {
 
         repository.save(cartaoEntity);
 
-        System.out.println(cartao.getIdCartao() + " . " + cartao.getNrCartao() + " . " + cartao.getCodSeguranca() + " . " + cartao.getDtValidade() + " . " + cartao.getDtEmissao());
+        System.out.println(cartao.getIdCartao() + " . " + cartao.getNrCartao() + " . " + cartao.getNmNome()  + " . " + cartao.getCodSeguranca() + " . " + cartao.getDtValidade() + " . " + cartao.getDtEmissao());
 
         return "Cartao Cadastrado com sucesso";
 
