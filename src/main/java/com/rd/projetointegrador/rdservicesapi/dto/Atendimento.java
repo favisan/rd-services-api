@@ -1,5 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,8 @@ public class Atendimento {
 
     private Prontuario prontuario;
 
+    private AgPaciente agPaciente;
+
     private Float vlPeso;
 
     private Float vlAltura;
@@ -31,6 +35,7 @@ public class Atendimento {
 
     private String dsProblemasSaude;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtAtendimento;
 
 }

@@ -37,7 +37,7 @@ public class ContatoService {
 
         contato.setIdContato(contatoEntity.getIdContato());
         contato.setIdUsuario(contatoEntity.getIdUsuario());
-        contato.setIdLoja(contatoEntity.getLoja().getIdLoja());
+        //contato.setIdLoja(contatoEntity.getLoja().getIdLoja());
 
         TipoContatoEntity tipoContatoEntity = contatoEntity.getTipoContato();
         TipoContato tipoContato = new TipoContato();

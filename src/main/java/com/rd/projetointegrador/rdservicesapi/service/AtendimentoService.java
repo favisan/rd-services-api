@@ -1,11 +1,8 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Atendimento;
-import com.rd.projetointegrador.rdservicesapi.dto.Prontuario;
-import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
-import com.rd.projetointegrador.rdservicesapi.entity.AtendimentoEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.ProntuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.AgPacienteRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.AtendimentoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,147 +10,217 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AtendimentoService {
 
+    //Repository
     @Autowired private UsuarioRepository usuarioRepository;
-
-    @Autowired private ProntuarioService prontuarioService;
-
     @Autowired private AtendimentoRepository repository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
 
-    public Atendimento buscarAtendimentoId(BigInteger id) {
-        System.out.println("ID: " + id);
-
-        AtendimentoEntity entity = repository.findById(id).get();
-
-        Atendimento atend = new Atendimento();
-
-
-        atend.setIdAtendimento(entity.getIdAtendimento());
-        atend.setVlPeso(entity.getVlPeso());
-        atend.setVlAltura(entity.getVlAltura());
-        atend.setDsHabitosVicios(entity.getDsHabitosVicios());
-        atend.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
-        atend.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
-        atend.setDsProblemasSaude(entity.getDsProblemasSaude());
-        atend.setDtAtendimento(entity.getDtAtendimento());
+    //Service
+    @Autowired private ProntuarioService prontuarioService;
+    @Autowired private UsuarioService usuarioService;
+    @Autowired private MedicoService medicoService;
+    @Autowired private AgPacienteService agPacienteService;
 
 
-        Prontuario prontuario = new Prontuario();
-        prontuario.setIdProntuario(entity.getProntuario().getIdProntuario());
-
-        atend.setProntuario(prontuario);
-
-        return atend;
-
-    }
-
+    //Buscando todos os atendimentos
     public List<Atendimento> listarAtendimentos() {
+
         List<AtendimentoEntity> atendimentoEntity = repository.findAll();
+
         List<Atendimento> atendimentos = new ArrayList<>();
+        atendimentos = converterAtendimentosToDTO(atendimentoEntity, atendimentos);
 
-        for (AtendimentoEntity entity : atendimentoEntity) {
-            Atendimento atend = new Atendimento();
-
-            atend.setIdAtendimento(entity.getIdAtendimento());
-            atend.setVlPeso(entity.getVlPeso());
-            atend.setVlAltura(entity.getVlAltura());
-            atend.setDsHabitosVicios(entity.getDsHabitosVicios());
-            atend.setDsAlergiasRestricoes(entity.getDsAlergiasRestricoes());
-            atend.setDsMedicacaoUsoContinuo(entity.getDsMedicacaoUsoContinuo());
-            atend.setDsProblemasSaude(entity.getDsProblemasSaude());
-            atend.setDtAtendimento(entity.getDtAtendimento());
-
-            Prontuario prontuario = new Prontuario();
-            prontuario = prontuarioService.conversaoProntuarioDto(entity.getProntuario());
-            atend.setProntuario(prontuario);
-            atendimentos.add(atend);
-        }
         return atendimentos;
-
     }
 
-    @Transactional
-    public String cadastrarAtendimento(Atendimento atendimento) {
-        AtendimentoEntity entity = new AtendimentoEntity();
-        entity.setDtAtendimento(atendimento.getDtAtendimento());
-        entity.setDsAlergiasRestricoes(atendimento.getDsAlergiasRestricoes());
-        entity.setDsMedicacaoUsoContinuo(atendimento.getDsMedicacaoUsoContinuo());
-        entity.setDsProblemasSaude(atendimento.getDsProblemasSaude());
-        entity.setDsHabitosVicios(atendimento.getDsHabitosVicios());
-        entity.setVlAltura(atendimento.getVlAltura());
-        entity.setVlPeso(atendimento.getVlPeso());
+    //Buscando atendimento por id
+    public Atendimento buscarAtendimentoId(BigInteger id) {
 
-        UsuarioEntity paciente = usuarioRepository.findById(atendimento.getPaciente().getIdUsuario()).get();
-        UsuarioEntity medico = usuarioRepository.findById(atendimento.getMedico().getIdUsuario()).get();
+        AtendimentoEntity atendEntity = repository.findById(id).get();
 
-        entity.setMedico(medico);
-        entity.setPaciente(paciente);
+        Atendimento atendimento = new Atendimento();
+        atendimento= converterAtendimentoToDTO(atendEntity, atendimento);
 
-        ProntuarioEntity p = prontuarioService.conversaoProntuarioEntity(atendimento.getProntuario());
-        entity.setProntuario(p);
-
-        repository.save(entity);
-
-        return "Cadastro realizado com sucesso!";
+        return atendimento;
     }
 
-
-
+    //Buscando atendimentos por médico
     public List<Atendimento> consultarPorIdMedico(BigInteger id){
 
         UsuarioEntity medico = usuarioRepository.findById(id).get();
+
         List<AtendimentoEntity>  atendData = repository.findByMedicoOrderByDtAtendimentoDesc(medico);
-        List<Atendimento> atendList = converterEntityToDTO(atendData);
 
-        return atendList;
-    }
-
-    private List<Atendimento> converterEntityToDTO(List<AtendimentoEntity> atendimentoEntities){
-        List<Atendimento> atendimentosDto = new ArrayList<>();
-
-        for(AtendimentoEntity atendimentoEntity : atendimentoEntities){
-            Atendimento atendimentoDto = new Atendimento();
-            atendimentoDto.setDtAtendimento(atendimentoEntity.getDtAtendimento());
-            atendimentoDto.setDsProblemasSaude(atendimentoEntity.getDsProblemasSaude());
-            atendimentoDto.setDsMedicacaoUsoContinuo(atendimentoEntity.getDsMedicacaoUsoContinuo());
-            atendimentoDto.setDsAlergiasRestricoes(atendimentoEntity.getDsAlergiasRestricoes());
-            atendimentoDto.setDsHabitosVicios(atendimentoEntity.getDsHabitosVicios());
-            atendimentoDto.setVlAltura(atendimentoEntity.getVlAltura());
-            atendimentoDto.setVlPeso(atendimentoEntity.getVlPeso());
-
-
-           Prontuario prontuario = prontuarioService.conversaoProntuarioDto(atendimentoEntity.getProntuario());
-
-            atendimentoDto.setProntuario(prontuario);
-            atendimentosDto.add(atendimentoDto);
-
-        }
-        return atendimentosDto;
-    }
-
-    public List<AtendimentoEntity> consultarPorCpf(String cpf){
-
-        UsuarioEntity paciente = usuarioRepository.findOneByNrCpf(cpf);
-        List<AtendimentoEntity> atendimentos = repository.findByPaciente(paciente);
+        List<Atendimento> atendimentos = new ArrayList<>();
+        atendimentos = converterAtendimentosToDTO(atendData, atendimentos);
 
         return atendimentos;
     }
 
-//    @Transactional
-//    public String alterarStatusAgPaciente(BigInteger idAgPaciente){
-//        StatusConsultaEntity status = new StatusConsultaEntity();
-//        status.setIdStatusConsulta(BigInteger.valueOf(2));
-//        AgPacienteEntity agPaciente = repository.findById(idAgPaciente).get();
-//        agPaciente.setStatusConsulta(status);
-//        agPacienteEntity = agPacienteRepository.save(agPacienteEntity);
-//
-//        return "Consulta Realizada";
+    //Buscando atendimentos por cpf de paciente
+    public List<Atendimento> consultarPorCpf(String cpf){
+
+        UsuarioEntity paciente = usuarioRepository.findOneByNrCpf(cpf);
+
+        List<AtendimentoEntity> atendPac = repository.findByPaciente(paciente);
+
+        List<Atendimento> atendimentos = new ArrayList<>();
+        atendimentos = converterAtendimentosToDTO(atendPac, atendimentos);
+
+        return atendimentos;
+    }
+
+    //Preenchendo a tela Atendimento com os dados que são fixos na tela
+    public AtendimentoOutput preencherAtendimento(BigInteger idAgPaciente){
+
+        AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
+
+        AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
+        atendimentoEntity = repository.findByAgPaciente(agPacienteEntity);
+
+        Integer idade = getIdade(atendimentoEntity.getPaciente().getDtNascimento());
+
+        AtendimentoOutput atendimentoOutput = new AtendimentoOutput();
+        atendimentoOutput.setIdAtendimento(atendimentoEntity.getIdAtendimento());
+        atendimentoOutput.setData(atendimentoEntity.getAgPaciente().getAgenda().getData());
+        atendimentoOutput.setNomePaciente(atendimentoEntity.getPaciente().getNmNome());
+        atendimentoOutput.setIdade(idade);
+        atendimentoOutput.setGenero(atendimentoEntity.getPaciente().getGenero().getDsGenero());
+        atendimentoOutput.setIdProntuario(atendimentoEntity.getProntuario().getIdProntuario());
+
+        return atendimentoOutput;
+
+    }
+
+    //Calculando a idade do Usuario
+    public Integer getIdade(Date dataNasc) {
+        GregorianCalendar hoje = new GregorianCalendar();
+        GregorianCalendar nascimento =new GregorianCalendar();
+        if(dataNasc != null){
+            nascimento.setTime(dataNasc);
+        }
+        int anoAtual= hoje.get(Calendar.YEAR);
+        int anoNascimento = nascimento.get(Calendar.YEAR);
+        Integer idade = (anoAtual-anoNascimento);
+        return idade;
+    }
+
+//    public Integer calculaIdade(Date dataNasc){
+//        Calendar data = new GregorianCalendar();
+//        data.setTime(dataNasc);
+//        // Cria um objeto calendar com a data atual
+//        Calendar hoje = Calendar.getInstance();
+//        // Obtém a idade baseado no ano
+//        Integer idade = hoje.get(Calendar.YEAR) - data.get(Calendar.YEAR);
+//        data.add(Calendar.YEAR, idade);
+//        //se a data de hoje é antes da data de Nascimento, então diminui 1(um)
+//        if (hoje.before(hoje)) {
+//            idade--;
+//        }
+//        return idade;
 //    }
+
+    //Cadastrando atendimento
+    @Transactional
+    public String cadastrarAtendimento(Atendimento atendimento) {
+
+        AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
+
+        atendimentoEntity.setDtAtendimento(atendimento.getDtAtendimento());
+        atendimentoEntity.setDsAlergiasRestricoes(atendimento.getDsAlergiasRestricoes());
+        atendimentoEntity.setDsMedicacaoUsoContinuo(atendimento.getDsMedicacaoUsoContinuo());
+        atendimentoEntity.setDsProblemasSaude(atendimento.getDsProblemasSaude());
+        atendimentoEntity.setDsHabitosVicios(atendimento.getDsHabitosVicios());
+        atendimentoEntity.setVlAltura(atendimento.getVlAltura());
+        atendimentoEntity.setVlPeso(atendimento.getVlPeso());
+
+        UsuarioEntity paciente = usuarioRepository.findById(atendimento.getPaciente().getIdUsuario()).get();
+        atendimentoEntity.setPaciente(paciente);
+
+        UsuarioEntity medico = usuarioRepository.findById(atendimento.getMedico().getIdUsuario()).get();
+        atendimentoEntity.setMedico(medico);
+
+        ProntuarioEntity prontuarioEntity = prontuarioService.conversaoProntuarioEntity(atendimento.getProntuario());
+        atendimentoEntity.setProntuario(prontuarioEntity);
+
+        BigInteger idAgPaciente = atendimento.getAgPaciente().getIdAgPaciente();
+        AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
+        atendimentoEntity.setAgPaciente(agPacienteEntity);
+
+        repository.save(atendimentoEntity);
+
+        alterarStatusAgPaciente(idAgPaciente);
+
+        return "Atendimento registrado com sucesso!";
+    }
+
+    //Alterar status do AgPaciente para realizada e a disponibilidade da agenda para 4 (Grupo 4)
+    @Transactional
+    public void alterarStatusAgPaciente(BigInteger idAgPaciente) {
+
+        AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
+        StatusConsultaEntity status = new StatusConsultaEntity();
+        status.setIdStatusConsulta(BigInteger.valueOf(2));
+        agPacienteEntity.setStatusConsulta(status);
+        agPacienteEntity.getAgenda().setDisponibilidade(4);
+
+        agPacienteEntity = agPacienteRepository.save(agPacienteEntity);
+
+    }
+
+    //Convertendo de Entity para DTO
+    public Atendimento converterAtendimentoToDTO(AtendimentoEntity atendimentoEntity, Atendimento atendimento) {
+
+        //PEGAR A DTO Usuario paciente
+        Usuario paciente = new Usuario();
+        paciente = usuarioService.conversaoUsuarioDTO(atendimentoEntity.getPaciente(), paciente);
+
+        //PEGAR A DTO OutputMedico medico
+        OutputMedico medico = new OutputMedico();
+        medico = medicoService.conversaoOutputMedicoDTO(atendimentoEntity.getMedico(), medico);
+
+        //PEGAR A DTO Prontuario
+        Prontuario prontuario = new Prontuario();
+        prontuario.setIdProntuario(atendimentoEntity.getProntuario().getIdProntuario());
+        prontuario.setDsSubjetivo(atendimentoEntity.getProntuario().getDsSubjetivo());
+        prontuario.setDsObjetivo(atendimentoEntity.getProntuario().getDsObjetivo());
+        prontuario.setDsAvaliacao(atendimentoEntity.getProntuario().getDsAvaliacao());
+        prontuario.setDsPlano(atendimentoEntity.getProntuario().getDsPlano());
+        prontuario.setDsObservacoes(atendimentoEntity.getProntuario().getDsObservacoes());
+
+
+        //SETANDO OS VALORES NA DTO Atendimento
+        atendimento.setIdAtendimento(atendimentoEntity.getIdAtendimento());
+        atendimento.setPaciente(paciente);
+        atendimento.setMedico(medico);
+        atendimento.setProntuario(prontuario);
+        atendimento.setVlPeso(atendimentoEntity.getVlPeso());
+        atendimento.setVlAltura(atendimentoEntity.getVlAltura());
+        atendimento.setDsHabitosVicios(atendimentoEntity.getDsHabitosVicios());
+        atendimento.setDsAlergiasRestricoes(atendimentoEntity.getDsAlergiasRestricoes());
+        atendimento.setDsMedicacaoUsoContinuo(atendimentoEntity.getDsMedicacaoUsoContinuo());
+        atendimento.setDsProblemasSaude(atendimentoEntity.getDsProblemasSaude());
+        atendimento.setDtAtendimento(atendimentoEntity.getDtAtendimento());
+
+        return atendimento;
+    }
+
+    //Convertendo listaEntity para ListaDTO
+    public List<Atendimento> converterAtendimentosToDTO(List<AtendimentoEntity> atendimentosEntity, List<Atendimento> atendimentos) {
+
+        for(AtendimentoEntity atendimentoEntity : atendimentosEntity) {
+            Atendimento atendimento = new Atendimento();
+            atendimento = converterAtendimentoToDTO(atendimentoEntity, atendimento);
+
+            atendimentos.add(atendimento);
+        }
+
+        return atendimentos;
+    }
+
 }

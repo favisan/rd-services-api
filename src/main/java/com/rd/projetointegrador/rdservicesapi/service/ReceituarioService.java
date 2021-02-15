@@ -78,7 +78,7 @@ public class ReceituarioService {
 
     }
 
-    //Preenchendo a tela Receituário com listas para os selects do front e e dados que são fixos na tela
+    //Preenchendo a tela Receituário com listas para os selects do front e dados que são fixos na tela
     public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente){
 
         ReceituarioOutput receituarioOutput = new ReceituarioOutput();
