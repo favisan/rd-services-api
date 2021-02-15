@@ -67,10 +67,10 @@ public class AtendimentoService {
 
         UsuarioEntity paciente = usuarioRepository.findOneByNrCpf(cpf);
 
-        List<AtendimentoEntity> atendPac = repository.findByPaciente(paciente);
+        List<AtendimentoEntity> atendPacOrdem = repository.findByPacienteOrderByDtAtendimentoDesc(paciente);
 
         List<Atendimento> atendimentos = new ArrayList<>();
-        atendimentos = converterAtendimentosToDTO(atendPac, atendimentos);
+        atendimentos = converterAtendimentosToDTO(atendPacOrdem, atendimentos);
 
         return atendimentos;
     }
@@ -83,47 +83,17 @@ public class AtendimentoService {
         AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
         atendimentoEntity = repository.findByAgPaciente(agPacienteEntity);
 
-        Integer idade = getIdade(atendimentoEntity.getPaciente().getDtNascimento());
-
         AtendimentoOutput atendimentoOutput = new AtendimentoOutput();
         atendimentoOutput.setIdAtendimento(atendimentoEntity.getIdAtendimento());
         atendimentoOutput.setData(atendimentoEntity.getAgPaciente().getAgenda().getData());
         atendimentoOutput.setNomePaciente(atendimentoEntity.getPaciente().getNmNome());
-        atendimentoOutput.setIdade(idade);
+        atendimentoOutput.setDataNasc(atendimentoEntity.getPaciente().getDtNascimento());
         atendimentoOutput.setGenero(atendimentoEntity.getPaciente().getGenero().getDsGenero());
         atendimentoOutput.setIdProntuario(atendimentoEntity.getProntuario().getIdProntuario());
 
         return atendimentoOutput;
 
     }
-
-    //Calculando a idade do Usuario
-    public Integer getIdade(Date dataNasc) {
-        GregorianCalendar hoje = new GregorianCalendar();
-        GregorianCalendar nascimento =new GregorianCalendar();
-        if(dataNasc != null){
-            nascimento.setTime(dataNasc);
-        }
-        int anoAtual= hoje.get(Calendar.YEAR);
-        int anoNascimento = nascimento.get(Calendar.YEAR);
-        Integer idade = (anoAtual-anoNascimento);
-        return idade;
-    }
-
-//    public Integer calculaIdade(Date dataNasc){
-//        Calendar data = new GregorianCalendar();
-//        data.setTime(dataNasc);
-//        // Cria um objeto calendar com a data atual
-//        Calendar hoje = Calendar.getInstance();
-//        // Obtém a idade baseado no ano
-//        Integer idade = hoje.get(Calendar.YEAR) - data.get(Calendar.YEAR);
-//        data.add(Calendar.YEAR, idade);
-//        //se a data de hoje é antes da data de Nascimento, então diminui 1(um)
-//        if (hoje.before(hoje)) {
-//            idade--;
-//        }
-//        return idade;
-//    }
 
     //Cadastrando atendimento
     @Transactional

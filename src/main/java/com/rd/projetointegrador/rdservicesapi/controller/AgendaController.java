@@ -110,5 +110,10 @@ import java.util.List;
             }
         }
 
+        @PutMapping ("/agPaciente/status/{idAgPaciente}")
+        public ResponseEntity cancelarConsulta(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
+            return ResponseEntity.status(HttpStatus.OK).body(agendaService.alterarStatusAgPaciente(idAgPaciente));
+        }
+
     }
 

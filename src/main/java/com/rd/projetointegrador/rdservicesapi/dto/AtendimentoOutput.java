@@ -21,7 +21,8 @@ public class AtendimentoOutput {
 
     private String nomePaciente;
 
-    private Integer idade;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date dataNasc;
 
     private String genero;
 

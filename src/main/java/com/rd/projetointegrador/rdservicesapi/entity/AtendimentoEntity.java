@@ -53,6 +53,7 @@ public class AtendimentoEntity {
     private String dsProblemasSaude;
 
     @Column(name="DT_ATENDIMENTO")
+    @Temporal(value = TemporalType.DATE)
     private Date dtAtendimento;
 
 }
