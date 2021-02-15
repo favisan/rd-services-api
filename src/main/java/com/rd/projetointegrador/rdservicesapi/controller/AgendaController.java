@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
+import com.rd.projetointegrador.rdservicesapi.dto.CadastroAgPaciente;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
 import com.rd.projetointegrador.rdservicesapi.service.EspMedService;
@@ -26,6 +27,12 @@ public class AgendaController {
     @GetMapping("agenda/{idTipoConsulta}/{idEspecialidade}")
     public ResponseEntity getAgendaByEsp (@PathVariable("idTipoConsulta") BigInteger idC, @PathVariable("idEspecialidade") BigInteger idE){
         return ResponseEntity.ok().body(agendaService.getAgendaByEspecialidade(idE, idC));
+    }
+
+    //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada
+    @GetMapping("agenda/disponibilidade/{idAgPaciente}")
+    public ResponseEntity mudarDisponibilidade(@PathVariable("idAgPaciente") BigInteger id) {
+        return ResponseEntity.status(HttpStatus.OK).body(agendaService.mudarDisponibilidadeParaAgendada(id));
     }
 
     @GetMapping("/agenda")

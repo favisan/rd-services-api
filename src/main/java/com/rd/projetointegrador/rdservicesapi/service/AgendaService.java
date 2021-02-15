@@ -1,19 +1,14 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.*;
-import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.TipoConsultaRepository;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import com.rd.projetointegrador.rdservicesapi.entity.PeriodoEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.TipoConsultaEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.PeriodoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
+
 import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.util.Date;
@@ -25,6 +20,7 @@ public class AgendaService {
     @Autowired private AgendaRepository agendaRepository;
     @Autowired private TipoConsultaRepository tipoConsultaRepository;
     @Autowired private PeriodoRepository periodoRepository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
 
     //Grupo2 - Lista de agendas médicas disponíveis por especialidade e por tipo de consulta
      public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
@@ -68,6 +64,16 @@ public class AgendaService {
             agendasDto.add(agendaDto);
         }
         return agendasDto;
+    }
+
+    //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada
+    @Transactional
+    public RespostaString mudarDisponibilidadeParaAgendada(BigInteger idAgPaciente){
+        AgPacienteEntity agPaciente = agPacienteRepository.findByIdAgPaciente(idAgPaciente).get();
+        agPaciente.getAgenda().setDisponibilidade(2);
+        RespostaString resposta = new RespostaString();
+        resposta.setResposta("Consulta agendada");
+        return resposta;
     }
 
     public List<AgendaEntity> getAgendas() {

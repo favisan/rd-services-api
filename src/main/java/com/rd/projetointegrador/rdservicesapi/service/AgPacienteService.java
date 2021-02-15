@@ -71,7 +71,7 @@ public class AgPacienteService {
         return agPacientes;
     };
 
-    //Grupo 2 - Cadastrar nova Agenda de Paciente
+    //Grupo2 - Cadastrar nova Agenda de Paciente
     @Transactional
     public BigInteger setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
@@ -84,13 +84,12 @@ public class AgPacienteService {
         agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setStatusConsulta(status);
         //mudando disponibilidade da agenda médica para agendada
-        agPacienteEntity.getAgenda().setDisponibilidade(2);
         repository.save(agPacienteEntity);
 
         return agPacienteEntity.getIdAgPaciente();
     }
 
-    //Grupo 2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
+    //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
     @Transactional
     public RespostaString cancelarAgPaciente(BigInteger idAgPaciente){
         StatusConsultaEntity status = new StatusConsultaEntity();
