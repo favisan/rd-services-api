@@ -1,7 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -10,6 +9,7 @@ import java.math.BigInteger;
 @Data
 @Table(name="TB_TIPO_USUARIO")
 public class TipoUsuarioEntity implements Serializable {
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

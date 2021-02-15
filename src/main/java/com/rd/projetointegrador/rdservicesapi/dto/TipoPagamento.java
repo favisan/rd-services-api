@@ -11,7 +11,7 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TipoPagamento {
-
+    //GRUPO1
 
     private BigInteger idFormaPagamento;
     private String dsFormaPagamento;

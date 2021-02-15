@@ -8,11 +8,10 @@ import java.math.BigInteger;
 
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Data
 public class Genero {
+   //GRUPO1
 
    private BigInteger idGenero;
-
    private String dsGenero;
 }

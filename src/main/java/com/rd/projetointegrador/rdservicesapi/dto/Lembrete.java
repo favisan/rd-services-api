@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rd.projetointegrador.rdservicesapi.entity.LembreteIntervaloEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import lombok.AllArgsConstructor;
@@ -13,17 +14,20 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lembrete {
+    //GRUPO1
+
     private BigInteger idLembrete;
     private BigInteger idPaciente;
     private LembreteIntervalo lembreteIntervalo;
     private String nmTitulo;
     private String dsLembrete;
-    private Date dtLembrete;
-    private Date dtCriacao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private String dtLembrete;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private String dtCriacao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private Date hrHora;
     private Integer nrRepeticao;
     private Boolean vencido;
 
-    //private UsuarioEntity paciente;
-    //private String lembreteIntervalo;
 }

@@ -10,6 +10,7 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LembreteIntervalo {
+    //GRUPO1
 
     private BigInteger idLembreteIntervalo;
     private String dsLembreteIntervalo;

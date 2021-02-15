@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface CartaoRepository extends JpaRepository <CartaoEntity, BigInteger> {
+    //GRUPO1
 
     List<CartaoEntity> findByUsuario(UsuarioEntity usuarioEntity);
 }
+

@@ -17,6 +17,7 @@ import java.util.Date;
 @Data
 
 public class LembreteEntity implements Serializable {
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

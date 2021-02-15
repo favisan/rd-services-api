@@ -16,6 +16,7 @@ import java.math.BigInteger;
 @Data
 @Table(name="TB_LOGIN_USUARIO")
 public class LoginUsuarioEntity implements Serializable {
+    //GRUPO1
 
     @Id
     @Column(name="ID_USUARIO")

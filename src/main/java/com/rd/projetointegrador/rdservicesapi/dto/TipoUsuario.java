@@ -10,6 +10,7 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TipoUsuario {
+    //GRUPO1
 
     private BigInteger idTipoUsuario;
     private String dsTipoUsuario;

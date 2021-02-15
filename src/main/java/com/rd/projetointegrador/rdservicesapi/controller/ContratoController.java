@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.math.BigInteger;
+import javax.websocket.server.PathParam;;
 import java.util.List;
 
 @RestController
 public class ContratoController {
+    //GRUPO1
 
     @Autowired
     ContratoService service;
@@ -24,6 +28,14 @@ public class ContratoController {
                 .body(service.getContrato(idContrato));
 
     }
+    //Grupo2
+    @CrossOrigin
+    @GetMapping("/contrato/{idUsuario}") // BUSCA POR Usuario
+    public ResponseEntity getContratoByUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.getContratosByUsuario(idUsuario));
+    }
+
 
     @GetMapping("/contrato") //Busca de todos os Contratos
     public ResponseEntity getContratos(@PathParam("idContrato") BigInteger idContrato) {
@@ -31,18 +43,18 @@ public class ContratoController {
         return ResponseEntity.status(HttpStatus.OK).body(contratos);
     }
 
-    @PostMapping("/contrato") //Cadastrar Novo Contrato
-    public ResponseEntity cadastrarContrato(@RequestBody Contrato contrato) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarContrato(contrato));
+//    @PostMapping("/contrato") //Cadastrar Novo Contrato
+//    public ResponseEntity cadastrarContrato(@RequestBody Contrato contrato) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarContrato(contrato));
+//
+//    }
 
-    }
-
-    @PutMapping("/contrato/{idContrato}") // Alterar Plano
-    public ResponseEntity alterarContrato(@RequestBody Contrato contrato, @PathVariable("idContrato") BigInteger idContrato){
-        String retorno = service.alterarContrato(contrato, idContrato);
-        return ResponseEntity.ok().body(retorno);
-
-    }
+//    @PutMapping("/contrato/{idContrato}") // Alterar Plano
+//    public ResponseEntity alterarContrato(@RequestBody Contrato contrato, @PathVariable("idContrato") BigInteger idContrato){
+//        String retorno = service.alterarContrato(contrato, idContrato);
+//        return ResponseEntity.ok().body(retorno);
+//
+//    }
 
     //Confirmar se haverá ou não exclusão do contrato
     @DeleteMapping("/contrato/{idContrato}") //Excluir Contrato
@@ -55,4 +67,3 @@ public class ContratoController {
     }
 
 }
-

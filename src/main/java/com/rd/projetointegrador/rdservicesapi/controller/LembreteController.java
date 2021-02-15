@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.Lembrete;
+import com.rd.projetointegrador.rdservicesapi.dto.LembreteIntervalo;
 import com.rd.projetointegrador.rdservicesapi.entity.LembreteEntity;
 import com.rd.projetointegrador.rdservicesapi.service.LembreteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,10 @@ import java.util.List;
 
 @Controller
 public class LembreteController {
+    //GRUPO1
 
     @Autowired
     LembreteService service;
-
-
 
     @GetMapping("/lembrete/{idLembrete}") // BUSCA POR ID
     public ResponseEntity getLembrete(@PathVariable("idLembrete") BigInteger idLembrete) {
@@ -39,12 +39,24 @@ public class LembreteController {
         return ResponseEntity.status(HttpStatus.OK).body(lembretes);
     }
 
+    @GetMapping("/lembrete/user/{idUsuario}/dt-antiga") //Busca de lembrete por usuario
+    public ResponseEntity getLembretesByDataInversa(@PathVariable("idUsuario") BigInteger idUsuario) {
+        List<Lembrete> lembretes = service.getLembretesOrderByDataAsc(idUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(lembretes);
+    }
+
+    @GetMapping("/lembrete/user/{idUsuario}/dt-criacao") //Busca de lembrete por usuario
+    public ResponseEntity getLembretesByDataCriacao(@PathVariable("idUsuario") BigInteger idUsuario) {
+        List<Lembrete> lembretes = service.getLembretesOrderByDataCriacao(idUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(lembretes);
+    }
+
 
 
 
     @PostMapping("/lembrete") //Cadastrar Novo Lembrete
     public ResponseEntity cadastrarLembrete(@RequestBody Lembrete Lembrete) {
-        String retorno = service.cadastrarLembrete(Lembrete);
+        Boolean retorno = service.cadastrarLembrete(Lembrete);
         if (retorno == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar Lembrete.");
         }
@@ -52,21 +64,30 @@ public class LembreteController {
 
     }
 
-    @PutMapping("/lembrete/{idLembrete}") // Alterar Plano
+    @PutMapping("/lembrete/{idLembrete}")
     public ResponseEntity alterarLembrete(@RequestBody Lembrete Lembrete, @PathVariable("idLembrete") BigInteger idLembrete){
         String retorno = service.alterarLembrete(Lembrete, idLembrete);
         return ResponseEntity.ok().body(retorno);
 
     }
 
-    //Confirmar se haverá ou não exclusão do Lembrete
     @DeleteMapping("/lembrete/{idLembrete}") //Excluir Lembrete
     public ResponseEntity excluirLembrete(@PathVariable("idLembrete") BigInteger idLembrete) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.excluirLembrete(idLembrete));
-        } catch (Exception e) {
+            Boolean retorno = service.excluirLembrete(idLembrete);
+            return ResponseEntity.status(HttpStatus.OK).body(retorno);
+        } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir Lembrete");
         }
+    }
+
+
+
+    //LEMBRETE INTERVALO
+    @GetMapping("/lembrete/intervalos") //buscar intervalos para formulario
+    public ResponseEntity getLembreteIntervalos() {
+        List<LembreteIntervalo> lembretesIntervalo = service.getLembreteIntervalos();
+        return ResponseEntity.status(HttpStatus.OK).body(lembretesIntervalo);
     }
 
 }

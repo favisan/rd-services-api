@@ -10,8 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormularioCadastro {
+    //GRUPO1
 
-    //private List<Uf> ufs;
+    private List<Uf> ufs;
     private List<Genero> genero;
     private List<Planos> planos;
 }

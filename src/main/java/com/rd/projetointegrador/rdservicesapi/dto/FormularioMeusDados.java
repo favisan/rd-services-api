@@ -11,12 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormularioMeusDados {
+    //GRUPO1
 
     private Usuario usuario;
     private String dsEmail;
-    //private List<Contato> contatos;
+    private List<Contato> contatos;
 
-    //private List<Uf> ufs;
+    private List<Uf> ufs;
     private List<Genero> genero;
     private List<Planos> planos;
 

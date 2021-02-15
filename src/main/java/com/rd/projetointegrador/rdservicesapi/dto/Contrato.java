@@ -12,12 +12,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contrato {
+    //GRUPO1
 
     private BigInteger idContrato;
     private String dsContrato;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtVigencia;
-    private BigInteger idPlano;
+    private Planos plano;
     private BigInteger idUsuario;
 
 }

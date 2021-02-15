@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 public class PlanosController {
+    //GRUPO1
 
     @Autowired PlanosService service;
 
@@ -24,13 +25,18 @@ public class PlanosController {
                 .body(service.getPlano(idPlano));
 
     }
-/*
+
+    @GetMapping("/contrato/user/{idUsuario}")
+    public ResponseEntity verContratoByUser(@PathVariable("idUsuario") BigInteger idUsuario) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPlanobyUsuario(idUsuario));
+    }
+
     @GetMapping("/planos") //Busca de todos os Planos
     public ResponseEntity getPlanos() {
         List<PlanosEntity> planos = service.getPlanos();
         return ResponseEntity.status(HttpStatus.OK).body(planos);
     }
-*/
+
     @PostMapping("/planos") //Cadastrar Novo Plano
     public ResponseEntity cadastrarPlano(@RequestBody Planos plano) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarPlano(plano));

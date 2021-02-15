@@ -10,6 +10,7 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServicoPlano {
+    //GRUPO1
 
     private BigInteger idServicoPlano;
     private String dsServico;

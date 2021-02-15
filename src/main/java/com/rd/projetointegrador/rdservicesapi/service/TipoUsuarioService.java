@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class TipoUsuarioService {
+    //GRUPO1
+
     @Autowired
     private TipoUsuarioRepository repository;
 

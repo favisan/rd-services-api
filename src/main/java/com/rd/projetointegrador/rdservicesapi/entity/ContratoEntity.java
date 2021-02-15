@@ -16,6 +16,7 @@ import java.util.Date;
 @Data
 @Table (name="TB_CONTRATO")
 public class ContratoEntity  implements Serializable {
+    //GRUPO1
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +36,5 @@ public class ContratoEntity  implements Serializable {
     @ManyToOne
     @JoinColumn (name="ID_USUARIO") //FK TB_USUARIO
     private UsuarioEntity usuario;
+
 }

@@ -10,19 +10,31 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import java.util.Optional;
+import java.security.NoSuchAlgorithmException;
+
 
 @Service
 public class UsuarioService {
+    //GRUPO1
 
     //repositories
     @Autowired private UsuarioRepository repository;
     @Autowired private GeneroRepository generoRepository;
     @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
+    @Autowired private UfRepository ufRepository;
+    @Autowired private EspecialidadeRepository especialidadeRepository;
+    @Autowired private TipoContatoRepository tipoContatoRepository;
+    @Autowired private LoginUsuarioRepository loginUsuarioRepository;
+    @Autowired private PrecoRepository precoRepository;
 
     //services
     //@Autowired private UfService ufService;
-    //@Autowired private EnderecoService enderecoService;
+    @Autowired private EnderecoService enderecoService;
+    @Autowired private CidadeService cidadeService;
+    @Autowired private LoginUsuarioService loginUsuarioService;
 
 
     //MÉTODO: conversão de DTO para Entity
@@ -31,16 +43,18 @@ public class UsuarioService {
         GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
         usuarioEntity.setGenero(genero);
 
-        //TODO: objeto Esp Medica
-        usuarioEntity.setIdEspMedica(usuario.getIdEspMedica());
+        EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
+        usuarioEntity.setEspMed(espMedEntity);
 
-        //TODO: objeto Uf
-        usuarioEntity.setIdUfCrm(usuario.getIdUfCrm());
+        UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
+        usuarioEntity.setUf(ufEntity);
 
-        //TODO: conversao endereços
-        //List<EnderecoEntity> enderecosEntities = new ArrayList();
-        //enderecosEntities = conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities)
-        //usuarioEntity.setEnderecos(enderecosEntities);
+        PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
+        usuarioEntity.setPreco(precoEntity);
+
+        List<EnderecoEntity> enderecosEntities = new ArrayList();
+        enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
+        usuarioEntity.setEnderecos(enderecosEntities);
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
         usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
@@ -50,29 +64,44 @@ public class UsuarioService {
         usuarioEntity.setNrCpf(usuario.getNrCpf());
         usuarioEntity.setNrCrm(usuario.getNrCrm());
         usuarioEntity.setDsEndImg(usuario.getDsEndImg());
-        usuarioEntity.setIdPreco(usuario.getIdPreco());
 
         return usuarioEntity;
     }
     //MÉTODO: conversão de Entity para DTO
     public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
 
-        //TODO: conversao endereços
-        //List<Endereco> enderecos = new ArrayList();
-        //enderecos = conversaoEnderecosDTO(usuarioEntity.getEnderecos(), enderecos)
-        //usuario.setEnderecos(enderecos);
+        List<Endereco> enderecos = new ArrayList();
+        enderecos = enderecoService.conversaoEnderecosDTO(usuarioEntity.getEnderecos(), enderecos);
+        usuario.setEnderecos(enderecos);
 
         usuario.setIdUsuario(usuarioEntity.getIdUsuario());
-        usuario.setIdGenero(usuarioEntity.getGenero().getIdGenero());
-        usuario.setIdEspMedica(usuarioEntity.getIdEspMedica());
-        usuario.setIdUfCrm(usuarioEntity.getIdUfCrm());
+
+        GeneroEntity generoEntity = usuarioEntity.getGenero();
+        if(generoEntity != null) {
+            usuario.setIdGenero(generoEntity.getIdGenero());
+        }
+
+        EspMedEntity espMedEntity= usuarioEntity.getEspMed();
+        if(espMedEntity != null) {
+            usuario.setIdEspMedica(espMedEntity.getIdEspMed());
+        }
+
+        UfEntity ufEntity = usuarioEntity.getUf();
+        if(ufEntity != null) {
+            usuario.setIdUfCrm(usuarioEntity.getUf().getIdUf());
+        }
+
+        PrecoEntity precoEntity = usuarioEntity.getPreco();
+        if(precoEntity != null) {
+            usuario.setIdPreco(precoEntity.getIdPreco());
+        }
+
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
         usuario.setNmNome(usuarioEntity.getNmNome());
         usuario.setDtNascimento(usuarioEntity.getDtNascimento());
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
-        usuario.setIdPreco(usuarioEntity.getIdPreco());
 
         return usuario;
     }
@@ -172,5 +201,203 @@ public class UsuarioService {
     }
 
 
+    //GRUPO4 --------------------------------------------------------------------------
 
+    //BUSCAR MEDICO POR ID
+    public OutputMedico getMedico(BigInteger id) {
+        System.out.println("ID: " + id);
+        UsuarioEntity entity = repository.findById(id).get();
+        OutputMedico user = new OutputMedico();
+        user.setIdUsuario(entity.getIdUsuario());
+        user.setNome(entity.getNmNome());
+        user.setNrCrm(entity.getNrCrm());
+
+        UfEntity ufEntity = entity.getUf();
+        Uf uf = new Uf();
+        uf.setDsUf(ufEntity.getDsUf());
+        user.setUfCrm(uf);
+
+        EspMedEntity espMedEntity = entity.getEspMed();
+        EspMed espMed = new EspMed();
+        espMed.setDsEspMed(espMedEntity.getDsEspMed());
+        user.setIdEspMed(espMed);
+
+        user.setNome(entity.getNmNome());
+        user.setDtNascimento(entity.getDtNascimento());
+        user.setNrCpf(entity.getNrCpf());
+        user.setNrCrm(entity.getNrCrm());
+
+        PrecoEntity precoEntity = entity.getPreco();
+        Preco preco = new Preco();
+        preco.setVlConsulta(precoEntity.getVlConsulta());
+        user.setPreco(preco);
+
+        List<ContatoEntity> contatosEntity = entity.getContatos();
+        List<Contato> contatos = new ArrayList<>();
+        for (ContatoEntity contatoEntity : contatosEntity) {
+            Contato contato = new Contato();
+            contato.setDsContato(contatoEntity.getDsContato());
+
+            contatos.add(contato);
+        }
+        user.setContatos(contatos);
+
+        List<EnderecoEntity> enderecoEntities = entity.getEnderecos();
+        List<Endereco> enderecos = new ArrayList<>();
+        for (EnderecoEntity enderecoEntity : enderecoEntities) {
+            Endereco endereco = new Endereco();
+            endereco.setDsEndereco(enderecoEntity.getDsEndereco());
+            endereco.setDsBairro(enderecoEntity.getDsBairro());
+            endereco.setIdCidade(enderecoEntity.getIdCidade());
+            endereco.setDsComplemento(enderecoEntity.getDsComplemento());
+            endereco.setNrCep(enderecoEntity.getNrCep());
+
+            enderecos.add(endereco);
+        }
+        user.setEnderecos(enderecos);
+
+        return user;
+    }
+
+    //LISTAR TODOS OS MEDICOS
+    public List<UsuarioEntity> getMedicos() {
+        return repository.findAll();
+    }
+
+
+    //ALTERAR CADASTRO DE PERFIL DO MEDICO
+    @Transactional
+    public String alterarMedico(InputMedico inputMedico, BigInteger id) {
+
+        UsuarioEntity entity = repository.findById(id).get();
+
+        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
+        entity.setEspMed(espEntity);
+
+        UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
+        entity.setUf(ufEntity);
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
+        entity.setTipoUsuario(tipoUsuarioEntity);
+
+        entity.setNmNome(inputMedico.getNome());
+        entity.setDtNascimento(inputMedico.getDtNascimento());
+        entity.setNrCpf(inputMedico.getNrCpf());
+        entity.setNrCrm(inputMedico.getNrCrm());
+
+        PrecoEntity precoEntity = new PrecoEntity();
+        Preco preco = inputMedico.getPreco();
+        precoEntity.setVlConsulta(preco.getVlConsulta());
+        entity.setPreco(precoEntity);
+
+        List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
+        for (Endereco endereco : inputMedico.getEnderecos()) {
+            EnderecoEntity enderecoEntity = new EnderecoEntity();
+            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            enderecoEntity.setDsComplemento(endereco.getDsComplemento());
+            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
+            enderecoEntity.setDsBairro(endereco.getDsBairro());
+            enderecoEntity.setNrCep(endereco.getNrCep());
+        }
+        entity.setEnderecos(enderecosEntity);
+
+        List<ContatoEntity> contatosEntity = entity.getContatos();
+        for (Contato contato : inputMedico.getContatos()) {
+            ContatoEntity contatoEntity = new ContatoEntity();
+            TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
+            contatoEntity.setTipoContato(tpContatoEntity);
+            contatoEntity.setDsContato(contato.getDsContato());
+        }
+        entity.setContatos(contatosEntity);
+
+        repository.save(entity);
+
+        return "Alteração realizado com sucesso";
+    }
+
+    //CADASTRAR MEDICO
+    @Transactional
+    public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
+
+        UsuarioEntity entity = new UsuarioEntity();
+
+        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
+        entity.setEspMed(espEntity);
+
+        UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
+        entity.setUf(ufEntity);
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
+        entity.setTipoUsuario(tipoUsuarioEntity);
+
+        entity.setNmNome(inputMedico.getNome());
+        entity.setDtNascimento(inputMedico.getDtNascimento());
+        entity.setNrCpf(inputMedico.getNrCpf());
+        entity.setNrCrm(inputMedico.getNrCrm());
+
+        PrecoEntity precoEntity = new PrecoEntity();
+        Preco preco = inputMedico.getPreco();
+        precoEntity.setVlConsulta(preco.getVlConsulta());
+        entity.setPreco(precoEntity);
+
+        List<EnderecoEntity> enderecosEntity = new ArrayList<>();
+        for (Endereco endereco : inputMedico.getEnderecos()) {
+            EnderecoEntity enderecoEntity = new EnderecoEntity();
+            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            enderecoEntity.setDsComplemento(endereco.getDsComplemento());
+            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
+            enderecoEntity.setDsBairro(endereco.getDsBairro());
+            enderecoEntity.setNrCep(endereco.getNrCep());
+
+            enderecosEntity.add(enderecoEntity);
+        }
+
+        entity.setEnderecos(enderecosEntity);
+
+        List<ContatoEntity> contatosEntity = new ArrayList<>();
+        for (Contato contato : inputMedico.getContatos()) {
+            ContatoEntity contatoEntity = new ContatoEntity();
+            TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
+            contatoEntity.setTipoContato(tpContatoEntity);
+            contatoEntity.setDsContato(contato.getDsContato());
+
+            contatosEntity.add(contatoEntity);
+        }
+
+        entity.setContatos(contatosEntity);
+        repository.save(entity);
+
+        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+        LoginUsuario loginUsuario = inputMedico.getLogin();
+        
+        loginUsuarioEntity.setIdUsuario(entity.getIdUsuario());
+        loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
+        loginUsuarioEntity.setDsSenha(loginUsuarioService.codificar(loginUsuario.getDsSenha()));
+
+        loginUsuarioRepository.save(loginUsuarioEntity);
+
+        return "Usuário cadastrado com sucesso";
+    }
+
+    //EXIBIR TELA DE PERFIL DO MEDICO
+    public PerfilMedico mostrarTelaPerfil(BigInteger idMedico) {
+        PerfilMedico perfilMedico = new PerfilMedico();
+        perfilMedico.setMedico(getMedico(idMedico));
+        perfilMedico.setDsEmail(loginUsuarioRepository.findOneByIdUsuario(idMedico).getDsEmail());
+        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(getMedico(idMedico).getUfCrm().getIdUf()));
+        perfilMedico.setEspecialidades(especialidadeRepository.findAll());
+        perfilMedico.setUfs(ufRepository.findAll());
+
+        return perfilMedico;
+    }
+
+    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
+    public CadastroMedico mostrarTelaCadastro(BigInteger idUf) {
+        CadastroMedico cadastroMedico = new CadastroMedico();
+        cadastroMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
+        cadastroMedico.setEspecialidades(especialidadeRepository.findAll());
+        cadastroMedico.setUfs(ufRepository.findAll());
+
+        return cadastroMedico;
+    }
 }

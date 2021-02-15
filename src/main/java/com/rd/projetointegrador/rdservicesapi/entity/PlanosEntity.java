@@ -17,31 +17,32 @@ import java.util.List;
 @Table(name="TB_PLANOS")
 @Data
     public class PlanosEntity implements Serializable {
+        //GRUPO1
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name="ID_PLANO")
+        @Column(name = "ID_PLANO")
         private BigInteger idPlano;
 
-        @Column (name="NM_PLANO")
+        @Column(name = "NM_PLANO")
         private String nmPlano;
 
-        @Column (name= "DS_PLANO")
+        @Column(name = "DS_PLANO")
         private String dsPlano;
 
-        @Column (name= "VL_PLANO")
+        @Column(name = "VL_PLANO")
         private Double vlPlano;
 
-        @Column (name= "ID_SERVICO_PLANO")
+        @Column(name = "ID_SERVICO_PLANO")
         private BigInteger idServicoPlano;
 
         @ManyToMany(cascade = CascadeType.ALL)
-        @Cascade(value=org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+        @Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
         @JoinTable(name = "TB_PLANOS_SERVPLANOS",
                 joinColumns = @JoinColumn(name = "ID_PLANO"),
                 inverseJoinColumns = @JoinColumn(name = "ID_SERVICO_PLANO"))
         private List<ServicoPlanoEntity> servicos;
+    }
 
-}
 
 

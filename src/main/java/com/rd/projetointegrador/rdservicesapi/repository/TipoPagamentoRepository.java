@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;
 
-public  interface  TipoPagamentoRepository extends JpaRepository<TipoPagamentoEntity , BigInteger> {
+public interface TipoPagamentoRepository extends JpaRepository<TipoPagamentoEntity, BigInteger>{
+    //GRUPO1
 }
