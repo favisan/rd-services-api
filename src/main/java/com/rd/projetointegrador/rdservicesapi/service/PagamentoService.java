@@ -29,7 +29,7 @@ public class PagamentoService {
         pagamentoEntity.setIdContrato(pagamento.getIdContrato());
         pagamentoEntity.setIdFormaPgt(pagamento.getIdFormaPgt());
         pagamentoEntity.setIdNF(pagamento.getIdNF());
-        pagamentoEntity.setIdAgPaciente(pagamento.getIdAgPaciente());
+//        pagamentoEntity.setIdAgPaciente(pagamento.getIdAgPaciente());
         pagamentoEntity.setIdPedido(pagamento.getIdPedido());
         pagamentoEntity.setVlPagamento(pagamento.getVlPagamento());
         pagamentoEntity.setDtPagamento(pagamento.getDtPagamento());
@@ -45,7 +45,7 @@ public class PagamentoService {
         pagamento.setIdContrato(pagamentoEntity.getIdContrato());
         pagamento.setIdFormaPgt(pagamentoEntity.getIdFormaPgt());
         pagamento.setIdNF(pagamentoEntity.getIdNF());
-        pagamento.setIdAgPaciente(pagamentoEntity.getIdAgPaciente());
+//        pagamento.setIdAgPaciente(pagamentoEntity.getIdAgPaciente());
         pagamento.setIdPedido(pagamentoEntity.getIdPedido());
         pagamento.setVlPagamento(pagamentoEntity.getVlPagamento());
         pagamento.setDtPagamento(pagamentoEntity.getDtPagamento());
@@ -149,8 +149,10 @@ public class PagamentoService {
     public BigInteger setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         AgPacienteEntity agPaciente = agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get();
-        pagamentoEntity.setIdCartao(pagtoCartao.getIdCartao());
-        pagamentoEntity.setIdAgPaciente(pagtoCartao.getIdAgPaciente());
+        List<CartaoEntity> listaCartoes = new ArrayList<>();
+        listaCartoes = cartaoRepository.findByUsuario(agPaciente.getPaciente());
+        pagamentoEntity.setIdCartao(listaCartoes.get(0).getIdCartao());
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoCartao.getIdAgPaciente()).get());
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
@@ -163,10 +165,10 @@ public class PagamentoService {
     @Transactional
     public BigInteger setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoPlano.getIdAgPaciente()).get());
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
-        ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(pagtoPlano.getIdUsuario()).get());
+        ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
-        pagamentoEntity.setIdAgPaciente(pagtoPlano.getIdAgPaciente());
         repository.save(pagamentoEntity);
 
         return pagamentoEntity.getIdPagamento();

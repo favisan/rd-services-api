@@ -7,7 +7,6 @@ import java.math.BigInteger;
 @Data
 public class PagamentoCartao {
 
-    private BigInteger idCartao;
     private BigInteger idAgPaciente;
     private Integer parcelas;
 
