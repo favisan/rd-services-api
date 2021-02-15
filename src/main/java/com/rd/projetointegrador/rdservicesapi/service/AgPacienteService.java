@@ -21,6 +21,31 @@ public class AgPacienteService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
 
+    //Grupo2 - Get AgPaciente pelo idAgenda
+    public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
+        AgPacienteEntity agPacienteEntity= repository.findByIdAgPaciente(idAgPaciente).get();
+        AgPaciente agPacienteDto = new AgPaciente();
+        Agenda agendaDTO = new Agenda();
+        InputMedico medico = new InputMedico();
+        EspMed espMed = new EspMed();
+        Periodo periodo = new Periodo();
+
+        espMed.setDsEspMed(agPacienteEntity.getAgenda().getMedico().getEspMed().getDsEspMed());
+        medico.setNome(agPacienteEntity.getAgenda().getMedico().getNmNome());
+        medico.setEspMed(espMed);
+
+        periodo.setHoraInicial(agPacienteEntity.getAgenda().getPeriodo().getHoraInicial());
+
+        agendaDTO.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
+        agendaDTO.setData(agPacienteEntity.getAgenda().getData());
+        agendaDTO.setMedico(medico);
+        agendaDTO.setPeriodo(periodo);
+        agPacienteDto.setAgenda(agendaDTO);
+
+        return agPacienteDto;
+    }
+
+
     //Grupo 2 - Listas as agendas do paciente pela idUsuario
     public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
         List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
