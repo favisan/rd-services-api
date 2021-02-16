@@ -60,7 +60,8 @@ public class LoginUsuarioService {
         loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
         loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
 
-        loginUsuario.setDsSenha(codificar(loginUsuarioEntity.getDsSenha()));
+        String senhaDesc = codificar(loginUsuarioEntity.getDsSenha());
+        loginUsuario.setDsSenha(senhaDesc);
 
         return loginUsuario;
 

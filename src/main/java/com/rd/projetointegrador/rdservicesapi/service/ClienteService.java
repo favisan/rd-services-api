@@ -86,6 +86,7 @@ public class ClienteService {
 
             //Entidade Cartao
             if(!inputUsuario.getCartao().getNrCartao().equals("") && inputUsuario.getCartao().getCodSeguranca() != null) {
+                System.out.println("Entrou no if!");
                 inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
                 cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
                 cartaoRepository.save(cartaoEntity);
@@ -128,7 +129,7 @@ public class ClienteService {
         ContratoEntity contratoEntity = contratoEntities.get(0);
         CartaoEntity cartaoEntity= cartaoRepository.findById(inputUsuario.getCartao().getIdCartao()).get();
 
-        List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuarioAndDsContato(id, inputUsuario.getCelular());
+        List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
         ContatoEntity contatoEntity = contatoEntities.get(0);
 
         try {
@@ -178,7 +179,7 @@ public class ClienteService {
                 contatoRepository.save(contatoEntity);
                 System.out.println("Alterou Contato: " + contatoEntity.getIdContato());
 
-                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Usuário cadastrado com sucesso");
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Usuário atualizado com sucesso");
                 return ResponseEntity.status(HttpStatus.OK).body(resultData);
 
 
