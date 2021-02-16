@@ -1,6 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.InputMedico;
+import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
@@ -81,7 +82,7 @@ public class UsuarioController {
         }
     }
 
-    //EXIBIR TELA DE PERFIL DO MEDICO DEU RUIM
+    //EXIBIR TELA DE PERFIL DO MEDICO
     @GetMapping("/perfilMedico/{idMedico}")
     public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico){
         return ResponseEntity.status(HttpStatus.OK)
@@ -90,8 +91,8 @@ public class UsuarioController {
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @PutMapping("/medico/{idUsuario}")
-    public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
-        try{ String retorno = service.alterarMedico(inputMedico, id);
+    public ResponseEntity alterarMedico(@RequestBody OutputMedico outputMedico, @PathVariable("idUsuario") BigInteger id){
+        try{ String retorno = service.alterarMedico(outputMedico, id);
             return ResponseEntity.ok().body(retorno);
         } catch (Exception e) {
             e.printStackTrace();

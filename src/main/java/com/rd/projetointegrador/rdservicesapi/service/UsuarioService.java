@@ -279,55 +279,51 @@ public class UsuarioService {
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional
-    public String alterarMedico(InputMedico inputMedico, BigInteger id) {
+    public String alterarMedico(OutputMedico outputMedico, BigInteger id) {
 
         UsuarioEntity entity = repository.findById(id).get();
 
-        EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
+        EspMedEntity espEntity = especialidadeRepository.findById(outputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
 
-        UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
+        UfEntity ufEntity = ufRepository.findById(outputMedico.getUfCrm().getIdUf()).get();
         entity.setUf(ufEntity);
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
 
-        entity.setNmNome(inputMedico.getNome());
-        entity.setDtNascimento(inputMedico.getDtNascimento());
-        entity.setNrCpf(inputMedico.getNrCpf());
-        entity.setNrCrm(inputMedico.getNrCrm());
+        entity.setNmNome(outputMedico.getNome());
+        entity.setDtNascimento(outputMedico.getDtNascimento());
+        entity.setNrCpf(outputMedico.getNrCpf());
+        entity.setNrCrm(outputMedico.getNrCrm());
 
         PrecoEntity precoEntity = new PrecoEntity();
-        Preco preco = inputMedico.getPreco();
+        Preco preco = outputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
         entity.setPreco(precoEntity);
 
         List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
-        for (Endereco endereco : inputMedico.getEnderecos()) {
-            EnderecoEntity enderecoEntity = new EnderecoEntity();
-            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
-            Cidade cidade = new Cidade();
-            cidade.setIdCidade(cidadeEntity.getIdCidade());
-            UfEntity ufEntity1 = enderecoEntity.getCidade().getUf();
-            Uf uf1 = new Uf();
-            uf1.setIdUf(ufEntity1.getIdUf());
-            cidade.setUf(uf1);
-            endereco.setCidade(cidade);
-            enderecoEntity.setDsComplemento(endereco.getDsComplemento());
-            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
-            enderecoEntity.setDsBairro(endereco.getDsBairro());
-            enderecoEntity.setNrCep(endereco.getNrCep());
+        for (EnderecoEntity endereco : enderecosEntity) {
+            //CidadeEntity cidadeEntity = cidadeRepository.findById(endereco.getCidade().getIdCidade()).get();
+            UfEntity ufEntity1 = new UfEntity();
+            ufEntity1.setIdUf(outputMedico.getEnderecos().get(0).getCidade().getUf().getIdUf());
+            CidadeEntity cidadeEntity = new CidadeEntity();
+            cidadeEntity.setIdCidade(outputMedico.getEnderecos().get(0).getCidade().getIdCidade());
+            cidadeEntity.setUf(ufEntity1);
+            endereco.setCidade(cidadeEntity);
+            endereco.setDsComplemento(outputMedico.getEnderecos().get(0).getDsComplemento());
+            endereco.setDsEndereco(outputMedico.getEnderecos().get(0).getDsEndereco());
+            endereco.setDsBairro(outputMedico.getEnderecos().get(0).getDsBairro());
+            endereco.setNrCep(outputMedico.getEnderecos().get(0).getNrCep());
         }
-        entity.setEnderecos(enderecosEntity);
 
         List<ContatoEntity> contatosEntity = entity.getContatos();
-        for (Contato contato : inputMedico.getContatos()) {
-            ContatoEntity contatoEntity = new ContatoEntity();
+        for (ContatoEntity contato : contatosEntity) {
+            contato.setIdUsuario(entity.getIdUsuario());
             TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
-            contatoEntity.setTipoContato(tpContatoEntity);
-            contatoEntity.setDsContato(contato.getDsContato());
+            contato.setTipoContato(tpContatoEntity);
+            contato.setDsContato(outputMedico.getContatos().get(0).getDsContato());
         }
-        entity.setContatos(contatosEntity);
 
         repository.save(entity);
 
