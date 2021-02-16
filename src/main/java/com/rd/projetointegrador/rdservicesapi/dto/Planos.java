@@ -18,7 +18,7 @@ public class Planos {
     private String nmPlano;
     private String dsPlano;
     private Double vlPlano;
-    private BigInteger idServicoPlano;
+    //private BigInteger idServicoPlano;
     private List<ServicoPlano> servicos;
 
 }
