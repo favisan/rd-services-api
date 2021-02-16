@@ -39,12 +39,13 @@ public class ContratoService {
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
 
-
             contrato.setIdContrato(contratoEntity.getIdContrato());
             contrato.setDsContrato(contratoEntity.getDsContrato());
 
-            String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
-            contrato.setDtVigencia(dtVigencia);
+            if(contratoEntity.getDtVigencia() != null) {
+                String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
+                contrato.setDtVigencia(dtVigencia);
+            }
 
             Planos plano = new Planos();
             plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
@@ -67,9 +68,13 @@ public class ContratoService {
         //pegar usuario
         UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
 
-            contratoEntity.setDsContrato(contrato.getDsContrato());
-            Date dataVigencia = SDF2.parse(contrato.getDtVigencia());
-            contratoEntity.setDtVigencia(dataVigencia);
+        contratoEntity.setDsContrato(contrato.getDsContrato());
+
+            if(contrato.getDtVigencia() != null) {
+                Date dataVigencia = SDF2.parse(contrato.getDtVigencia());
+                contratoEntity.setDtVigencia(dataVigencia);
+            }
+
             contratoEntity.setPlanosEntity(planosEntity);
             contratoEntity.setUsuario(usuarioEntity);
             return contratoEntity;

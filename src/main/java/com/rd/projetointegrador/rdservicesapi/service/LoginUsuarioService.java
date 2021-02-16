@@ -84,7 +84,7 @@ public class LoginUsuarioService {
 
     }
     public LoginUsuarioEntity getAcessoByEmail(String email) {
-        return loginUsuarioRepository.findByDsEmail(email);
+        return loginUsuarioRepository.findOneByDsEmail(email);
     }
 
     //MÉTODO RETORNANDO A DTO
@@ -106,7 +106,7 @@ public class LoginUsuarioService {
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
         try {
-            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
             String login = loginUsuarioEntity.getDsEmail();
             String senha = loginUsuarioEntity.getDsSenha();
 
@@ -179,7 +179,7 @@ public class LoginUsuarioService {
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
-        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
         String login = loginUsuarioEntity.getDsEmail();
         String senha = loginUsuarioEntity.getDsSenha();
 
