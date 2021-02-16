@@ -91,11 +91,9 @@ public class PlanosService {
         planosEntity.setNmPlano(plano.getNmPlano());
         planosEntity.setDsPlano(plano.getDsPlano());
         planosEntity.setVlPlano(plano.getVlPlano());
-        planosEntity.setIdServicoPlano(plano.getIdServicoPlano());
+        //TODO: cadastrar serviços?
 
         repository.save(planosEntity);
-
-        System.out.println(plano.getIdPlano() + " . " + plano.getNmPlano() + " . " +plano.getDsPlano() + " . " + plano.getVlPlano());
 
         return "Plano cadastrado com sucesso";
 
@@ -109,7 +107,6 @@ public class PlanosService {
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
-        //planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
 
         List<ServicoPlanoEntity> listaServPlano = new ArrayList<>();
         for(ServicoPlano servico : plano.getServicos()){

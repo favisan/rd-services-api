@@ -46,6 +46,6 @@ public class ClienteController {
     //POST PÁGINA DE CADASTRO (Novo Usuario + Login + Contato + Cartao + Contrato)
     @PostMapping("/cliente/cadastro")
     public ResponseEntity cadastrarUsuario(@RequestBody InputCliente inputCliente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarCliente(inputCliente));
+        return service.cadastrarCliente(inputCliente);
     }
 }

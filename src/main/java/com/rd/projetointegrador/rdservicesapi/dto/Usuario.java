@@ -22,7 +22,7 @@ public class Usuario {
     private BigInteger idTipoUsuario;
     private String nmNome;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtNascimento;
+    private String dtNascimento;
     private String nrCpf;
     private String nrCrm;
     private String dsEndImg;

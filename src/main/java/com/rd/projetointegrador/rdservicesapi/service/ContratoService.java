@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,38 +33,50 @@ public class ContratoService {
 
     @Autowired PlanosService planosService;
 
+    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
 
-        contrato.setIdContrato(contratoEntity.getIdContrato());
-        contrato.setDsContrato(contratoEntity.getDsContrato());
-        contrato.setDtVigencia(contratoEntity.getDtVigencia());
 
-        Planos plano = new Planos();
-        plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
-        contrato.setPlano(plano);
+            contrato.setIdContrato(contratoEntity.getIdContrato());
+            contrato.setDsContrato(contratoEntity.getDsContrato());
 
-        contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
+            String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
+            contrato.setDtVigencia(dtVigencia);
 
-        return contrato;
+            Planos plano = new Planos();
+            plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
+            contrato.setPlano(plano);
+
+            contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
+
+            return contrato;
+
+
+
     }
 
     //MÉTODO: conversão de DTO para Entity
     public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
-
+        try {
         //pegar plano
         PlanosEntity planosEntity = planosRepository.findById(contrato.getPlano().getIdPlano()).get();
 
         //pegar usuario
         UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
 
-
-        contratoEntity.setDsContrato(contrato.getDsContrato());
-        contratoEntity.setDtVigencia(contrato.getDtVigencia());
-        contratoEntity.setPlanosEntity(planosEntity);
-        contratoEntity.setUsuario(usuarioEntity);
-
-        return contratoEntity;
+            contratoEntity.setDsContrato(contrato.getDsContrato());
+            Date dataVigencia = SDF2.parse(contrato.getDtVigencia());
+            contratoEntity.setDtVigencia(dataVigencia);
+            contratoEntity.setPlanosEntity(planosEntity);
+            contratoEntity.setUsuario(usuarioEntity);
+            return contratoEntity;
+        } catch(ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     //MÉTODOS RETORNANDO A ENTITY
@@ -93,7 +108,8 @@ public class ContratoService {
         plano.setDsPlano(contratoByUser.getPlanosEntity().getDsPlano());
         Contrato contrato = new Contrato();
         contrato.setIdContrato(contratoByUser.getIdContrato());
-        contrato.setDtVigencia(contratoByUser.getDtVigencia());
+        String dtVigencia = SDF.format(contratoByUser.getDtVigencia());
+        contrato.setDtVigencia(dtVigencia);
         contrato.setPlano(plano);
         return contrato;
     }

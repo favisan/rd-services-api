@@ -20,9 +20,9 @@ public class Cartao {
     private String nrCartao;
     private String codSeguranca;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtValidade;
+    private String dtValidade;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtEmissao;
+    private String dtEmissao;
     private String nmNome;
     //private BigInteger idPaciente;
 }
