@@ -1,8 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
-import com.rd.projetointegrador.rdservicesapi.dto.AgPaciente;
-import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
-import com.rd.projetointegrador.rdservicesapi.dto.Periodo;
+import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
@@ -11,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import com.rd.projetointegrador.rdservicesapi.dto.Agenda;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,7 +86,7 @@ import java.util.List;
             try {
                 Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
 
-                List<AgPaciente> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
+                List<AgendamentoOutput> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
 
                 return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
 

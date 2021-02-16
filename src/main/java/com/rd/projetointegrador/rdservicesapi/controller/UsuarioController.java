@@ -94,6 +94,7 @@ public class UsuarioController {
         try{ String retorno = service.alterarMedico(inputMedico, id);
             return ResponseEntity.ok().body(retorno);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar dados");
         }
     }

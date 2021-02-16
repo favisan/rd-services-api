@@ -127,8 +127,8 @@ public class AgendaService {
     }
 
     //Listar Agendamentos por agenda (Grupo 4)
-    public List<AgPaciente> getAgendamentosPorAgenda(Date data, BigInteger idMedico) {
-        List<AgPaciente> agendamentos = new ArrayList<>();
+    public List<AgendamentoOutput> getAgendamentosPorAgenda(Date data, BigInteger idMedico) {
+        List<AgendamentoOutput> agendamentos = new ArrayList<>();
 
         //Pegandos todas as agendas do dia com disponibilidade 2
         List<AgendaEntity> agendas = getAgendasPorDataDisponibilidade(data);
@@ -138,7 +138,7 @@ public class AgendaService {
             BigInteger idMedicoAgenda = agenda.getMedico().getIdUsuario();
             if (idMedicoAgenda.equals(idMedico)) {
                 AgPacienteEntity agPacienteEntity = agPacienteRepository.findByAgenda(agenda);
-                AgPaciente agPaciente = new AgPaciente();
+                AgendamentoOutput agPaciente = new AgendamentoOutput();
                 agPaciente = converterAgPacienteToDTO(agPacienteEntity, agPaciente);
                 agendamentos.add(agPaciente);
             }
@@ -319,15 +319,15 @@ public class AgendaService {
     }
 
     //Convertendo AgPaciente de Entity para DTO (Grupo 4)
-    public AgPaciente converterAgPacienteToDTO(AgPacienteEntity agPacienteEntity, AgPaciente agPaciente) {
+    public AgendamentoOutput converterAgPacienteToDTO(AgPacienteEntity agPacienteEntity, AgendamentoOutput agPaciente) {
 
         //SETANDO OS VALORES NA DTO Agenda
         agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
-        agPaciente.setIdPaciente(agPacienteEntity.getPaciente().getIdUsuario());
-        agPaciente.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
+        agPaciente.setPaciente(agPacienteEntity.getPaciente());
+        agPaciente.setAgenda(agPacienteEntity.getAgenda());
         agPaciente.setDtSolicitacao(agPacienteEntity.getDtSolicitacao());
-        agPaciente.setIdTipoConfirmacao(agPacienteEntity.getTipoConfirmacao().getIdTipoConfirmacao());
-        agPaciente.setIdStatusConsulta(agPacienteEntity.getStatusConsulta().getIdStatusConsulta());
+        agPaciente.setTipoConfirmacao(agPacienteEntity.getTipoConfirmacao());
+        agPaciente.setStatusConsulta(agPacienteEntity.getStatusConsulta());
 
         return agPaciente;
     }
