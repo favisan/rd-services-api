@@ -1,12 +1,15 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
+import com.rd.projetointegrador.rdservicesapi.dto.ResultData;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -94,40 +97,55 @@ public class LoginUsuarioService {
         return loginUsuario;
     }
 
-    //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
+    //PÁGINA DE LOGIN CLIENTE ------------------------------------------------------------------------
+    //VALIDAR LOGIN E SENHA DE ACESSO (CLIENTE)
     @Transactional
-    public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
+    public ResponseEntity validarAcessoCliente(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
 
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
-        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
-        String login = loginUsuarioEntity.getDsEmail();
-        String senha = loginUsuarioEntity.getDsSenha();
+        try {
+            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+            String login = loginUsuarioEntity.getDsEmail();
+            String senha = loginUsuarioEntity.getDsSenha();
 
-        if (emailTela.equals(login) && senhaTela.equals(senha)) {
-            return " acesso permitido";
-        } else {
-            return "acesso negado";
+            if (emailTela.equals(login) && senhaTela.equals(senha)) {
+
+                loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Acesso Permitido", loginUsuario);
+                return ResponseEntity.status(HttpStatus.OK).body(resultData);
+            } else {
+                ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário ou Senha incorretos!");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+            }
+
+        } catch(Exception e) {
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Acesso inexistente.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
+
     }
 
     //MÉTODO ESQUECI A SENHA
-    public String esqueceuASenha(String email) {
+    public ResponseEntity esqueceuASenha(String email) {
 
         try {
             LoginUsuarioEntity loginExistente = getAcessoByEmail(email);
-            System.out.println(loginExistente.getDsSenha() + loginExistente.getDsEmail());
 
             //TOOO: envio de email para o endereço escolhido?
-            return " Senha de acesso enviada para o email de cadastro";
+            ResultData resultData = new ResultData(HttpStatus.OK.value(), "Senha de acesso enviada para o email de cadastro");
+            return ResponseEntity.status(HttpStatus.OK).body(resultData);
 
         } catch(Exception e) {
-            System.out.println(e.getMessage());
-            return "Não há usuário cadastrado para este e-mail.";
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Não há usuário cadastrado para este e-mail.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
 
     }
+
+    //------------------------------------------------------------------------------------------------
 
     @Transactional
     public String alterarAcesso(LoginUsuario login, BigInteger idUsuario){
@@ -152,8 +170,25 @@ public class LoginUsuarioService {
     }
 
 
-
     //GRUPO4
+
+    //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
+    @Transactional
+    public String validarAcesso(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
+
+        String emailTela = loginUsuario.getDsEmail();
+        String senhaTela = codificar(loginUsuario.getDsSenha());
+
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+        String login = loginUsuarioEntity.getDsEmail();
+        String senha = loginUsuarioEntity.getDsSenha();
+
+        if (emailTela.equals(login) && senhaTela.equals(senha)) {
+            return " acesso permitido";
+        } else {
+            return "acesso negado";
+        }
+    }
 
     //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
@@ -198,14 +233,21 @@ public class LoginUsuarioService {
 
     //---OBSOLETO---
     @Transactional
-    public String cadastrarAcesso(LoginUsuario login, BigInteger idUsuario){
+    public String cadastrarAcesso(LoginUsuario login){
 
-        LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-        loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
+        LoginUsuarioEntity loginUsuarioEntityEx = loginUsuarioRepository.findById(login.getIdUsuario()).get();
 
-        loginUsuarioRepository.save(loginUsuarioEntity);
+        if(loginUsuarioEntityEx == null) {
+            LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+            loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
 
-        return "Contrato cadastrado com sucesso";
+            loginUsuarioEntity = loginUsuarioRepository.save(loginUsuarioEntity);
+
+            return "Login cadastrado com sucesso. Id: " + loginUsuarioEntity.getIdUsuario();
+        }
+
+        return "Login já existe";
+
     }
 
 
