@@ -49,7 +49,7 @@ public class ClienteController {
         return service.cadastrarCliente(inputCliente);
     }
 
-    @PostMapping("/cliente/alterar")
+    @PutMapping("/cliente/alterar")
     public ResponseEntity alterarCliente(@RequestBody InputCliente inputCliente) {
         return service.alterarCliente(inputCliente);
     }
