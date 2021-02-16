@@ -20,7 +20,7 @@ public class Pagamento {
     private BigInteger idContrato;
     private BigInteger idFormaPgt;
     private BigInteger idNF;
-    private BigInteger idAgPaciente;
+    private AgPaciente AgPaciente;
     private BigInteger idPedido;
     private Double vlPagamento;
     private Date dtPagamento;
