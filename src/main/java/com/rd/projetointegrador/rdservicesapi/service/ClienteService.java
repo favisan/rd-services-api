@@ -116,9 +116,9 @@ public class ClienteService {
     }
 
     @Transactional
-    public ResponseEntity alterarCliente(InputCliente inputUsuario){
+    public ResponseEntity alterarCliente(BigInteger idUsuario, InputCliente inputUsuario){
 
-        BigInteger id = inputUsuario.getUsuario().getIdUsuario();
+        BigInteger id = idUsuario;
 
         UsuarioEntity usuarioEntity = usuarioRepository.findById(id).get();
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);

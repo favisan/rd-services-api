@@ -51,6 +51,6 @@ public class ClienteController {
 
     @PutMapping("/cliente/alterar/{idUsuario}")
     public ResponseEntity alterarCliente(@PathVariable("idUsuario") BigInteger idUsuario, @RequestBody InputCliente inputCliente) {
-        return service.alterarCliente(inputCliente);
+        return service.alterarCliente(idUsuario, inputCliente);
     }
 }
