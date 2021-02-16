@@ -39,8 +39,7 @@ public class UsuarioService {
     @Autowired private CidadeService cidadeService;
     @Autowired private LoginUsuarioService loginUsuarioService;
 
-    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
 
     //MÉTODO: conversão de DTO para Entity
@@ -73,7 +72,7 @@ public class UsuarioService {
             usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
 
             usuarioEntity.setNmNome(usuario.getNmNome());
-            Date dataNascimento = SDF2.parse(usuario.getDtNascimento());
+            Date dataNascimento = SDF.parse(usuario.getDtNascimento());
             usuarioEntity.setDtNascimento(dataNascimento);
             usuarioEntity.setNrCpf(usuario.getNrCpf());
             usuarioEntity.setNrCrm(usuario.getNrCrm());

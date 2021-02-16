@@ -45,12 +45,12 @@ public class ClienteController {
 
     //POST PÁGINA DE CADASTRO (Novo Usuario + Login + Contato + Cartao + Contrato)
     @PostMapping("/cliente/cadastrar")
-    public ResponseEntity cadastrarUsuario(@RequestBody InputCliente inputCliente) {
+    public ResponseEntity cadastrarCliente(@RequestBody InputCliente inputCliente) {
         return service.cadastrarCliente(inputCliente);
     }
 
     @PostMapping("/cliente/alterar")
-    public ResponseEntity alterarUsuario(@RequestBody InputCliente inputCliente) {
+    public ResponseEntity alterarCliente(@RequestBody InputCliente inputCliente) {
         return service.alterarCliente(inputCliente);
     }
 }

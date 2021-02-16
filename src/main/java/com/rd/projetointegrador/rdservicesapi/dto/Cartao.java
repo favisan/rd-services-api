@@ -19,9 +19,9 @@ public class Cartao {
     private Usuario usuario;
     private String nrCartao;
     private String codSeguranca;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private String dtValidade;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private String dtEmissao;
     private String nmNome;
     //private BigInteger idPaciente;

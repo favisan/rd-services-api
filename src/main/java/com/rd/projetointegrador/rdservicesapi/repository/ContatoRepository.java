@@ -15,5 +15,7 @@ public interface ContatoRepository extends JpaRepository<ContatoEntity, BigInteg
 
     List<ContatoEntity> findByIdUsuario(BigInteger idUsuario);
 
-    ContatoEntity findOneByDsContato(String dsContato);
+    List<ContatoEntity> findByDsContato(String dsContato);
+
+    List<ContatoEntity> findByIdUsuarioAndDsContato(BigInteger idUsuario, String dsContato);
 }

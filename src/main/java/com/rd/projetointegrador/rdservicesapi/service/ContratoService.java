@@ -33,8 +33,7 @@ public class ContratoService {
 
     @Autowired PlanosService planosService;
 
-    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
@@ -71,7 +70,7 @@ public class ContratoService {
         contratoEntity.setDsContrato(contrato.getDsContrato());
 
             if(contrato.getDtVigencia() != null) {
-                Date dataVigencia = SDF2.parse(contrato.getDtVigencia());
+                Date dataVigencia = SDF.parse(contrato.getDtVigencia());
                 contratoEntity.setDtVigencia(dataVigencia);
             }
 

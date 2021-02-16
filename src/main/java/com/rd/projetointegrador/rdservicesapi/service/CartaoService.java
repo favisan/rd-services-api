@@ -22,8 +22,7 @@ public class CartaoService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private UsuarioService usuarioService;
 
-    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
 
     //MÉTODO: conversão de DTO para Entity
@@ -33,9 +32,9 @@ public class CartaoService {
             UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-            Date dtValidade = SDF2.parse(cartao.getDtValidade());
+            Date dtValidade = SDF.parse(cartao.getDtValidade());
             cartaoEntity.setDtValidade(dtValidade);
-            Date dtEmissao = SDF2.parse(cartao.getDtEmissao());
+            Date dtEmissao = SDF.parse(cartao.getDtEmissao());
             cartaoEntity.setDtEmissao(dtEmissao);
             cartaoEntity.setNmNome(cartao.getNmNome());
             cartaoEntity.setUsuario(usuarioEntity);
