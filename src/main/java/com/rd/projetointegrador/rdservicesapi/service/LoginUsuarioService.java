@@ -60,8 +60,7 @@ public class LoginUsuarioService {
         loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
         loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
 
-        //TODO: Preciso decoficar a senha?
-        loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
+        loginUsuario.setDsSenha(codificar(loginUsuarioEntity.getDsSenha()));
 
         return loginUsuario;
 

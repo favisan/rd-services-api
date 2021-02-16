@@ -69,7 +69,7 @@ public class ContratoService {
 
         contratoEntity.setDsContrato(contrato.getDsContrato());
 
-            if(contrato.getDtVigencia() != null) {
+            if(!contrato.getDtVigencia().equals("")) {
                 Date dataVigencia = SDF.parse(contrato.getDtVigencia());
                 contratoEntity.setDtVigencia(dataVigencia);
             }

@@ -85,10 +85,12 @@ public class ClienteService {
             System.out.println("Inseriu Contrato: " + contratoEntity.getIdContrato());
 
             //Entidade Cartao
-            inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
-            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-            cartaoRepository.save(cartaoEntity);
-            System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
+            if(!inputUsuario.getCartao().getNrCartao().equals("") && inputUsuario.getCartao().getCodSeguranca() != null) {
+                inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
+                cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+                cartaoRepository.save(cartaoEntity);
+                System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
+            }
 
             //Entidade Contato
             ContatoEntity contatoEntity = new ContatoEntity();
