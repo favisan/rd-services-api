@@ -159,7 +159,7 @@ public class ClienteService {
                 }
 
                 //Entidade Cartao
-                if(!cartaoEntity.getNrCartao().equals(inputUsuario.getCartao().getNrCartao())) {
+                if(cartaoEntity == null || !cartaoEntity.getNrCartao().equals(inputUsuario.getCartao().getNrCartao())) {
                     System.out.println(cartaoEntity.getNrCartao());
                     CartaoEntity newCartaoEntity = new CartaoEntity();
                     newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
@@ -256,17 +256,17 @@ public class ClienteService {
         loginUsuario = luService.conversaoLoginUsuarioDTO(loginUsuarioEntity, loginUsuario);
 
         Contrato contrato = new Contrato();
-        contrato = contratoService.conversaoContratoDTO(contratoEntities.get(0), contrato);
+        contrato = contratoService.conversaoContratoDTO(contratoEntities.get(contratoEntities.size()-1), contrato);
 
         Cartao cartao = new Cartao();
-        cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(0), cartao);
+        cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(cartaoEntities.size()-1), cartao);
 
         inputCliente.setUsuario(usuario);
         inputCliente.setLoginUsuario(loginUsuario);
         inputCliente.setContrato(contrato);
         inputCliente.setCartao(cartao);
-        inputCliente.setDdd(contatoEntities.get(0).getNrDdd());
-        inputCliente.setCelular(contatoEntities.get(0).getDsContato());
+        inputCliente.setDdd(contatoEntities.get(contatoEntities.size()-1).getNrDdd());
+        inputCliente.setCelular(contatoEntities.get(contatoEntities.size()-1).getDsContato());
 
         return inputCliente;
     }
