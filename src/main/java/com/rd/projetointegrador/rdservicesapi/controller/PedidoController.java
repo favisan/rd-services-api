@@ -20,10 +20,10 @@ public class PedidoController {
 
     @Autowired
     private PedidoService service;
-
-    @PostMapping("/pedido")
-    public ResponseEntity cadastrarAgendamento(@RequestBody PedidoInput pedidoInput) {
-        System.out.println(pedidoInput.getIdUsuario());
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAgendamento(pedidoInput.getAgendamentos(), pedidoInput.getIdUsuario(), pedidoInput.getCartao()));
-    }
+//
+//    @PostMapping("/pedido")
+//    public ResponseEntity cadastrarAgendamento(@RequestBody PedidoInput pedidoInput) {
+//        System.out.println(pedidoInput.getIdUsuario());
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarAgendamento(pedidoInput.getAgendamentos(), pedidoInput.getIdUsuario(), pedidoInput.getCartao()));
+//    }
 }

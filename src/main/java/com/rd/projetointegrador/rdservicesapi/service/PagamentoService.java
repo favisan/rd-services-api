@@ -27,7 +27,7 @@ public class PagamentoService {
     public PagamentoEntity conversaoPagamentoEntity(Pagamento pagamento, PagamentoEntity pagamentoEntity) {
 
         pagamentoEntity.setIdContrato(pagamento.getIdContrato());
-        pagamentoEntity.setIdFormaPgt(pagamento.getIdFormaPgt());
+//        pagamentoEntity.setidFormaPgt(pagamento.getIdFormaPgt());
         pagamentoEntity.setIdNF(pagamento.getIdNF());
 //        pagamentoEntity.setIdAgPaciente(pagamento.getIdAgPaciente());
         pagamentoEntity.setIdPedido(pagamento.getIdPedido());
@@ -43,7 +43,9 @@ public class PagamentoService {
     //MÉTODO: conversão de Entity para DTO
     public Pagamento conversaoPagamentoDTO(PagamentoEntity pagamentoEntity, Pagamento pagamento) {
         pagamento.setIdContrato(pagamentoEntity.getIdContrato());
-        pagamento.setIdFormaPgt(pagamentoEntity.getIdFormaPgt());
+        TipoPagamento formaPgto = new TipoPagamento();
+        formaPgto.setDsFormaPagamento(pagamentoEntity.getTipoPagamentoEntity().getDsFormaPagamento());
+        pagamento.setFormaPgt(formaPgto);
         pagamento.setIdNF(pagamentoEntity.getIdNF());
 //        pagamento.setIdAgPaciente(pagamentoEntity.getIdAgPaciente());
         pagamento.setIdPedido(pagamentoEntity.getIdPedido());
@@ -153,7 +155,9 @@ public class PagamentoService {
         listaCartoes = cartaoRepository.findByUsuario(agPaciente.getPaciente());
         pagamentoEntity.setIdCartao(listaCartoes.get(0).getIdCartao());
         pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoCartao.getIdAgPaciente()).get());
-        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
+        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
+        formaPgto.setIdFormaPagamento(BigInteger.valueOf(1));
+        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
         repository.save(pagamentoEntity);
@@ -168,7 +172,9 @@ public class PagamentoService {
     public Pagamento setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoPlano.getIdAgPaciente()).get());
-        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
+        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
+        formaPgto.setIdFormaPagamento(BigInteger.valueOf(3));
+        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
         ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
         repository.save(pagamentoEntity);

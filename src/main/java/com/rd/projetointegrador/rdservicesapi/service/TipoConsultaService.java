@@ -13,9 +13,9 @@ public class TipoConsultaService {
 
     @Autowired private TipoConsultaRepository repository;
 
-    //Grupo2 - Get tipo de consulta to by id
+    //Grupo2 - Get tipo de consulta dto by id
     public TipoConsulta getTipoConsultabyId(BigInteger idTipoConsulta){
-        TipoConsultaEntity tipoConsultaEntity = repository.findByIdTipoConsulta(idTipoConsulta).get();
+        TipoConsultaEntity tipoConsultaEntity = repository.findById(idTipoConsulta).get();
         TipoConsulta tipoConsultaDTO = new TipoConsulta();
         tipoConsultaDTO.setIdTipoConsulta(tipoConsultaEntity.getIdTipoConsulta());
         tipoConsultaDTO.setDsTipoConsulta(tipoConsultaEntity.getDsTipoConsulta());

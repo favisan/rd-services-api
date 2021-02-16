@@ -27,7 +27,7 @@ public class AgendaService {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
         //Se consulta=2, retornar as agendas com status presencial; se consulta=1(online), traz todas as agendas
         if(idConsulta.intValue() == 2){
-            agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findByIdTipoConsulta(idConsulta).get());
+            agendaPorTipoConsulta = agendaRepository.findByTipoConsulta(tipoConsultaRepository.findById(idConsulta).get());
         } else {
             agendaPorTipoConsulta = agendaRepository.findAll();
         }

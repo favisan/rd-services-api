@@ -18,7 +18,7 @@ public class Pagamento {
     private BigInteger  idPagamento;
     private BigInteger idCartao ;
     private BigInteger idContrato;
-    private BigInteger idFormaPgt;
+    private TipoPagamento formaPgt;
     private BigInteger idNF;
     private AgPaciente AgPaciente;
     private BigInteger idPedido;
