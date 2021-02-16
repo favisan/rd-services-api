@@ -79,24 +79,21 @@ public class ContratoService {
     }
 
     //Grupo2 - Listar os contratos pela id do usuário
-    public List<Contrato> getContratoDTOByUsuario(BigInteger idUsuario) {
+    public Contrato getContratoDTOByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
-        List <ContratoEntity> contratoByUser = repository.findByUsuario(usuarioEntity);
-        List <Contrato> contratoDTO = new ArrayList<>();
-        //convertendo ContratoEntity em ContratoDTO
-        for (ContratoEntity contratoEntity : contratoByUser) {
-            Planos plano = new Planos();
-            plano.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
-            plano.setNmPlano(contratoEntity.getPlanosEntity().getNmPlano());
-            plano.setDsPlano(contratoEntity.getPlanosEntity().getDsPlano());
-            Contrato contrato = new Contrato();
-            contrato.setIdContrato(contratoEntity.getIdContrato());
-            contrato.setDtVigencia(contratoEntity.getDtVigencia());
-            contrato.setPlano(plano);
+        ContratoEntity contratoEntity = repository.findOneByUsuario(usuarioEntity);
 
-            contratoDTO.add(contrato);
-        }
-        return contratoDTO;
+        //convertendo ContratoEntity em ContratoDTO
+        Planos plano = new Planos();
+        plano.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
+        plano.setNmPlano(contratoEntity.getPlanosEntity().getNmPlano());
+        plano.setDsPlano(contratoEntity.getPlanosEntity().getDsPlano());
+        Contrato contrato = new Contrato();
+        contrato.setIdContrato(contratoEntity.getIdContrato());
+        contrato.setDtVigencia(contratoEntity.getDtVigencia());
+        contrato.setPlano(plano);
+
+        return contrato;
     }
 
 //    @Transactional

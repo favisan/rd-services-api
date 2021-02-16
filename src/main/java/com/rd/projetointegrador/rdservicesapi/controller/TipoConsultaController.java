@@ -15,7 +15,7 @@ public class TipoConsultaController {
     @Autowired private TipoConsultaService service;
 
     //Grupo2 - Consultar tipo de consulta pela id
-    @GetMapping("/tipoConsulta/{idAgConsulta}")
+    @GetMapping("/tipoConsulta/{idTipoConsulta}")
     public ResponseEntity listarTipoConsultaPorId(@PathVariable("idTipoConsulta") BigInteger idTipoConsulta){
         return ResponseEntity.status(HttpStatus.OK).body(service.getTipoConsultabyId(idTipoConsulta));
     }

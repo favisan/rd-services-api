@@ -146,7 +146,7 @@ public class PagamentoService {
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
-    public BigInteger setPagamentoComCartao(PagamentoCartao pagtoCartao){
+    public Pagamento setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         AgPacienteEntity agPaciente = agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get();
         List<CartaoEntity> listaCartoes = new ArrayList<>();
@@ -157,22 +157,25 @@ public class PagamentoService {
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
         repository.save(pagamentoEntity);
+        Pagamento pagamento = new Pagamento();
+        conversaoPagamentoDTO(pagamentoEntity, pagamento);
 
-        return pagamentoEntity.getIdPagamento();
+        return pagamento;
     }
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
     @Transactional
-    public BigInteger setPagamentoComPlano(PagamentoPlano pagtoPlano){
+    public Pagamento setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoPlano.getIdAgPaciente()).get());
         pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
         ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
         repository.save(pagamentoEntity);
+        Pagamento pagamento = new Pagamento();
+        conversaoPagamentoDTO(pagamentoEntity, pagamento);
 
-
-        return pagamentoEntity.getIdPagamento();
+        return pagamento;
 
     }
 

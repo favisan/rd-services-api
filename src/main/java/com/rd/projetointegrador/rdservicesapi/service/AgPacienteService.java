@@ -21,6 +21,49 @@ public class AgPacienteService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
 
+    //Grupo2 - Convertendo AgPacienteEntity para DTO
+    public AgPaciente conversaoAgPacienteParaDTO (AgPacienteEntity agPacienteEntity, AgPaciente agPaciente){
+        agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
+
+        //idAgenda
+        Agenda agenda = new Agenda();
+        agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
+
+        //nomeMedico
+        UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
+        InputMedico medicoDto = new InputMedico();
+        medicoDto.setNome(medicoEntity.getNmNome());
+
+        //especialidade
+        EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
+        EspMed espMedDto = new EspMed();
+        espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
+        espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
+        medicoDto.setEspMed(espMedDto);
+        agenda.setMedico(medicoDto);
+
+        //data
+        agenda.setData(agPacienteEntity.getAgenda().getData());
+
+        //horaInicial
+        PeriodoEntity periodoEntity = agPacienteEntity.getAgenda().getPeriodo();
+        Periodo periodo = new Periodo();
+        periodo.setIdPeriodo(periodoEntity.getIdPeriodo());
+        periodo.setHoraInicial(periodoEntity.getHoraInicial());
+        agenda.setPeriodo(periodo);
+
+        //statusConsulta
+        StatusConsulta status = new StatusConsulta();
+        status.setIdStatusConsulta(agPacienteEntity.getStatusConsulta().getIdStatusConsulta());
+        status.setDsStatusConsulta(agPacienteEntity.getStatusConsulta().getDsStatusConsulta());
+        agPaciente.setStatusConsulta(status);
+
+        //passando agendaDTO para agPacienteDTO
+        agPaciente.setAgenda(agenda);
+
+        return agPaciente;
+    }
+
     //Grupo2 - Get AgPaciente pelo idAgenda
     public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
         AgPacienteEntity agPacienteEntity= repository.findByIdAgPaciente(idAgPaciente).get();
@@ -50,47 +93,10 @@ public class AgPacienteService {
     public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
         List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
         List<AgPaciente> agPacientes = new ArrayList<>();
-
+        AgPaciente agPaciente = new AgPaciente();
         //Convertendo AgPacienteEntity para AgPacienteDTO
         for (AgPacienteEntity agPacienteEntity : listaAgendas){
-            AgPaciente agPaciente = new AgPaciente();
-            agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
-
-            //idAgenda
-            Agenda agenda = new Agenda();
-            agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
-
-            //nomeMedico
-            UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
-            InputMedico medicoDto = new InputMedico();
-            medicoDto.setNome(medicoEntity.getNmNome());
-
-            //especialidade
-            EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
-            EspMed espMedDto = new EspMed();
-            espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
-            espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
-            medicoDto.setEspMed(espMedDto);
-            agenda.setMedico(medicoDto);
-
-            //data
-            agenda.setData(agPacienteEntity.getAgenda().getData());
-
-            //horaInicial
-            PeriodoEntity periodoEntity = agPacienteEntity.getAgenda().getPeriodo();
-            Periodo periodo = new Periodo();
-            periodo.setIdPeriodo(periodoEntity.getIdPeriodo());
-            periodo.setHoraInicial(periodoEntity.getHoraInicial());
-            agenda.setPeriodo(periodo);
-
-            //statusConsulta
-            StatusConsulta status = new StatusConsulta();
-            status.setIdStatusConsulta(agPacienteEntity.getStatusConsulta().getIdStatusConsulta());
-            status.setDsStatusConsulta(agPacienteEntity.getStatusConsulta().getDsStatusConsulta());
-            agPaciente.setStatusConsulta(status);
-
-            //passando agendaDTO para agPacienteDTO
-            agPaciente.setAgenda(agenda);
+            conversaoAgPacienteParaDTO(agPacienteEntity,agPaciente);
             agPacientes.add(agPaciente);
         }
         return agPacientes;
@@ -98,7 +104,7 @@ public class AgPacienteService {
 
     //Grupo2 - Cadastrar nova Agenda de Paciente
     @Transactional
-    public BigInteger setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
+    public AgPaciente setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
         //mudando status da consulta para agendada
@@ -110,8 +116,11 @@ public class AgPacienteService {
         agPacienteEntity.setStatusConsulta(status);
         //mudando disponibilidade da agenda médica para agendada
         repository.save(agPacienteEntity);
+        //convertendo para DTO
+        AgPaciente agPaciente = new AgPaciente();
+        conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
 
-        return agPacienteEntity.getIdAgPaciente();
+        return agPaciente;
     }
 
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
