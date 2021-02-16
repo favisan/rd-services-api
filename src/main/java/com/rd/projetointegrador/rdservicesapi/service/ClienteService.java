@@ -258,13 +258,15 @@ public class ClienteService {
         Contrato contrato = new Contrato();
         contrato = contratoService.conversaoContratoDTO(contratoEntities.get(contratoEntities.size()-1), contrato);
 
-        Cartao cartao = new Cartao();
-        cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(cartaoEntities.size()-1), cartao);
+        if(!cartaoEntities.isEmpty()) {
+            Cartao cartao = new Cartao();
+            cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(cartaoEntities.size() - 1), cartao);
+            inputCliente.setCartao(cartao);
+        }
 
         inputCliente.setUsuario(usuario);
         inputCliente.setLoginUsuario(loginUsuario);
         inputCliente.setContrato(contrato);
-        inputCliente.setCartao(cartao);
         inputCliente.setDdd(contatoEntities.get(contatoEntities.size()-1).getNrDdd());
         inputCliente.setCelular(contatoEntities.get(contatoEntities.size()-1).getDsContato());
 
