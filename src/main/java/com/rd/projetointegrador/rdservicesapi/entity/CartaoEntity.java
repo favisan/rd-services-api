@@ -40,10 +40,7 @@ public class CartaoEntity implements Serializable{
     @Column(name ="DT_EMISSAO")
     private Date dtEmissao;
 
-<<<<<<< HEAD
     @Column(name ="NM_NOME")
     private String nmNome;
 
-=======
->>>>>>> 0173f7246e3d603b2cb99ca466e61d54d74b1a9b
 }

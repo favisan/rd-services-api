@@ -46,15 +46,13 @@ public class CartaoService {
         cartao.setCodSeguranca(cartaoEntity.getCodSeguranca());
         cartao.setDtValidade(cartaoEntity.getDtValidade());
         cartao.setDtEmissao(cartaoEntity.getDtEmissao());
-<<<<<<< HEAD
+
         cartao.setNmNome( cartaoEntity.getNmNome());
-        cartao.setIdUsuario(cartaoEntity.getUsuario().getIdUsuario());
-=======
+        cartao.setIdCartao(cartaoEntity.getUsuario().getIdUsuario());
 
         Usuario usuario = new Usuario();
         usuario = usuarioService.conversaoUsuarioDTO(cartaoEntity.getUsuario(), usuario);
         cartao.setUsuario(usuario);
->>>>>>> 0173f7246e3d603b2cb99ca466e61d54d74b1a9b
 
         return cartao;
     }
@@ -87,14 +85,12 @@ public class CartaoService {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
 
-<<<<<<< HEAD
         repository.save(cartaoEntity);
 
         System.out.println(cartao.getIdCartao() + " . " + cartao.getNrCartao() + " . " + cartao.getNmNome()  + " . " + cartao.getCodSeguranca() + " . " + cartao.getDtValidade() + " . " + cartao.getDtEmissao());
-=======
             if(usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
                 repository.save(cartaoEntity);
->>>>>>> 0173f7246e3d603b2cb99ca466e61d54d74b1a9b
+
 
                 return "Cartao Cadastrado com sucesso";
             }
