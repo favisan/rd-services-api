@@ -68,85 +68,85 @@ public class PedidoService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    @Transactional
-    public String cadastrarAgendamento (List<AgServico> lista, BigInteger id, Cartao cartao) {
-       List<AgServicoEntity> listaEntity = new ArrayList<>();
-       List<Servico> servicoDto = new ArrayList<>();
-       UsuarioEntity user = usuarioRepository.findById(id).get();
-
-        double totalPedido = 0;
-
-        for (AgServico ag : lista ){
-            AgServicoEntity agServicoEntity = new AgServicoEntity();
-            agServicoEntity.setIdServico(servicoRepository.findById(ag.getIdServico()).get());
-            agServicoEntity.setIdLoja(lojaRepository.findById(ag.getIdLoja()).get());
-            agServicoEntity.setIdStatus(statusRepository.findById(ag.getIdStatus()).get());
-            agServicoEntity.setDtDataHora(ag.getDtDataHora());
-            listaEntity.add(agServicoEntity);
-
-            totalPedido += agServicoEntity.getIdServico().getPreco();
-        }
-
-        List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
-        ContratoEntity contratoEntity = listContratoEntity.get(0);
-
-        List<ServicoPlanoEntity> listaServicos = contratoEntity.getPlanosEntity().getServicos();
-        boolean cobreServico = false;
-
-        for (ServicoPlanoEntity s : listaServicos) {
-            if (s.getIdServicoPlano() == BigInteger.valueOf(1L)) {
-                cobreServico = true;
-            }
-        }
-
-        // 2 - Salvar pedido;
-        // 3 - Salvar agendamento;
-        // 4 - Salvar pagamento.
-
-        try { PedidoEntity pedido  = new PedidoEntity();
-            pedido.setIdPaciente(id);
-            pedido.setVlTotal(totalPedido);
-
-            PedidoEntity pedidoSalvo = pedidoRepository.save(pedido);
-
-        for (AgServicoEntity ag : listaEntity) {
-            ag.setPedido(pedidoSalvo);
-            agServicoRepository.save(ag);
-        }
-
-        if (!cobreServico) {
-            CartaoEntity cartaoEntity = new CartaoEntity();
-            cartaoEntity.setNrCartao(cartao.getNrCartao());
-            cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-            cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-            cartaoEntity.setDtValidade(cartao.getDtValidade());
-            cartaoEntity.setUsuario(user);
-
-            cartaoRepository.save(cartaoEntity);
-
-            PagamentoEntity pagamento = new PagamentoEntity();
-            pagamento.setIdCartao(cartao.getIdCartao());
-            pagamento.setIdFormaPgt(BigInteger.valueOf(1L));
-            pagamento.setIdPedido(pedidoSalvo.getIdPedido());
-            pagamento.setVlPagamento(totalPedido);
-            pagamento.setDtPagamento(new Date());
-
-            pagamentoRepository.save(pagamento);
-            return "Agendamento realizado com sucesso";
-        }
-
-        PagamentoEntity pagamento = new PagamentoEntity();
-        pagamento.setIdFormaPgt(BigInteger.valueOf(3L));
-        pagamento.setIdPedido(pedidoSalvo.getIdPedido());
-        pagamento.setVlPagamento(totalPedido);
-        pagamento.setDtPagamento(new Date());
-
-        pagamentoRepository.save(pagamento);
-        return "Agendamento realizado com sucesso";
-        }
-
-        catch (Exception e) {
-            return "Erro ao criar agendamento.";
-        }
-    }
+//    @Transactional
+//    public String cadastrarAgendamento (List<AgServico> lista, BigInteger id, Cartao cartao) {
+//       List<AgServicoEntity> listaEntity = new ArrayList<>();
+//       List<Servico> servicoDto = new ArrayList<>();
+//       UsuarioEntity user = usuarioRepository.findById(id).get();
+//
+//        double totalPedido = 0;
+//
+//        for (AgServico ag : lista ){
+//            AgServicoEntity agServicoEntity = new AgServicoEntity();
+//            agServicoEntity.setIdServico(servicoRepository.findById(ag.getIdServico()).get());
+//            agServicoEntity.setIdLoja(lojaRepository.findById(ag.getIdLoja()).get());
+//            agServicoEntity.setIdStatus(statusRepository.findById(ag.getIdStatus()).get());
+//            agServicoEntity.setDtDataHora(ag.getDtDataHora());
+//            listaEntity.add(agServicoEntity);
+//
+//            totalPedido += agServicoEntity.getIdServico().getPreco();
+//        }
+//
+//        List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
+//        ContratoEntity contratoEntity = listContratoEntity.get(0);
+//
+//        List<ServicoPlanoEntity> listaServicos = contratoEntity.getPlanosEntity().getServicos();
+//        boolean cobreServico = false;
+//
+//        for (ServicoPlanoEntity s : listaServicos) {
+//            if (s.getIdServicoPlano() == BigInteger.valueOf(1L)) {
+//                cobreServico = true;
+//            }
+//        }
+//
+//        // 2 - Salvar pedido;
+//        // 3 - Salvar agendamento;
+//        // 4 - Salvar pagamento.
+//
+//        try { PedidoEntity pedido  = new PedidoEntity();
+//            pedido.setIdPaciente(id);
+//            pedido.setVlTotal(totalPedido);
+//
+//            PedidoEntity pedidoSalvo = pedidoRepository.save(pedido);
+//
+//        for (AgServicoEntity ag : listaEntity) {
+//            ag.setPedido(pedidoSalvo);
+//            agServicoRepository.save(ag);
+//        }
+//
+//        if (!cobreServico) {
+//            CartaoEntity cartaoEntity = new CartaoEntity();
+//            cartaoEntity.setNrCartao(cartao.getNrCartao());
+//            cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
+//            cartaoEntity.setDtEmissao(cartao.getDtEmissao());
+//            cartaoEntity.setDtValidade(cartao.getDtValidade());
+//            cartaoEntity.setUsuario(user);
+//
+//            cartaoRepository.save(cartaoEntity);
+//
+//            PagamentoEntity pagamento = new PagamentoEntity();
+//            pagamento.setIdCartao(cartao.getIdCartao());
+//            pagamento.setIdFormaPgt(BigInteger.valueOf(1L));
+//            pagamento.setIdPedido(pedidoSalvo.getIdPedido());
+//            pagamento.setVlPagamento(totalPedido);
+//            pagamento.setDtPagamento(new Date());
+//
+//            pagamentoRepository.save(pagamento);
+//            return "Agendamento realizado com sucesso";
+//        }
+//
+//        PagamentoEntity pagamento = new PagamentoEntity();
+//        pagamento.setIdFormaPgt(BigInteger.valueOf(3L));
+//        pagamento.setIdPedido(pedidoSalvo.getIdPedido());
+//        pagamento.setVlPagamento(totalPedido);
+//        pagamento.setDtPagamento(new Date());
+//
+//        pagamentoRepository.save(pagamento);
+//        return "Agendamento realizado com sucesso";
+//        }
+//
+//        catch (Exception e) {
+//            return "Erro ao criar agendamento.";
+//        }
+//    }
 }

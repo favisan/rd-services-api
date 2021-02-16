@@ -14,6 +14,12 @@ public class AgPacienteController {
     @Autowired private AgPacienteService service;
     @Autowired private UsuarioRepository usuarioRepository;
 
+    //Grupo2 - Consultar agenda de paciente pela id da agPaciente
+    @GetMapping("/agPacientePorId/{idAgPaciente}")
+    public ResponseEntity listarAgPacienteporId(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPacientePorId(idAgPaciente));
+    }
+
      //Grupo2 - Consultar agendas de paciente filtradas pela Id do Usuario
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
@@ -23,13 +29,13 @@ public class AgPacienteController {
     //Grupo2 - Alterar a disponibilidade da agenda médica para disponível quando o paciente cancela a consulta
     @GetMapping ("/agPaciente/mudar-status/{idAgPaciente}")
     public ResponseEntity cancelarConsulta(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
-        return ResponseEntity.status(HttpStatus.OK).body(service.cancelarAgPaciente(idAgPaciente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cancelarAgPaciente(idAgPaciente));
     }
 
     //Grupo2 - Cadastrar nova Agenda do Paciente
     @PostMapping ("/agPaciente/cadastrar")
     public ResponseEntity cadastrarAgPaciente(@RequestBody CadastroAgPaciente cadastroAgPaciente) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.setAgPaciente(cadastroAgPaciente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setAgPaciente(cadastroAgPaciente));
     }
 
 }

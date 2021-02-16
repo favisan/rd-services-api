@@ -62,13 +62,13 @@ public class PagamentoController {
     }
 
     //Grupo2 - Cadastro de Pagamento de consulta feito com cartão
-    @PostMapping("/pagamento/cartao") //Cadastrar Novo PgtoCartao
+    @PostMapping("/pagamento/cartao")
     public ResponseEntity setPagamentoCartao(@RequestBody PagamentoCartao pagtoCartao) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(pagtoCartao));
     }
 
     //Grupo 2 - Cadastro de Pagamento de consulta feito com plano
-    @PostMapping("/pagamento/plano") //Cadastrar Novo PgtoPlano
+    @PostMapping("/pagamento/plano")
     public ResponseEntity setPagamentoPlano(@RequestBody PagamentoPlano pagtoPlano) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(pagtoPlano));
     }

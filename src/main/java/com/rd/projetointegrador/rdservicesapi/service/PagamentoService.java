@@ -27,9 +27,9 @@ public class PagamentoService {
     public PagamentoEntity conversaoPagamentoEntity(Pagamento pagamento, PagamentoEntity pagamentoEntity) {
 
         pagamentoEntity.setIdContrato(pagamento.getIdContrato());
-        pagamentoEntity.setIdFormaPgt(pagamento.getIdFormaPgt());
+//        pagamentoEntity.setidFormaPgt(pagamento.getIdFormaPgt());
         pagamentoEntity.setIdNF(pagamento.getIdNF());
-        pagamentoEntity.setIdAgPaciente(pagamento.getIdAgPaciente());
+//        pagamentoEntity.setIdAgPaciente(pagamento.getIdAgPaciente());
         pagamentoEntity.setIdPedido(pagamento.getIdPedido());
         pagamentoEntity.setVlPagamento(pagamento.getVlPagamento());
         pagamentoEntity.setDtPagamento(pagamento.getDtPagamento());
@@ -43,9 +43,11 @@ public class PagamentoService {
     //MÉTODO: conversão de Entity para DTO
     public Pagamento conversaoPagamentoDTO(PagamentoEntity pagamentoEntity, Pagamento pagamento) {
         pagamento.setIdContrato(pagamentoEntity.getIdContrato());
-        pagamento.setIdFormaPgt(pagamentoEntity.getIdFormaPgt());
+        TipoPagamento formaPgto = new TipoPagamento();
+        formaPgto.setDsFormaPagamento(pagamentoEntity.getTipoPagamentoEntity().getDsFormaPagamento());
+        pagamento.setFormaPgt(formaPgto);
         pagamento.setIdNF(pagamentoEntity.getIdNF());
-        pagamento.setIdAgPaciente(pagamentoEntity.getIdAgPaciente());
+//        pagamento.setIdAgPaciente(pagamentoEntity.getIdAgPaciente());
         pagamento.setIdPedido(pagamentoEntity.getIdPedido());
         pagamento.setVlPagamento(pagamentoEntity.getVlPagamento());
         pagamento.setDtPagamento(pagamentoEntity.getDtPagamento());
@@ -146,34 +148,41 @@ public class PagamentoService {
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
-    public RespostaString setPagamentoComCartao(PagamentoCartao pagtoCartao){
+    public Pagamento setPagamentoComCartao(PagamentoCartao pagtoCartao){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
         AgPacienteEntity agPaciente = agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get();
-        pagamentoEntity.setIdCartao(pagtoCartao.getIdCartao());
-        pagamentoEntity.setIdAgPaciente(pagtoCartao.getIdAgPaciente());
-        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(1));
+        List<CartaoEntity> listaCartoes = new ArrayList<>();
+        listaCartoes = cartaoRepository.findByUsuario(agPaciente.getPaciente());
+        pagamentoEntity.setIdCartao(listaCartoes.get(0).getIdCartao());
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoCartao.getIdAgPaciente()).get());
+        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
+        formaPgto.setIdFormaPagamento(BigInteger.valueOf(1));
+        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
         pagamentoEntity.setVlPagamento(agPaciente.getAgenda().getMedico().getPreco().getVlConsulta());
         pagamentoEntity.setNrParcela(pagtoCartao.getParcelas());
         repository.save(pagamentoEntity);
+        Pagamento pagamento = new Pagamento();
+        conversaoPagamentoDTO(pagamentoEntity, pagamento);
 
-        RespostaString respostaPagtoCartao = new RespostaString();
-        respostaPagtoCartao.setResposta("Pagamento com cartão cadastrado com sucesso");
-        return respostaPagtoCartao;
+        return pagamento;
     }
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
     @Transactional
-    public RespostaString setPagamentoComPlano(PagamentoPlano pagtoPlano){
+    public Pagamento setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        pagamentoEntity.setIdFormaPgt(BigInteger.valueOf(3));
-        ContratoEntity contrato = contratoRepository.findOneByUsuario(usuarioRepository.findById(pagtoPlano.getIdUsuario()).get());
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoPlano.getIdAgPaciente()).get());
+        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
+        formaPgto.setIdFormaPagamento(BigInteger.valueOf(3));
+        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
+        ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
-        pagamentoEntity.setIdAgPaciente(pagtoPlano.getIdAgPaciente());
         repository.save(pagamentoEntity);
+        Pagamento pagamento = new Pagamento();
+        conversaoPagamentoDTO(pagamentoEntity, pagamento);
 
-        RespostaString respostaPagtoPlano = new RespostaString();
-        respostaPagtoPlano.setResposta("Pagamento com plano cadastrado com sucesso");
-        return respostaPagtoPlano;
+        return pagamento;
+
     }
 
 

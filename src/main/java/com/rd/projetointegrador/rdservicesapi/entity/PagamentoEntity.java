@@ -29,14 +29,16 @@ public class PagamentoEntity  implements Serializable {
     @Column  (name= "ID_CONTRATO")
     private BigInteger idContrato;
 
-    @Column (name= "ID_FORMA_PAGAMENTO")
-    private BigInteger idFormaPgt;
+    @ManyToOne
+    @JoinColumn (name= "ID_FORMA_PAGAMENTO")
+    private TipoPagamentoEntity tipoPagamentoEntity;
 
     @Column (name= "ID_NF")
     private BigInteger idNF;
 
-    @Column  (name= "ID_AG_PACIENTE")
-    private BigInteger idAgPaciente;
+    @ManyToOne
+    @JoinColumn  (name= "ID_AG_PACIENTE")
+    private AgPacienteEntity agPacienteEntity;
 
     @Column  (name= "ID_PEDIDO")
     private BigInteger idPedido;
