@@ -400,4 +400,13 @@ public class UsuarioService {
 
         return cadastroMedico;
     }
+
+    //GRUPO3 --------------------------------------------------------------------------
+
+    public BigInteger getUsuarioPorCPF(String cpf) {
+
+        UsuarioEntity user= repository.findOneByNrCpf(cpf);
+        return user.getIdUsuario();
+    }
+
 }

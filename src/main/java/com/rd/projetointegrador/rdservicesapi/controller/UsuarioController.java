@@ -34,6 +34,11 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
+    @GetMapping("/usuario/cpf/{cpf}")//Pegar usuário por CPF
+    public ResponseEntity getUsuarioPorCpf(@PathVariable("cpf") String cpf){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getUsuarioPorCPF(cpf));
+    }
+
     @PostMapping("/usuario") //Cadastrar Novo Usuario
     public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(usuario));
