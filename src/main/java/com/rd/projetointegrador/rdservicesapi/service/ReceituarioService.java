@@ -16,32 +16,25 @@ public class ReceituarioService {
 
     //Repository
     @Autowired private ReceituarioRepository receituarioRepository;
-
     @Autowired private ProntuarioRepository prontuarioRepository;
-
     @Autowired private UsuarioRepository usuarioRepository;
-
     @Autowired private TipoReceitaRepository tipoReceitaRepository;
 
     //Service
     @Autowired private TipoReceitaService tipoReceitaService;
-
     @Autowired private FormaFarmacService formaFarmacService;
-
     @Autowired private ViaAdmService viaAdmService;
-
     @Autowired private MedicacaoService medicacaoService;
-
     @Autowired private UsuarioService usuarioService;
-
     @Autowired private EnderecoService enderecoService;
-
     @Autowired private MedicoService medicoService;
 
     //Consultar receituário por Id
-    public ReceituarioEntity exibirReceituarioPorId(BigInteger idReceituario){
+    public ReceituarioInput exibirReceituarioPorId(BigInteger idReceituario){
 
-        ReceituarioEntity receituario = receituarioRepository.findById(idReceituario).get();
+        ReceituarioEntity receituarioEntity = receituarioRepository.findById(idReceituario).get();
+        ReceituarioInput receituario = new ReceituarioInput();
+        receituario = converterReceituarioToDTO(receituarioEntity, receituario);
         return receituario;
 
     }

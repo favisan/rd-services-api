@@ -4,10 +4,13 @@ import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -95,14 +98,12 @@ public class AgendaService {
                 }
             return agendasOutput;
         }
-
         for (Agenda agenda : agendas) {
             AgendaOutput agendaOutput = new AgendaOutput();
             agendaOutput.setPeriodo(agenda.getPeriodo());
             agendaOutput.setDisponibilidade(agenda.getDisponibilidade());
             agendasOutput.add(agendaOutput);
         }
-
         return agendasOutput;
     }
 
@@ -126,21 +127,22 @@ public class AgendaService {
     }
 
     //Listar Agendamentos por agenda (Grupo 4)
-    public List<AgPacienteEntity> getAgendamentosPorAgenda(Date data, BigInteger idMedico) {
-        List<AgPacienteEntity> agendamentos = new ArrayList<>();
+    public List<AgPaciente> getAgendamentosPorAgenda(Date data, BigInteger idMedico) {
+        List<AgPaciente> agendamentos = new ArrayList<>();
 
         //Pegandos todas as agendas do dia com disponibilidade 2
         List<AgendaEntity> agendas = getAgendasPorDataDisponibilidade(data);
 
         //Pegandos todas as agendas do dia com disponibilidade 2 por idMedico
-        for (AgendaEntity agenda : agendas){
+        for (AgendaEntity agenda : agendas) {
             BigInteger idMedicoAgenda = agenda.getMedico().getIdUsuario();
             if (idMedicoAgenda.equals(idMedico)) {
-                AgPacienteEntity agendamento = agPacienteRepository.findByAgenda(agenda);
-                agendamentos.add(agendamento);
+                AgPacienteEntity agPacienteEntity = agPacienteRepository.findByAgenda(agenda);
+                AgPaciente agPaciente = new AgPaciente();
+                agPaciente = converterAgPacienteToDTO(agPacienteEntity, agPaciente);
+                agendamentos.add(agPaciente);
             }
         }
-
         return agendamentos;
     }
 
@@ -314,6 +316,20 @@ public class AgendaService {
         }
 
         return agendasEntity;
+    }
+
+    //Convertendo AgPaciente de Entity para DTO (Grupo 4)
+    public AgPaciente converterAgPacienteToDTO(AgPacienteEntity agPacienteEntity, AgPaciente agPaciente) {
+
+        //SETANDO OS VALORES NA DTO Agenda
+        agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
+        agPaciente.setIdPaciente(agPacienteEntity.getPaciente().getIdUsuario());
+        agPaciente.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
+        agPaciente.setDtSolicitacao(agPacienteEntity.getDtSolicitacao());
+        agPaciente.setIdTipoConfirmacao(agPacienteEntity.getTipoConfirmacao().getIdTipoConfirmacao());
+        agPaciente.setIdStatusConsulta(agPacienteEntity.getStatusConsulta().getIdStatusConsulta());
+
+        return agPaciente;
     }
 
 }

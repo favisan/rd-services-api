@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
+import com.rd.projetointegrador.rdservicesapi.dto.AgPaciente;
 import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
 import com.rd.projetointegrador.rdservicesapi.dto.Periodo;
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
@@ -88,7 +89,7 @@ import java.util.List;
             try {
                 Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgendada);
 
-                List<AgPacienteEntity> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
+                List<AgPaciente> agendamentos = agendaService.getAgendamentosPorAgenda(data, idMedico);
 
                 return ResponseEntity.status(HttpStatus.OK).body(agendamentos);
 
