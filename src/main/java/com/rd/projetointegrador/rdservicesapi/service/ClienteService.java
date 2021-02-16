@@ -127,7 +127,11 @@ public class ClienteService {
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);
         List<ContratoEntity> contratoEntities = contratoRepository.findByUsuarioOrderByDtVigenciaDesc(usuarioEntity);
         ContratoEntity contratoEntity = contratoEntities.get(0);
-        CartaoEntity cartaoEntity= cartaoRepository.findById(inputUsuario.getCartao().getIdCartao()).get();
+
+        CartaoEntity cartaoEntity = new CartaoEntity();
+        if(cartaoRepository.existsById(inputUsuario.getCartao().getIdCartao())) {
+            cartaoEntity = cartaoRepository.findById(inputUsuario.getCartao().getIdCartao()).get();
+        }
 
         List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
         ContatoEntity contatoEntity = contatoEntities.get(0);
@@ -159,7 +163,7 @@ public class ClienteService {
                 }
 
                 //Entidade Cartao
-                if(cartaoEntity == null || !cartaoEntity.getNrCartao().equals(inputUsuario.getCartao().getNrCartao())) {
+                if(!cartaoEntity.getNrCartao().equals(inputUsuario.getCartao().getNrCartao())) {
                     System.out.println(cartaoEntity.getNrCartao());
                     CartaoEntity newCartaoEntity = new CartaoEntity();
                     newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
@@ -234,7 +238,7 @@ public class ClienteService {
         areaDoCliente.setNmNome( usuarioEntity.getNmNome());
         areaDoCliente.setPlano(plano);
 
-        List<Lembrete> lembretes = lembreteService.getLembretesIdPaciente(idUsuario);
+        List<Lembrete> lembretes = lembreteService.getLembretesOrderByDataDesc(idUsuario);
         areaDoCliente.setLembretes(lembretes);
 
         return areaDoCliente;
