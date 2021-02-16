@@ -67,6 +67,38 @@ public class AgServicoService {
         return repository.findByIdLojaAndDtDataHoraBetweenAndIdStatus(loja,data1, data2, status);
     }
 
+    public List<String> getAgendamentosIndisponiveis(BigInteger id, String data) throws ParseException {
+
+        System.out.println("DATA: "+data);
+
+        String from = data + " 00:00:00";
+        String to = data + " 23:59:59";
+
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date data1 = formato.parse(from);
+        Date data2 = formato.parse(to);
+
+        LojaEntity loja = lojaRepository.findById(id).get();
+        StatusEntity status = statusRepository.findById(BigInteger.valueOf(3l)).get(); //Status = Agendada
+
+        List<AgServicoEntity> ag =  repository.findByIdLojaAndDtDataHoraBetweenAndIdStatus(loja,data1, data2, status);
+
+        List<String> indisponiveis = getDatasString(ag);
+
+        return indisponiveis;
+    }
+
+    public List<String> getDatasString(List<AgServicoEntity> agendamentos){
+
+        List<String> datas = new ArrayList<>();
+        for (AgServicoEntity ag: agendamentos){
+            String dt = ag.getDtDataHora().toString().split(" ")[1];
+            dt = dt.split(":")[0] +":"+ dt.split(":")[1] ;
+            datas.add(dt);
+        }
+        return datas;
+    }
+
 
     public Map<Status, List<AgServico>> getAgendamentos(BigInteger id){
 
