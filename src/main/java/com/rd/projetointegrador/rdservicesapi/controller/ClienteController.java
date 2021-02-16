@@ -49,8 +49,8 @@ public class ClienteController {
         return service.cadastrarCliente(inputCliente);
     }
 
-    @PutMapping("/cliente/alterar")
-    public ResponseEntity alterarCliente(@RequestBody InputCliente inputCliente) {
+    @PutMapping("/cliente/alterar/{idUsuario}")
+    public ResponseEntity alterarCliente(@PathVariable("idUsuario") BigInteger idUsuario, @RequestBody InputCliente inputCliente) {
         return service.alterarCliente(inputCliente);
     }
 }
