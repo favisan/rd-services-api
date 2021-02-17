@@ -57,7 +57,7 @@ public class UsuarioEntity implements Serializable {
     @Column(name = "DS_END_IMG")
     private String dsEndImg;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "ID_PRECO")
     private PrecoEntity preco;
 
@@ -68,11 +68,11 @@ public class UsuarioEntity implements Serializable {
     )
     private List<EnderecoEntity> enderecos;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn(name = "ID_CONTATO")
     private List<ContatoEntity> contatos;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinTable(name = "TB_LOGIN_USUARIO")
     @JoinColumn(name = "ID_USUARIO")
     @JsonIgnore

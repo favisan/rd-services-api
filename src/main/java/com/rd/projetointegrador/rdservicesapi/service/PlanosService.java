@@ -1,6 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Genero;
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.dto.ServicoPlano;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
@@ -10,7 +9,6 @@ import com.rd.projetointegrador.rdservicesapi.repository.ServicoPlanoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -28,11 +26,13 @@ public class PlanosService {
     @Autowired private ContratoRepository contratoRepository;
 
     //MÉTODO: conversão de DTO para Entity
+    //TODO: Lista servicos entity?
     public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
         planoEntity.setIdPlano(plano.getIdPlano());
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
+
 
         return planoEntity;
     }
@@ -51,6 +51,10 @@ public class PlanosService {
         plano.setNmPlano(planoEntity.getNmPlano());
         plano.setDsPlano(planoEntity.getDsPlano());
         plano.setVlPlano(planoEntity.getVlPlano());
+
+        List<ServicoPlano> servicosPlano = new ArrayList<>();
+        servicosPlano = servPlanService.conversaoServicosPlanoDTOs(planoEntity.getServicos(), servicosPlano);
+        plano.setServicos(servicosPlano);
 
         return plano;
     }
@@ -91,11 +95,9 @@ public class PlanosService {
         planosEntity.setNmPlano(plano.getNmPlano());
         planosEntity.setDsPlano(plano.getDsPlano());
         planosEntity.setVlPlano(plano.getVlPlano());
-        planosEntity.setIdServicoPlano(plano.getIdServicoPlano());
+        //TODO: cadastrar serviços?
 
         repository.save(planosEntity);
-
-        System.out.println(plano.getIdPlano() + " . " + plano.getNmPlano() + " . " +plano.getDsPlano() + " . " + plano.getVlPlano());
 
         return "Plano cadastrado com sucesso";
 
@@ -109,7 +111,6 @@ public class PlanosService {
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
-        //planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
 
         List<ServicoPlanoEntity> listaServPlano = new ArrayList<>();
         for(ServicoPlano servico : plano.getServicos()){
@@ -132,17 +133,25 @@ public class PlanosService {
 
     }
 
-    //GRUPO2
-
-    public List<PlanosEntity> getPlanobyUsuario(BigInteger id) {
+    //Grupo2 - Listar planos pela Id do Usuario
+    public List<Planos> getPlanobyUsuario(BigInteger id) {
         UsuarioEntity usuario = usuarioRepository.findById(id).get();
         List<ContratoEntity> contratos = contratoRepository.findByUsuario(usuario);
         List<PlanosEntity> listaPlanos = new ArrayList<>();
+        List <Planos> planosDto = new ArrayList<>();
         for (ContratoEntity contratoEntity : contratos) {
             PlanosEntity plano = contratoEntity.getPlanosEntity();
             listaPlanos.add(plano);
         }
-        return listaPlanos;
+        for (PlanosEntity planoEntity : listaPlanos){
+            Planos plano = new Planos();
+            plano.setIdPlano(planoEntity.getIdPlano());
+            plano.setNmPlano(planoEntity.getNmPlano());
+            plano.setDsPlano(planoEntity.getDsPlano());
+            planosDto.add(plano);
+        }
+
+        return planosDto;
     }
 
 

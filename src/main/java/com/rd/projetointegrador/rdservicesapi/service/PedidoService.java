@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,11 @@ public class PedidoService {
     @Autowired private PedidoRepository pedidoRepository;
     @Autowired private AgServicoRepository agServicoRepository;
     @Autowired private PagamentoRepository pagamentoRepository;
+
+    @Autowired private TipoPagamentoRepository tpRepository;
+
+
+    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
 
     @Transactional
     public String cadastrarAgendamento (List<AgServico> lista, BigInteger id, Cartao cartao) {
@@ -101,15 +107,19 @@ public class PedidoService {
             CartaoEntity cartaoEntity = new CartaoEntity();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-            cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-            cartaoEntity.setDtValidade(cartao.getDtValidade());
+
+            Date dataEmissao = SDF2.parse(cartao.getDtEmissao());
+            cartaoEntity.setDtEmissao(dataEmissao);
+            Date dataValidade = SDF2.parse(cartao.getDtValidade());
+            cartaoEntity.setDtValidade(dataValidade);
             cartaoEntity.setUsuario(user);
 
             cartaoRepository.save(cartaoEntity);
 
             PagamentoEntity pagamento = new PagamentoEntity();
             pagamento.setIdCartao(cartao.getIdCartao());
-            pagamento.setIdFormaPgt(BigInteger.valueOf(1L));
+            TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(1L)).get();
+            pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
             pagamento.setIdPedido(pedidoSalvo.getIdPedido());
             pagamento.setVlPagamento(totalPedido);
             pagamento.setDtPagamento(new Date());
@@ -119,7 +129,8 @@ public class PedidoService {
         }
 
         PagamentoEntity pagamento = new PagamentoEntity();
-        pagamento.setIdFormaPgt(BigInteger.valueOf(3L));
+        TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(3L)).get();
+        pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
         pagamento.setIdPedido(pedidoSalvo.getIdPedido());
         pagamento.setVlPagamento(totalPedido);
         pagamento.setDtPagamento(new Date());

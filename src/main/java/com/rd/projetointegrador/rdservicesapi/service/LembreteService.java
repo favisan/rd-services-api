@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class LembreteService {
     @Autowired private LembreteIntervaloRepository lirepository;
     @Autowired private UsuarioRepository usuarioRepository;
 
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
     //MÉTODO: conversão de DTO para Entity
     public LembreteEntity conversaoLembreteEntity(Lembrete lembrete, LembreteEntity lembreteEntity) {
@@ -35,16 +39,23 @@ public class LembreteService {
         Optional<LembreteIntervaloEntity> optional = lirepository.findById(lembrete.getLembreteIntervalo().getIdLembreteIntervalo());
         LembreteIntervaloEntity liEntity = optional.get();
 
-        lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
-        lembreteEntity.setLembreteIntervalo(liEntity);
-        lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
-        lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
-        lembreteEntity.setDtLembrete(lembrete.getDtLembrete());
-        lembreteEntity.setDtCriacao(lembrete.getDtCriacao());
-        lembreteEntity.setHrHora(lembrete.getHrHora());
-        lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
+        try {
+            lembreteEntity.setIdPaciente(lembrete.getIdPaciente());
+            lembreteEntity.setLembreteIntervalo(liEntity);
+            lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
+            lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
+            Date dataLembrete = SDF.parse(lembrete.getDtLembrete());
+            lembreteEntity.setDtLembrete(dataLembrete);
+            lembreteEntity.setDtCriacao(java.util.Calendar.getInstance().getTime());
+            lembreteEntity.setHrHora(lembrete.getHrHora());
+            lembreteEntity.setNrRepeticao(lembrete.getNrRepeticao());
 
-        return lembreteEntity;
+            return lembreteEntity;
+        } catch(ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
     //MÉTODO: conversão de Entity para DTO
     public Lembrete conversaoLembreteDTO(LembreteEntity lembreteEntity, Lembrete lembrete) {
@@ -61,8 +72,12 @@ public class LembreteService {
         lembrete.setLembreteIntervalo(li);
         lembrete.setNmTitulo(lembreteEntity.getNmTitulo());
         lembrete.setDsLembrete(lembreteEntity.getDsLembrete());
-        lembrete.setDtLembrete(lembreteEntity.getDtLembrete());
-        lembrete.setDtCriacao(lembreteEntity.getDtCriacao());
+
+        String dtLembrete = SDF.format(lembreteEntity.getDtLembrete());
+        lembrete.setDtLembrete(dtLembrete);
+        String dtCriacao = SDF.format(lembreteEntity.getDtCriacao());
+        lembrete.setDtCriacao(dtCriacao);
+
         lembrete.setHrHora(lembreteEntity.getHrHora());
         lembrete.setNrRepeticao(lembreteEntity.getNrRepeticao());
 
@@ -159,7 +174,7 @@ public class LembreteService {
         return lembretesPorData;
     }
     public List<Lembrete> getLembretesOrderByDataCriacao(BigInteger idPaciente) {
-        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtCriacao(idPaciente);
+        List<LembreteEntity> lembretesEntities = repository.findByIdPacienteOrderByDtCriacaoDesc(idPaciente);
         List<Lembrete> lembretesPorData = new ArrayList<>();
 
         lembretesPorData = conversaoLembretesDTO(lembretesEntities, lembretesPorData);
@@ -168,7 +183,7 @@ public class LembreteService {
     }
 
     @Transactional
-    public String cadastrarLembrete(Lembrete lembrete){
+    public Boolean cadastrarLembrete(Lembrete lembrete){
 
         LembreteEntity lembreteEntity = new LembreteEntity();
         BigInteger idPaciente = lembrete.getIdPaciente();
@@ -176,9 +191,9 @@ public class LembreteService {
         if(usuarioRepository.existsById(idPaciente)) {
             lembreteEntity = conversaoLembreteEntity(lembrete, lembreteEntity);
             repository.save(lembreteEntity);
-            return "Lembrete cadastrado com sucesso.";
+            return true;
         }
-            return "Erro ao cadastrar lembrete.";
+            return false;
     }
 
     @Transactional
@@ -193,10 +208,9 @@ public class LembreteService {
         return "Alteração realizada com sucesso";
     }
 
-    public String excluirLembrete(BigInteger idLembrete){
+    public Boolean excluirLembrete(BigInteger idLembrete){
         repository.deleteById(idLembrete);
-        return "Exclusão de Lembrete realizada com sucesso";
-
+        return true;
     }
 
     //LEMBRETE INTERVALO

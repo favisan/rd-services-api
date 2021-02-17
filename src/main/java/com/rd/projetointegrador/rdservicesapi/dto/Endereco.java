@@ -18,6 +18,8 @@ public class Endereco {
 
     private String nrCep;
 
-    private BigInteger idCidade;
+    private Cidade cidade;
+
+    private BigInteger idUf;
 
 }

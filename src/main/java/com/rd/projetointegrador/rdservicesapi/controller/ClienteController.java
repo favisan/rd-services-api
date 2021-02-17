@@ -21,6 +21,7 @@ public class ClienteController {
     private ClienteService service;
 
     //PÁGINA DE CADASTRO
+    @CrossOrigin
     @GetMapping("/cliente/cadastro")
     public ResponseEntity getFormularioCadastro(){
         FormularioCadastro formularioCadastro = service.getFormularioCadastro();
@@ -43,8 +44,13 @@ public class ClienteController {
 
 
     //POST PÁGINA DE CADASTRO (Novo Usuario + Login + Contato + Cartao + Contrato)
-    @PostMapping("/cliente/cadastro")
-    public ResponseEntity cadastrarUsuario(@RequestBody InputCliente inputCliente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarCliente(inputCliente));
+    @PostMapping("/cliente/cadastrar")
+    public ResponseEntity cadastrarCliente(@RequestBody InputCliente inputCliente) {
+        return service.cadastrarCliente(inputCliente);
+    }
+
+    @PutMapping("/cliente/alterar/{idUsuario}")
+    public ResponseEntity alterarCliente(@PathVariable("idUsuario") BigInteger idUsuario, @RequestBody InputCliente inputCliente) {
+        return service.alterarCliente(idUsuario, inputCliente);
     }
 }

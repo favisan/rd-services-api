@@ -25,62 +25,64 @@ public class LojaService {
     @Autowired
     private ContatoRepository repositoryContato;
 
+    @Autowired
+    private EnderecoService enderecoService;
 
-    public LojaEntity getLoja(BigInteger id){
-        System.out.println("ID: " + id);
-        Optional<LojaEntity> optional = repository.findById(id);
-        LojaEntity entity = optional.get();
-
-        return entity;
-    }
-
-    public List<LojaEntity> getLojas2(){
-
-        return repository.findAll();
-    }
 
     public List<Loja> getLojas(){
 
         List<LojaEntity> lojasEntities = repository.findAll();
+        List<Loja> lojasDTO = conversaoLojasDTO(lojasEntities);
+        return lojasDTO;
+    }
+
+    public List<Loja> getLojasPorLocalidade(String local){
+
+        List<LojaEntity> lojasEntities = repository.getLojasPorLocalidade(local, local, local);
+        List<Loja> lojasDTO = conversaoLojasDTO(lojasEntities);
+        return lojasDTO;
+    }
+
+
+    //MÉTODO: conversão listaEntity para ListaDTO
+    public List<Loja> conversaoLojasDTO(List<LojaEntity> lojasEntities){
 
         List<Loja> lojasDTO = new ArrayList<>();
 
-        for(LojaEntity lojaEntity : lojasEntities){
-            Loja lojaDTO = new Loja();
-            lojaDTO.setIdLoja(lojaEntity.getIdLoja());
-            lojaDTO.setNmLoja(lojaEntity.getNmLoja());
-
-            //pegar todos os endereços dessa loja
-            List<EnderecoEntity> enderecosEntity = lojaEntity.getEnderecos();
-
-            List<Endereco> enderecosDTO = new ArrayList<>();
-
-            for(EnderecoEntity enderecoEntity : enderecosEntity){
-                Endereco endereco = new Endereco();
-                endereco.setIdEndereco(enderecoEntity.getIdEndereco());
-                endereco.setDsEndereco(enderecoEntity.getDsEndereco());
-                endereco.setDsBairro(enderecoEntity.getDsBairro());
-                endereco.setNrCep(enderecoEntity.getNrCep());
-
-                enderecosDTO.add(endereco);
-            }
-
-            //pegar todos os contatos dessa loja
-            List<ContatoEntity> contatos = repositoryContato.findByLoja(lojaEntity);
-            System.out.println("Contatos para o ID loja: " + lojaDTO.getIdLoja());
-            List<Contato> contatosDTO = new ArrayList<>();
-
-            for(ContatoEntity contatoEntity : contatos){
-                Contato contato = new Contato();
-                contato.setNrDdd(contatoEntity.getNrDdd());
-                contato.setDsContato(contatoEntity.getDsContato());
-                contatosDTO.add(contato);
-            }
-
-            lojaDTO.setEnderecos(enderecosDTO);
-            lojaDTO.setContatos(contatosDTO);
-            lojasDTO.add(lojaDTO);
+        for(LojaEntity lojaEntity: lojasEntities) {
+            Loja loja = conversaoLojaDTO(lojaEntity);
+            lojasDTO.add(loja);
         }
         return lojasDTO;
     }
+
+    //MÉTODO: conversão de Entity para DTO
+    public Loja conversaoLojaDTO(LojaEntity lojaEntity) {
+
+        Loja loja = new Loja();
+        loja.setIdLoja(lojaEntity.getIdLoja());
+        loja.setNmLoja(lojaEntity.getNmLoja());
+
+        //pegar todos os endereços dessa loja
+        List<EnderecoEntity> enderecosEntity = lojaEntity.getEnderecos();
+        List<Endereco> enderecosDTO = new ArrayList<>();
+
+        enderecosDTO = enderecoService.conversaoEnderecosDTO(enderecosEntity, enderecosDTO);
+        loja.setEnderecos(enderecosDTO);
+
+        //pegar todos os contatos dessa loja
+        List<ContatoEntity> contatos = repositoryContato.findByLoja(lojaEntity);
+        List<Contato> contatosDTO = new ArrayList<>();
+
+        for(ContatoEntity contatoEntity : contatos){
+            Contato contato = new Contato();
+            contato.setNrDdd(contatoEntity.getNrDdd());
+            contato.setDsContato(contatoEntity.getDsContato());
+            contatosDTO.add(contato);
+        }
+        loja.setContatos(contatosDTO);
+
+        return loja;
+    }
+
 }

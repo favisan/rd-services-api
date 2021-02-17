@@ -16,12 +16,13 @@ public class Cartao {
     //GRUPO1
 
     private BigInteger idCartao;
-    private BigInteger idUsuario;
+    private Usuario usuario;
     private String nrCartao;
     private String codSeguranca;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtValidade;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dtEmissao;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private String dtValidade;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private String dtEmissao;
+    private String nmNome;
     //private BigInteger idPaciente;
 }

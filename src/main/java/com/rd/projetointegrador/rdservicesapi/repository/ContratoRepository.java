@@ -11,6 +11,7 @@ public interface ContratoRepository extends JpaRepository<ContratoEntity, BigInt
     //GRUPO1
 
     public List<ContratoEntity> findByUsuarioOrderByDtVigencia(UsuarioEntity usuarioEntity);
+    public List<ContratoEntity> findByUsuarioOrderByDtVigenciaDesc(UsuarioEntity usuarioEntity);
     public List<ContratoEntity> findByUsuario(UsuarioEntity usuarioEntity);
     public ContratoEntity findOneByUsuario(UsuarioEntity usuarioEntity);
 }

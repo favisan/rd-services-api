@@ -34,6 +34,11 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
+    @GetMapping("/usuario/cpf/{cpf}")//Pegar usuário por CPF
+    public ResponseEntity getUsuarioPorCpf(@PathVariable("cpf") String cpf){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getUsuarioPorCPF(cpf));
+    }
+
     @PostMapping("/usuario") //Cadastrar Novo Usuario
     public ResponseEntity cadastrarUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarUsuario(usuario));
@@ -55,6 +60,10 @@ public class UsuarioController {
         }
     }
 
+
+    //GRUPO4
+    //LISTAR TODOS OS MEDICOS
+
     @GetMapping("/medico/{id}")
     public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
         try {
@@ -64,8 +73,6 @@ public class UsuarioController {
         }
     }
 
-    //GRUPO4
-    //LISTAR TODOS OS MEDICOS
     @GetMapping("/medicos")
     public ResponseEntity getmedicos(){
         try{
