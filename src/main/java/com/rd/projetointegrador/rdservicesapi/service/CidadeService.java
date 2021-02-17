@@ -22,7 +22,7 @@ public class CidadeService {
     private UfRepository ufRepository;
 
     public Cidade buscarCidadeId(BigInteger id) {
-        System.out.println("ID: " + id);
+        //System.out.println("ID: " + id);
 
         CidadeEntity entity = repository.findById(id).get();
 

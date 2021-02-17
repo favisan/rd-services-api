@@ -136,8 +136,12 @@ public class UsuarioService {
 
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
         usuario.setNmNome(usuarioEntity.getNmNome());
-        String dtNascimento = SDF.format(usuarioEntity.getDtNascimento());
-        usuario.setDtNascimento(dtNascimento);
+
+        if(usuarioEntity.getDtNascimento() != null) {
+            String dtNascimento = SDF.format(usuarioEntity.getDtNascimento());
+            usuario.setDtNascimento(dtNascimento);
+        }
+
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
