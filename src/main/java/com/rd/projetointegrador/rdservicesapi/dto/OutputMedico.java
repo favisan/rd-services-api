@@ -25,4 +25,5 @@ public class OutputMedico {
     private String nrCrm;
     private List<Endereco> enderecos;
     private List<Contato> contatos;
+    private String dsEndImg;
 }

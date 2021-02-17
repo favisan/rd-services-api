@@ -21,7 +21,7 @@ public class AgPacienteService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
 
-    //TODO: Input ou Output médico
+
     //Grupo2 - Convertendo AgPacienteEntity para DTO
     public AgPaciente conversaoAgPacienteParaDTO (AgPacienteEntity agPacienteEntity, AgPaciente agPaciente){
         agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
@@ -30,7 +30,7 @@ public class AgPacienteService {
         agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         //nomeMedico
         UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
-        InputMedico medicoDto = new InputMedico();
+        OutputMedico medicoDto = new OutputMedico();
         medicoDto.setNome(medicoEntity.getNmNome());
         //especialidade
         EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
@@ -38,9 +38,7 @@ public class AgPacienteService {
         espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
         espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
         medicoDto.setEspMed(espMedDto);
-
-        //TODO: MedicoDTO
-        //agenda.setMedico(medicoDto);
+        agenda.setMedico(medicoDto);
 
         //data
         agenda.setData(agPacienteEntity.getAgenda().getData());
@@ -60,13 +58,13 @@ public class AgPacienteService {
         return agPaciente;
     }
 
-    //TODO: Input ou Output médico
+
     //Grupo2 - Get AgPaciente pelo idAgenda
     public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
         AgPacienteEntity agPacienteEntity= repository.findById(idAgPaciente).get();
         AgPaciente agPacienteDto = new AgPaciente();
         Agenda agendaDTO = new Agenda();
-        InputMedico medico = new InputMedico();
+        OutputMedico medico = new OutputMedico();
         EspMed espMed = new EspMed();
         Periodo periodo = new Periodo();
         espMed.setDsEspMed(agPacienteEntity.getAgenda().getMedico().getEspMed().getDsEspMed());
@@ -76,8 +74,7 @@ public class AgPacienteService {
         agendaDTO.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         agendaDTO.setData(agPacienteEntity.getAgenda().getData());
 
-        //TODO: Input ou Output médico
-        //agendaDTO.setMedico(medico);
+        agendaDTO.setMedico(medico);
         agendaDTO.setPeriodo(periodo);
         agPacienteDto.setAgenda(agendaDTO);
         return agPacienteDto;
@@ -113,6 +110,7 @@ public class AgPacienteService {
         //convertendo para DTO
         AgPaciente agPaciente = new AgPaciente();
         conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
+        
         return agPaciente;
     }
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
