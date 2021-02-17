@@ -252,8 +252,10 @@ public class ClienteService {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
 
 
-        ContratoEntity contratoEntitiy = contratoRepository.findOneByUsuario(usuarioEntity);
-        PlanosEntity planosEntity = contratoEntitiy.getPlanosEntity();
+        List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
+        ContratoEntity contratoEntity = contratoEntities.get(contratoEntities.size()-1);
+
+        PlanosEntity planosEntity = contratoEntity.getPlanosEntity();
         Planos plano = new Planos();
         plano = planosService.conversaoPlanoDTO(planosEntity, plano);
 
