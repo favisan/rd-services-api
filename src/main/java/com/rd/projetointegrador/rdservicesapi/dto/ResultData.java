@@ -19,6 +19,7 @@ public class ResultData<T> {
     private T retorno;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+
     private Date dtTimestampErro = new Date();
 
     public ResultData(Integer status, String mensagem) {

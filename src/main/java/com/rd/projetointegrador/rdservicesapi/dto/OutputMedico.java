@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OutputMedico {
+
     private BigInteger idUsuario;
     private Uf ufCrm;
     private EspMed espMed;

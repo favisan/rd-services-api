@@ -26,6 +26,7 @@ public class UsuarioService {
     //GRUPO1
 
     //repositories
+
     @Autowired
     private UsuarioRepository repository;
     @Autowired
@@ -42,6 +43,8 @@ public class UsuarioService {
     private LoginUsuarioRepository loginUsuarioRepository;
     @Autowired
     private PrecoRepository precoRepository;
+    @Autowired
+    private CidadeRepository cidadeRepository;
 
     //services
     //@Autowired private UfService ufService;
@@ -241,8 +244,10 @@ public class UsuarioService {
 
 
     //GRUPO4 --------------------------------------------------------------------------
+    //TODO: PEGAR COM A STEICY DE NOVO
 
-    //BUSCAR MEDICO POR ID
+    //BUSCAR MEDICO POR ID OK
+
     public OutputMedico getMedico(BigInteger id) {
         System.out.println("ID: " + id);
         UsuarioEntity entity = repository.findById(id).get();
@@ -299,12 +304,13 @@ public class UsuarioService {
         return user;
     }
 
-    //LISTAR TODOS OS MEDICOS
+    //LISTAR TODOS OS MEDICOS OK
     public List<UsuarioEntity> getMedicos() {
         return repository.findAll();
     }
 
-    //ALTERAR CADASTRO DE PERFIL DO MEDICO
+
+    //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional
     public String alterarMedico(InputMedico inputMedico, BigInteger id) {
         UsuarioEntity entity = repository.findById(id).get();
@@ -351,10 +357,12 @@ public class UsuarioService {
         return "Alteração realizado com sucesso";
     }
 
-    //CADASTRAR MEDICO
+    //CADASTRAR MEDICO OK
     @Transactional
-    public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
+    public boolean cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
+
         UsuarioEntity entity = new UsuarioEntity();
+
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
@@ -403,25 +411,27 @@ public class UsuarioService {
         loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
         loginUsuarioEntity.setDsSenha(loginUsuarioService.codificar(loginUsuario.getDsSenha()));
         loginUsuarioRepository.save(loginUsuarioEntity);
-        return "Usuário cadastrado com sucesso";
+
+        return true;
+
     }
 
-    //EXIBIR TELA DE PERFIL DO MEDICO
+    //EXIBIR TELA DE PERFIL DO MEDICO OK
     public PerfilMedico mostrarTelaPerfil(BigInteger idMedico) {
         PerfilMedico perfilMedico = new PerfilMedico();
         perfilMedico.setMedico(getMedico(idMedico));
         perfilMedico.setDsEmail(loginUsuarioRepository.findOneByIdUsuario(idMedico).getDsEmail());
-        perfilMedico.setCidades(cidadeService.buscarCidadePorUf(getMedico(idMedico).getUfCrm().getIdUf()));
+        perfilMedico.setCidades(cidadeService.listarCidade());
         perfilMedico.setEspecialidades(especialidadeRepository.findAll());
         perfilMedico.setUfs(ufRepository.findAll());
 
         return perfilMedico;
     }
 
-    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
-    public CadastroMedico mostrarTelaCadastro(BigInteger idUf) {
+    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
+    public CadastroMedico mostrarTelaCadastro() {
         CadastroMedico cadastroMedico = new CadastroMedico();
-        cadastroMedico.setCidades(cidadeService.buscarCidadePorUf(idUf));
+        cadastroMedico.setCidades(cidadeRepository.findAll());
         cadastroMedico.setEspecialidades(especialidadeRepository.findAll());
         cadastroMedico.setUfs(ufRepository.findAll());
 
@@ -434,6 +444,11 @@ public class UsuarioService {
 
         UsuarioEntity user = repository.findOneByNrCpf(cpf);
         return user.getIdUsuario();
+    }
+
+    //BUSCAR CPF PARA IMPEDIR CADATRO COM MESMO CPF OK
+    public UsuarioEntity consultarPorCpfMedico(String nrCpf) {
+        return repository.findOneByNrCpf(nrCpf);
     }
 
 }

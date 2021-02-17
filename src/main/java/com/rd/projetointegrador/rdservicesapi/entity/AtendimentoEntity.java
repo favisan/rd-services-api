@@ -28,8 +28,11 @@ public class AtendimentoEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ID_PRONTUARIO")
-    @JsonIgnore
     private ProntuarioEntity prontuario;
+
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name="ID_AG_PACIENTE")
+    private AgPacienteEntity agPaciente;
 
     @Column(name="VL_PESO")
     private Float vlPeso;
@@ -50,6 +53,7 @@ public class AtendimentoEntity {
     private String dsProblemasSaude;
 
     @Column(name="DT_ATENDIMENTO")
+    @Temporal(value = TemporalType.DATE)
     private Date dtAtendimento;
 
 }

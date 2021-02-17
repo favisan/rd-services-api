@@ -64,8 +64,7 @@ public class UsuarioEntity implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "TB_USUARIO_ENDERECO",
             joinColumns = @JoinColumn(name = "ID_USUARIO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
-    )
+            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO"))
     private List<EnderecoEntity> enderecos;
 
     @OneToMany

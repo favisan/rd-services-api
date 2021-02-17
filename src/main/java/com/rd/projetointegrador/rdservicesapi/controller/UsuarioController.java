@@ -3,6 +3,7 @@ package com.rd.projetointegrador.rdservicesapi.controller;
 import com.rd.projetointegrador.rdservicesapi.dto.InputMedico;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
+import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService service;
+    @Autowired
+    LoginUsuarioRepository loginUsuarioRepository;
 
     @GetMapping("/usuario/{idUsuario}") // BUSCA POR ID
     public ResponseEntity getUsuario(@PathVariable("idUsuario") BigInteger idUsuario) {
@@ -61,8 +64,12 @@ public class UsuarioController {
     }
 
 
+
     //GRUPO4
     //LISTAR TODOS OS MEDICOS
+
+
+    //BUSCAR MEDICO POR ID OK
 
     @GetMapping("/medico/{id}")
     public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
@@ -73,6 +80,7 @@ public class UsuarioController {
         }
     }
 
+    //LISTAR TODOS OS MEDICOS OK
     @GetMapping("/medicos")
     public ResponseEntity getmedicos(){
         try{
@@ -83,14 +91,14 @@ public class UsuarioController {
         }
     }
 
-    //EXIBIR TELA DE PERFIL DO MEDICO
+    //EXIBIR TELA DE PERFIL DO MEDICO DEU RUIM
     @GetMapping("/perfilMedico/{idMedico}")
-    public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idUf") BigInteger idUf){
+    public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.mostrarTelaPerfil(idMedico));
     }
 
-    //ALTERAR CADASTRO DE PERFIL DO MEDICO
+    //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @PutMapping("/medico/{idUsuario}")
     public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
         try{ String retorno = service.alterarMedico(inputMedico, id);
@@ -100,20 +108,22 @@ public class UsuarioController {
         }
     }
 
-    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
-    @GetMapping("/cadastroMedico/{idUf}")
-    public ResponseEntity mostrarTelaCadastro(@PathVariable("idUf") BigInteger idUf){
+    //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
+    @CrossOrigin
+    @GetMapping("/cadastroMedico")
+    public ResponseEntity mostrarTelaCadastro(){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaCadastro(idUf));
+                .body(service.mostrarTelaCadastro());
     }
 
-    //CADASTRAR MEDICO
+    //CADASTRAR MEDICO Ok
     @PostMapping("/medico")
     public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {
-        if (service.consultarPorCpf(inputMedico.getNrCpf()) != null) {
+        if (service.consultarPorCpfMedico(inputMedico.getNrCpf()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(inputMedico));
         }
     }
 }
+
