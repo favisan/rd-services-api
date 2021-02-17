@@ -67,8 +67,8 @@ public class UsuarioController {
     //GRUPO4
     //LISTAR TODOS OS MEDICOS
     @GetMapping("/medicos")
-    public ResponseEntity getmedicos(){
-        try{
+    public ResponseEntity getmedicos() {
+        try {
             List<UsuarioEntity> usuarios = service.getMedicos();
             return ResponseEntity.status(HttpStatus.OK).body(usuarios);
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class UsuarioController {
 
     //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO
     @GetMapping("/cadastroMedico/{idUf}")
-    public ResponseEntity mostrarTelaCadastro(@PathVariable("idUf") BigInteger idUf){
+    public ResponseEntity mostrarTelaCadastro(@PathVariable("idUf") BigInteger idUf) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.mostrarTelaCadastro(idUf));
     }
