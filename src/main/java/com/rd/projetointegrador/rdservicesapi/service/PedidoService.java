@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,6 +69,8 @@ public class PedidoService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
+    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+
     @Transactional
     public String cadastrarAgendamento (List<AgServico> lista, BigInteger id, Cartao cartao) {
        List<AgServicoEntity> listaEntity = new ArrayList<>();
@@ -118,8 +121,11 @@ public class PedidoService {
             CartaoEntity cartaoEntity = new CartaoEntity();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
-            cartaoEntity.setDtEmissao(cartao.getDtEmissao());
-            cartaoEntity.setDtValidade(cartao.getDtValidade());
+
+            Date dataEmissao = SDF2.parse(cartao.getDtEmissao());
+            cartaoEntity.setDtEmissao(dataEmissao);
+            Date dataValidade = SDF2.parse(cartao.getDtValidade());
+            cartaoEntity.setDtValidade(dataValidade);
             cartaoEntity.setUsuario(user);
 
             cartaoRepository.save(cartaoEntity);

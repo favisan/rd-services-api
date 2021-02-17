@@ -28,11 +28,13 @@ public class PlanosService {
     @Autowired private ContratoRepository contratoRepository;
 
     //MÉTODO: conversão de DTO para Entity
+    //TODO: Lista servicos entity?
     public PlanosEntity conversaoPlanoEntity(Planos plano, PlanosEntity planoEntity) {
         planoEntity.setIdPlano(plano.getIdPlano());
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
+
 
         return planoEntity;
     }
@@ -51,6 +53,10 @@ public class PlanosService {
         plano.setNmPlano(planoEntity.getNmPlano());
         plano.setDsPlano(planoEntity.getDsPlano());
         plano.setVlPlano(planoEntity.getVlPlano());
+
+        List<ServicoPlano> servicosPlano = new ArrayList<>();
+        servicosPlano = servPlanService.conversaoServicosPlanoDTOs(planoEntity.getServicos(), servicosPlano);
+        plano.setServicos(servicosPlano);
 
         return plano;
     }
@@ -91,11 +97,9 @@ public class PlanosService {
         planosEntity.setNmPlano(plano.getNmPlano());
         planosEntity.setDsPlano(plano.getDsPlano());
         planosEntity.setVlPlano(plano.getVlPlano());
-        planosEntity.setIdServicoPlano(plano.getIdServicoPlano());
+        //TODO: cadastrar serviços?
 
         repository.save(planosEntity);
-
-        System.out.println(plano.getIdPlano() + " . " + plano.getNmPlano() + " . " +plano.getDsPlano() + " . " + plano.getVlPlano());
 
         return "Plano cadastrado com sucesso";
 
@@ -109,7 +113,6 @@ public class PlanosService {
         planoEntity.setNmPlano(plano.getNmPlano());
         planoEntity.setDsPlano(plano.getDsPlano());
         planoEntity.setVlPlano(plano.getVlPlano());
-        //planoEntity.setIdServicoPlano(plano.getIdServicoPlano());
 
         List<ServicoPlanoEntity> listaServPlano = new ArrayList<>();
         for(ServicoPlano servico : plano.getServicos()){

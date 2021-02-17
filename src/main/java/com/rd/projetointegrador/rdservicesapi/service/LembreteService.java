@@ -31,8 +31,7 @@ public class LembreteService {
     @Autowired private LembreteIntervaloRepository lirepository;
     @Autowired private UsuarioRepository usuarioRepository;
 
-    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
     //MÉTODO: conversão de DTO para Entity
     public LembreteEntity conversaoLembreteEntity(Lembrete lembrete, LembreteEntity lembreteEntity) {
@@ -45,7 +44,7 @@ public class LembreteService {
             lembreteEntity.setLembreteIntervalo(liEntity);
             lembreteEntity.setNmTitulo(lembrete.getNmTitulo());
             lembreteEntity.setDsLembrete(lembrete.getDsLembrete());
-            Date dataLembrete = SDF2.parse(lembrete.getDtLembrete());
+            Date dataLembrete = SDF.parse(lembrete.getDtLembrete());
             lembreteEntity.setDtLembrete(dataLembrete);
             lembreteEntity.setDtCriacao(java.util.Calendar.getInstance().getTime());
             lembreteEntity.setHrHora(lembrete.getHrHora());

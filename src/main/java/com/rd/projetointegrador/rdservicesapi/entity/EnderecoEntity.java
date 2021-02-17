@@ -17,8 +17,9 @@ public class EnderecoEntity implements Serializable  {
     @Column(name="ID_ENDERECO")
     private BigInteger idEndereco;
 
-    @Column(name="ID_CIDADE")
-    private BigInteger idCidade;
+    @ManyToOne
+    @JoinColumn(name="ID_CIDADE")
+    private CidadeEntity cidade;
 
     @Column(name="DS_COMPLEMENTO")
     private String dsComplemento;

@@ -13,13 +13,16 @@ import java.util.List;
 public class FormularioMeusDados {
     //GRUPO1
 
-    private Usuario usuario;
-    private String dsEmail;
-    private List<Contato> contatos;
+//    private Usuario usuario;
+//    private String dsEmail;
+//    private List<Contato> contatos;
+//    private BigInteger idPlano;
+
+    private InputCliente inputCliente;
 
     private List<Uf> ufs;
     private List<Genero> genero;
     private List<Planos> planos;
 
-    private BigInteger idPlano;
+
 }

@@ -16,5 +16,6 @@ public class AreaDoCliente {
 
     private String nmNome;
     private BigInteger idPaciente;
-    private List<Lembrete> Lembrete;
+    private List<Lembrete> lembretes;
+    private Planos plano;
 }

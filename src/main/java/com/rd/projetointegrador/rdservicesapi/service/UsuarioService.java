@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
@@ -36,36 +39,52 @@ public class UsuarioService {
     @Autowired private CidadeService cidadeService;
     @Autowired private LoginUsuarioService loginUsuarioService;
 
+    SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
+
 
     //MÉTODO: conversão de DTO para Entity
     public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
 
-        GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
-        usuarioEntity.setGenero(genero);
+        try {
+            GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
+            usuarioEntity.setGenero(genero);
 
-        EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
-        usuarioEntity.setEspMed(espMedEntity);
+            if(usuario.getIdEspMedica() != null) {
+                EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
+                usuarioEntity.setEspMed(espMedEntity);
+            }
 
-        UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
-        usuarioEntity.setUf(ufEntity);
+            if(usuario.getIdUfCrm() != null) {
+                UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
+                usuarioEntity.setUf(ufEntity);
+            }
 
-        PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
-        usuarioEntity.setPreco(precoEntity);
+            if(usuario.getIdPreco() != null) {
+                PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
+                usuarioEntity.setPreco(precoEntity);
+            }
 
-        List<EnderecoEntity> enderecosEntities = new ArrayList();
-        enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
-        usuarioEntity.setEnderecos(enderecosEntities);
+            List<EnderecoEntity> enderecosEntities = new ArrayList();
+            enderecosEntities = enderecoService.conversaoEnderecosEntities(usuario.getEnderecos(), enderecosEntities);
+            usuarioEntity.setEnderecos(enderecosEntities);
 
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
-        usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
+            TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(usuario.getIdTipoUsuario()).get();
+            usuarioEntity.setTipoUsuario(tipoUsuarioEntity);
 
-        usuarioEntity.setNmNome(usuario.getNmNome());
-        usuarioEntity.setDtNascimento(usuario.getDtNascimento());
-        usuarioEntity.setNrCpf(usuario.getNrCpf());
-        usuarioEntity.setNrCrm(usuario.getNrCrm());
-        usuarioEntity.setDsEndImg(usuario.getDsEndImg());
+            usuarioEntity.setNmNome(usuario.getNmNome());
+            Date dataNascimento = SDF.parse(usuario.getDtNascimento());
+            usuarioEntity.setDtNascimento(dataNascimento);
+            usuarioEntity.setNrCpf(usuario.getNrCpf());
+            usuarioEntity.setNrCrm(usuario.getNrCrm());
+            usuarioEntity.setDsEndImg(usuario.getDsEndImg());
 
-        return usuarioEntity;
+            return usuarioEntity;
+
+        } catch(ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
     //MÉTODO: conversão de Entity para DTO
     public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
@@ -98,7 +117,8 @@ public class UsuarioService {
 
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
         usuario.setNmNome(usuarioEntity.getNmNome());
-        usuario.setDtNascimento(usuarioEntity.getDtNascimento());
+        String dtNascimento = SDF.format(usuarioEntity.getDtNascimento());
+        usuario.setDtNascimento(dtNascimento);
         usuario.setNrCpf(usuarioEntity.getNrCpf());
         usuario.setNrCrm(usuarioEntity.getNrCrm());
         usuario.setDsEndImg(usuarioEntity.getDsEndImg());
@@ -211,51 +231,52 @@ public class UsuarioService {
         user.setIdUsuario(entity.getIdUsuario());
         user.setNome(entity.getNmNome());
         user.setNrCrm(entity.getNrCrm());
-
         UfEntity ufEntity = entity.getUf();
         Uf uf = new Uf();
         uf.setDsUf(ufEntity.getDsUf());
         user.setUfCrm(uf);
-
         EspMedEntity espMedEntity = entity.getEspMed();
         EspMed espMed = new EspMed();
         espMed.setDsEspMed(espMedEntity.getDsEspMed());
-        user.setIdEspMed(espMed);
-
+        user.setEspMed(espMed);
         user.setNome(entity.getNmNome());
         user.setDtNascimento(entity.getDtNascimento());
         user.setNrCpf(entity.getNrCpf());
         user.setNrCrm(entity.getNrCrm());
-
         PrecoEntity precoEntity = entity.getPreco();
         Preco preco = new Preco();
         preco.setVlConsulta(precoEntity.getVlConsulta());
         user.setPreco(preco);
-
         List<ContatoEntity> contatosEntity = entity.getContatos();
         List<Contato> contatos = new ArrayList<>();
         for (ContatoEntity contatoEntity : contatosEntity) {
             Contato contato = new Contato();
             contato.setDsContato(contatoEntity.getDsContato());
-
+            contato.setNrDdd(contatoEntity.getNrDdd());
             contatos.add(contato);
         }
         user.setContatos(contatos);
-
         List<EnderecoEntity> enderecoEntities = entity.getEnderecos();
         List<Endereco> enderecos = new ArrayList<>();
         for (EnderecoEntity enderecoEntity : enderecoEntities) {
             Endereco endereco = new Endereco();
             endereco.setDsEndereco(enderecoEntity.getDsEndereco());
             endereco.setDsBairro(enderecoEntity.getDsBairro());
-            endereco.setIdCidade(enderecoEntity.getIdCidade());
+            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+            Cidade cidade = new Cidade();
+            cidade.setIdCidade(cidadeEntity.getIdCidade());
+            cidade.setDsCidade(cidadeEntity.getDsCidade());
+            UfEntity ufEntity1 = enderecoEntity.getCidade().getUf();
+            Uf uf1 = new Uf();
+            uf1.setIdUf(ufEntity1.getIdUf());
+            uf1.setDsUf(ufEntity1.getDsUf());
+            cidade.setUf(uf);
+            endereco.setCidade(cidade);
             endereco.setDsComplemento(enderecoEntity.getDsComplemento());
             endereco.setNrCep(enderecoEntity.getNrCep());
-
             enderecos.add(endereco);
         }
         user.setEnderecos(enderecos);
-
         return user;
     }
 
@@ -268,39 +289,38 @@ public class UsuarioService {
     //ALTERAR CADASTRO DE PERFIL DO MEDICO
     @Transactional
     public String alterarMedico(InputMedico inputMedico, BigInteger id) {
-
         UsuarioEntity entity = repository.findById(id).get();
-
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
-
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
-
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
-
         entity.setNmNome(inputMedico.getNome());
         entity.setDtNascimento(inputMedico.getDtNascimento());
         entity.setNrCpf(inputMedico.getNrCpf());
         entity.setNrCrm(inputMedico.getNrCrm());
-
         PrecoEntity precoEntity = new PrecoEntity();
         Preco preco = inputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
         entity.setPreco(precoEntity);
-
         List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
-            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
+            Cidade cidade = new Cidade();
+            cidade.setIdCidade(cidadeEntity.getIdCidade());
+            UfEntity ufEntity1 = enderecoEntity.getCidade().getUf();
+            Uf uf1 = new Uf();
+            uf1.setIdUf(ufEntity1.getIdUf());
+            cidade.setUf(uf1);
+            endereco.setCidade(cidade);
             enderecoEntity.setDsComplemento(endereco.getDsComplemento());
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
             enderecoEntity.setDsBairro(endereco.getDsBairro());
             enderecoEntity.setNrCep(endereco.getNrCep());
         }
         entity.setEnderecos(enderecosEntity);
-
         List<ContatoEntity> contatosEntity = entity.getContatos();
         for (Contato contato : inputMedico.getContatos()) {
             ContatoEntity contatoEntity = new ContatoEntity();
@@ -309,73 +329,62 @@ public class UsuarioService {
             contatoEntity.setDsContato(contato.getDsContato());
         }
         entity.setContatos(contatosEntity);
-
         repository.save(entity);
-
         return "Alteração realizado com sucesso";
     }
 
     //CADASTRAR MEDICO
     @Transactional
     public String cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
-
         UsuarioEntity entity = new UsuarioEntity();
-
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
-
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
-
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
-
         entity.setNmNome(inputMedico.getNome());
         entity.setDtNascimento(inputMedico.getDtNascimento());
         entity.setNrCpf(inputMedico.getNrCpf());
         entity.setNrCrm(inputMedico.getNrCrm());
-
         PrecoEntity precoEntity = new PrecoEntity();
         Preco preco = inputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
         entity.setPreco(precoEntity);
-
         List<EnderecoEntity> enderecosEntity = new ArrayList<>();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
-            enderecoEntity.setIdCidade(endereco.getIdCidade());
+            CidadeEntity cidadeEntity = new CidadeEntity();
+            Cidade cidade = endereco.getCidade();
+            cidadeEntity.setIdCidade(cidade.getIdCidade());
+            UfEntity ufEntity1 = new UfEntity();
+            Uf uf = endereco.getCidade().getUf();
+            ufEntity1.setIdUf(uf.getIdUf());
+            cidadeEntity.setUf(ufEntity1);
+            enderecoEntity.setCidade(cidadeEntity);
             enderecoEntity.setDsComplemento(endereco.getDsComplemento());
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
             enderecoEntity.setDsBairro(endereco.getDsBairro());
             enderecoEntity.setNrCep(endereco.getNrCep());
-
             enderecosEntity.add(enderecoEntity);
         }
-
         entity.setEnderecos(enderecosEntity);
-
         List<ContatoEntity> contatosEntity = new ArrayList<>();
         for (Contato contato : inputMedico.getContatos()) {
             ContatoEntity contatoEntity = new ContatoEntity();
             TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
             contatoEntity.setTipoContato(tpContatoEntity);
             contatoEntity.setDsContato(contato.getDsContato());
-
             contatosEntity.add(contatoEntity);
         }
-
         entity.setContatos(contatosEntity);
         repository.save(entity);
-
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         LoginUsuario loginUsuario = inputMedico.getLogin();
-        
         loginUsuarioEntity.setIdUsuario(entity.getIdUsuario());
         loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
         loginUsuarioEntity.setDsSenha(loginUsuarioService.codificar(loginUsuario.getDsSenha()));
-
         loginUsuarioRepository.save(loginUsuarioEntity);
-
         return "Usuário cadastrado com sucesso";
     }
 

@@ -49,6 +49,12 @@ public class LoginUsuarioController {
         return service.esqueceuASenha(email);
     }
 
+    @PostMapping("/login/conferir-senha/{idUsuario}")
+    public ResponseEntity conferirSenha(@RequestBody String email, @PathVariable("idUsuario") BigInteger idUsuario ) {
+        return service.conferirSenha(email, idUsuario);
+    }
+
+
     //-----------------------------------------------------------------------------------------------------
 
 
