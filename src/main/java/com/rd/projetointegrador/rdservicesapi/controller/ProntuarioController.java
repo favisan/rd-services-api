@@ -10,35 +10,35 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.util.List;
 
-    @RestController
-    public class ProntuarioController {
-        @Autowired
-        ProntuarioService service;
+@RestController
+public class ProntuarioController {
 
-        @GetMapping("/prontuario/{id}")
-        public ResponseEntity buscarProntuarioId(@PathVariable("id") BigInteger id) {
+    @Autowired ProntuarioService service;
 
-            Prontuario p = service.buscarProntuarioId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(p);
-        }
+    @GetMapping("/prontuario/{id}")
+    public ResponseEntity buscarProntuarioId(@PathVariable("id") BigInteger id) {
 
-        @GetMapping("/prontuario")
-        public ResponseEntity getProntuario(@RequestBody Prontuario prontuario) {
+        Prontuario p = service.buscarProntuarioId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(p);
+    }
 
-            List<Prontuario> prontuarios = service.listarProntuarios(prontuario);
-            return ResponseEntity.status(HttpStatus.OK).body(prontuarios);
+    @GetMapping("/prontuario")
+    public ResponseEntity getProntuario(@RequestBody Prontuario prontuario) {
 
-        }
-
-        @PostMapping("/prontuario")
-        public ResponseEntity cadastrarProntuario(@RequestBody Prontuario prontuario) {
-
-        if(prontuario.getIdProntuario() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo nome é obrigatório");
-        }
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarProntuario(prontuario));
-        }
+        List<Prontuario> prontuarios = service.listarProntuarios(prontuario);
+        return ResponseEntity.status(HttpStatus.OK).body(prontuarios);
 
     }
+
+    @PostMapping("/prontuario")
+    public ResponseEntity cadastrarProntuario(@RequestBody Prontuario prontuario) {
+
+    if(prontuario.getIdProntuario() == null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo id é obrigatório");
+    }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarProntuario(prontuario));
+    }
+
+}
 

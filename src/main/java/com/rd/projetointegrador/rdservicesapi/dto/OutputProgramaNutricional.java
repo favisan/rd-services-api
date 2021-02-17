@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +14,8 @@ public class OutputProgramaNutricional {
 
 
     private String nome;
+
+    private Date dtNascimento;
 
     private Float vlPeso;
 

@@ -11,7 +11,7 @@ import java.math.BigInteger;
 public class EspMedEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ESP_MED")
     private BigInteger idEspMed;
 

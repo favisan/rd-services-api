@@ -13,7 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 
 @Entity
-
 @Table (name="TB_CARTAO")
 @Data
 public class CartaoEntity implements Serializable{
@@ -39,5 +38,8 @@ public class CartaoEntity implements Serializable{
 
     @Column(name ="DT_EMISSAO")
     private Date dtEmissao;
+
+    @Column(name ="NM_NOME")
+    private String nmNome;
 
 }

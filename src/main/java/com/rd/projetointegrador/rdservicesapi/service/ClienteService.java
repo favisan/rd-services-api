@@ -4,11 +4,13 @@ import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -25,6 +27,7 @@ public class ClienteService {
     @Autowired private ContatoRepository contatoRepository;
     @Autowired private TipoContatoRepository tipoContatoRepository;
     @Autowired private EnderecoRepository enderecoRepository;
+    @Autowired private PlanosRepository planosRepository;
 
     //services
     @Autowired private UfService ufService;
@@ -37,25 +40,27 @@ public class ClienteService {
     @Autowired private LembreteService lembreteService;
     @Autowired private EnderecoService enderecoService;
 
-    @Transactional
-    public String cadastrarCliente(InputCliente inputUsuario){
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public ResponseEntity cadastrarCliente(InputCliente inputUsuario){
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         ContratoEntity contratoEntity = new ContratoEntity();
         CartaoEntity cartaoEntity= new CartaoEntity();
-        //List<EnderecoEntity> enderecosEntities = new ArrayList<>();
 
-        //VALIDAR CPF
-        String cpf = usuarioEntity.getNrCpf();
-        List<UsuarioEntity> usuarioExistente = usuarioRepository.findByNrCpf(cpf);
+        try {
 
-        //VALIDAR E-MAIL
-        String email = loginUsuarioEntity.getDsEmail();
-        LoginUsuarioEntity loginExistente = loginUsuarioRepository.findByDsEmail(email);
+            //VALIDAR CPF
+            String cpf = inputUsuario.getUsuario().getNrCpf();
+            List<UsuarioEntity> usuarioExistente = usuarioRepository.findByNrCpf(cpf);
+            System.out.println(usuarioExistente.isEmpty());
 
+            //VALIDAR E-MAIL
+            String email = inputUsuario.getLoginUsuario().getDsEmail();
+            List<LoginUsuarioEntity> loginExistente = loginUsuarioRepository.findByDsEmail(email);
+            System.out.println(loginExistente.isEmpty());
 
-        if(usuarioExistente.isEmpty() && loginExistente == null) {
-
+        if(usuarioExistente.isEmpty() && loginExistente.isEmpty()) {
             //Passando dados do Usuário
             usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
             usuarioEntity = usuarioRepository.save(usuarioEntity);
@@ -65,16 +70,24 @@ public class ClienteService {
             inputUsuario.getLoginUsuario().setIdUsuario(novoId);
             loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
             loginUsuarioRepository.save(loginUsuarioEntity);
+            System.out.println("Inseriu Login: " + loginUsuarioEntity.getDsEmail());
 
             //Entidade Contrato
             inputUsuario.getContrato().setIdUsuario(novoId);
             contratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), contratoEntity);
+            contratoEntity.setDsContrato("Contrato: " + contratoEntity.getPlanosEntity().getNmPlano());
+            contratoEntity.setDtVigencia(java.util.Calendar.getInstance().getTime());
             contratoRepository.save(contratoEntity);
+            System.out.println("Inseriu Contrato: " + contratoEntity.getIdContrato());
 
             //Entidade Cartao
-            inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
-            cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-            cartaoRepository.save(cartaoEntity);
+            if(!inputUsuario.getCartao().getNrCartao().equals("") && inputUsuario.getCartao().getCodSeguranca() != null) {
+                System.out.println("Entrou no if!");
+                inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
+                cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+                cartaoRepository.save(cartaoEntity);
+                System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
+            }
 
             //Entidade Contato
             ContatoEntity contatoEntity = new ContatoEntity();
@@ -82,18 +95,100 @@ public class ClienteService {
             contatoEntity.setNrDdd(inputUsuario.getDdd());
             contatoEntity.setDsContato(inputUsuario.getCelular());
             contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
+            contatoRepository.save(contatoEntity);
+            System.out.println("Inseriu Contato: " + contatoEntity.getIdContato());
 
-            //Entidade Endereço
-//          List<Endereco> enderecos = inputUsuario.getUsuario().getEnderecos();
-//          enderecosEntities = enderecoService.conversaoEnderecosEntities(enderecos,enderecosEntities);
-//          for(EnderecoEntity enderecoEntity: enderecosEntities) {
-//          enderecoRepository.save(enderecoEntity);
-//          }
+            ResultData resultData = new ResultData(HttpStatus.OK.value(), "Usuário cadastrado com sucesso");
+            return ResponseEntity.status(HttpStatus.OK).body(resultData);
 
-            return "Usuário cadastrado com sucesso";
+        } else {
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário já cadastrado!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
 
-        return "Erro. Usuário já cadastrado.";
+        } catch (Exception e) {
+            System.out.println(e);
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Erro ao cadastrar usuário.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+        }
+
+    }
+
+    @Transactional
+    public ResponseEntity alterarCliente(BigInteger idUsuario, InputCliente inputUsuario){
+
+        BigInteger id = idUsuario;
+
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(id).get();
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);
+        List<ContratoEntity> contratoEntities = contratoRepository.findByUsuarioOrderByDtVigenciaDesc(usuarioEntity);
+        ContratoEntity contratoEntity = contratoEntities.get(0);
+
+        CartaoEntity cartaoEntity = new CartaoEntity();
+        if(cartaoRepository.existsById(inputUsuario.getCartao().getIdCartao())) {
+            cartaoEntity = cartaoRepository.findById(inputUsuario.getCartao().getIdCartao()).get();
+        }
+
+        List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
+        ContatoEntity contatoEntity = contatoEntities.get(0);
+
+        try {
+                //Passando dados do Usuário
+                usuarioEntity = usuarioService.conversaoUsuarioEntity(inputUsuario.getUsuario(), usuarioEntity);
+                usuarioEntity = usuarioRepository.save(usuarioEntity);
+            System.out.println("Alterou Usuário: " + usuarioEntity.getIdUsuario());
+
+                //Entidade LoginUsuario
+                loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
+                loginUsuarioRepository.save(loginUsuarioEntity);
+                System.out.println("Alterou Login: " + loginUsuarioEntity.getDsEmail());
+
+                //Entidade Contrato
+                if(contratoEntity.getPlanosEntity().getIdPlano() != inputUsuario.getContrato().getPlano().getIdPlano()) {
+                    System.out.println(inputUsuario.getContrato().getPlano().getIdPlano());
+                    System.out.println("Antigo Contrato: " + contratoEntity.getIdContrato() + " / " + contratoEntity.getPlanosEntity().getIdPlano());
+                    ContratoEntity newContratoEntity = new ContratoEntity();
+                    inputUsuario.getContrato().setIdUsuario(usuarioEntity.getIdUsuario());
+
+                    newContratoEntity = contratoService.conversaoContratoEntity(inputUsuario.getContrato(), newContratoEntity);
+                    newContratoEntity.setDsContrato("Contrato: " + newContratoEntity.getPlanosEntity().getNmPlano());
+                    newContratoEntity.setDtVigencia(java.util.Calendar.getInstance().getTime());
+                    contratoRepository.save(newContratoEntity);
+
+                    System.out.println("Alterou Contrato: " + newContratoEntity.getIdContrato() + " / " + newContratoEntity.getPlanosEntity().getIdPlano());
+                }
+
+                //Entidade Cartao
+                if(!cartaoEntity.getNrCartao().equals(inputUsuario.getCartao().getNrCartao())) {
+                    System.out.println(cartaoEntity.getNrCartao());
+                    CartaoEntity newCartaoEntity = new CartaoEntity();
+                    newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
+                    cartaoRepository.save(newCartaoEntity);
+
+                    System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getNrCartao());
+                    System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getIdCartao());
+                } else {
+                    cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+                    cartaoRepository.save(cartaoEntity);
+                }
+
+                //Entidade Contato
+                contatoEntity.setNrDdd(inputUsuario.getDdd());
+                contatoEntity.setDsContato(inputUsuario.getCelular());
+                contatoEntity.setTipoContato(tipoContatoRepository.findById(new BigInteger("3")).get());
+                contatoRepository.save(contatoEntity);
+                System.out.println("Alterou Contato: " + contatoEntity.getIdContato());
+
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Usuário atualizado com sucesso");
+                return ResponseEntity.status(HttpStatus.OK).body(resultData);
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Erro ao atualizar usuário.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+        }
+
     }
 
     //TELA DE CADASTRO - GET
@@ -107,53 +202,77 @@ public class ClienteService {
     }
 
     //TELA MEUS DADOS - GET
-    //TODO: faltando dados relativos a contato
     public FormularioMeusDados getFormularioMeusDados(BigInteger id) {
         FormularioCadastro formularioCadastro = getFormularioCadastro();
         FormularioMeusDados formularioMeusDados = new FormularioMeusDados();
 
         Boolean teste = usuarioRepository.existsById(id);
         if(teste) {
-            //buscar entities
-            UsuarioEntity usuarioEntity = usuarioService.getUsuario(id);
-            Usuario usuario = new Usuario();
-            usuario = usuarioService.conversaoUsuarioDTO(usuarioEntity, usuario);
 
-            //buscar e-mail de login
-            String email = loginUsuarioRepository.findOneByIdUsuario(id).getDsEmail();
+            InputCliente inputCliente = getInputClienteDTO(id);
+            formularioMeusDados.setInputCliente(inputCliente);
+            formularioMeusDados.setUfs(formularioCadastro.getUfs());
+            formularioMeusDados.setGenero(formularioCadastro.getGenero());
+            formularioMeusDados.setPlanos(formularioCadastro.getPlanos());
 
-            //buscar idPlano no contrato
-            List<ContratoEntity> contratosEntities = contratoRepository.findByUsuarioOrderByDtVigencia(usuarioEntity);
-            BigInteger idPlanoVigente = contratosEntities.get(0).getPlanosEntity().getIdPlano();
-
-            //buscar lista de contatos
-            List<ContatoEntity> contatosEntities = contatoRepository.findByIdUsuario(id);
-
-            formularioMeusDados.setUsuario(usuario);
-            formularioMeusDados.setDsEmail(email);
-            formularioMeusDados.setContatos(null); //TODO!!!
-            formularioMeusDados.setIdPlano(idPlanoVigente);
-
+            return formularioMeusDados;
         }
-
-        formularioMeusDados.setUfs(formularioCadastro.getUfs());
-        formularioMeusDados.setGenero(formularioCadastro.getGenero());
-        formularioMeusDados.setPlanos(formularioCadastro.getPlanos());
-
-        return formularioMeusDados;
+            return null;
     }
 
     public AreaDoCliente getAreaDoCliente(BigInteger idUsuario){
         AreaDoCliente areaDoCliente = new AreaDoCliente();
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
 
+
+        ContratoEntity contratoEntitiy = contratoRepository.findOneByUsuario(usuarioEntity);
+        PlanosEntity planosEntity = contratoEntitiy.getPlanosEntity();
+        Planos plano = new Planos();
+        plano = planosService.conversaoPlanoDTO(planosEntity, plano);
+
         areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
         areaDoCliente.setNmNome( usuarioEntity.getNmNome());
+        areaDoCliente.setPlano(plano);
 
-        List<Lembrete> lembretes = lembreteService.getLembretesIdPaciente(idUsuario);
-        areaDoCliente.setLembrete(lembretes);
+        List<Lembrete> lembretes = lembreteService.getLembretesOrderByDataDesc(idUsuario);
+        areaDoCliente.setLembretes(lembretes);
 
         return areaDoCliente;
+    }
+
+    public InputCliente getInputClienteDTO(BigInteger id) {
+        InputCliente inputCliente = new InputCliente();
+
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(id).get();
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);
+        List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
+        List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
+        List<CartaoEntity> cartaoEntities = cartaoRepository.findByUsuario(usuarioEntity);
+
+        Usuario usuario = new Usuario();
+        usuario = usuarioService.conversaoUsuarioDTO(usuarioEntity, usuario);
+
+        LoginUsuario loginUsuario = new LoginUsuario();
+        loginUsuario = luService.conversaoLoginUsuarioDTO(loginUsuarioEntity, loginUsuario);
+
+        Contrato contrato = new Contrato();
+        contrato = contratoService.conversaoContratoDTO(contratoEntities.get(contratoEntities.size()-1), contrato);
+
+        Cartao cartao = new Cartao();
+        if(!cartaoEntities.isEmpty()) {
+            cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(cartaoEntities.size() - 1), cartao);
+            inputCliente.setCartao(cartao);
+        } else {
+            inputCliente.setCartao(cartao);
+        }
+
+        inputCliente.setUsuario(usuario);
+        inputCliente.setLoginUsuario(loginUsuario);
+        inputCliente.setContrato(contrato);
+        inputCliente.setDdd(contatoEntities.get(contatoEntities.size()-1).getNrDdd());
+        inputCliente.setCelular(contatoEntities.get(contatoEntities.size()-1).getDsContato());
+
+        return inputCliente;
     }
 
 }

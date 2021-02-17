@@ -19,6 +19,28 @@ public class ServicoPlanoService {
     @Autowired
     private ServicoPlanoRepository repository;
 
+
+    //MÉTODOS : De Entity para DTO
+    public ServicoPlano conversaoServicoPlanoDTO(ServicoPlanoEntity servicoPlanoEntity, ServicoPlano servicoPlano){
+
+        servicoPlano.setIdServicoPlano(servicoPlanoEntity.getIdServicoPlano());
+        servicoPlano.setDsServico(servicoPlanoEntity.getDsServico());
+
+        return servicoPlano;
+    }
+    //MÉTODOS : De List<DTO> para List<Entity>
+    public List<ServicoPlano> conversaoServicosPlanoDTOs(List<ServicoPlanoEntity> servicoPlanoEntities, List<ServicoPlano> servicosPlano){
+
+        for(ServicoPlanoEntity servicoPlanoEntity: servicoPlanoEntities) {
+            ServicoPlano servicoPlano = new ServicoPlano();
+            servicoPlano = conversaoServicoPlanoDTO(servicoPlanoEntity, servicoPlano);
+
+            servicosPlano.add(servicoPlano);
+        }
+
+        return servicosPlano;
+    }
+
     //MÉTODOS RETORNANDO A ENTITY
     public ServicoPlanoEntity getServicoPlano(BigInteger idServicoPlano) {
         System.out.println("IdServPlano: " + idServicoPlano);

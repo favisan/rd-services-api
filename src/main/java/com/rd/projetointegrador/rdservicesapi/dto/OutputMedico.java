@@ -15,23 +15,14 @@ import java.util.List;
 public class OutputMedico {
 
     private BigInteger idUsuario;
-
     private Uf ufCrm;
-
-    private EspMed IdEspMed;
-
+    private EspMed espMed;
     private Preco preco;
-
     private String nome;
-
     private String nrCpf;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtNascimento;
-
     private String nrCrm;
-
     private List<Endereco> enderecos;
-
     private List<Contato> contatos;
 }

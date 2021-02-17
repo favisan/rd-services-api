@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,8 @@ public class ResultData<T> {
     private String mensagem;
 
     private T retorno;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 
     private Date dtTimestampErro = new Date();
 

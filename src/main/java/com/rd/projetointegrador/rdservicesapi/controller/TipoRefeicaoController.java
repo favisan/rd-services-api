@@ -17,11 +17,19 @@ public class TipoRefeicaoController {
     @Autowired
     private TipoRefeicaoService tipoRefeicaoService;
 
-    //listar todas refeicoes cadastradas
-   @GetMapping("/listar-refeicoes/{idPaciente}")
-  public ResponseEntity listarRefeicoes(@PathVariable ("idPaciente") BigInteger idPaciente){
-       return ResponseEntity.status(HttpStatus.OK).body(tipoRefeicaoService.listarRefeicoes(idPaciente));
-  }
+    //listar todas refeicoes cadastradas para um idPaciente
+  // @GetMapping("/listar-refeicoes/{idPaciente}")
+  //public ResponseEntity listarRefeicoes(@PathVariable ("idPaciente") BigInteger idPaciente){
+  //     return ResponseEntity.status(HttpStatus.OK).body(tipoRefeicaoService.listarRefeicoes(idPaciente));
+  //}
+
+
+
+    @GetMapping("/listar-refeicoes/{idPaciente}")
+    public ResponseEntity getCardapioUsuario (@PathVariable("idPaciente") BigInteger idPaciente) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(tipoRefeicaoService.getCardapioUsuario(idPaciente));
+    }
 
     // BUSCA POR ID
     @GetMapping("/tipo-refeicoes/{idTipoRefeicao}")

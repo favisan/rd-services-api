@@ -33,8 +33,6 @@ import java.util.List;
         @Column(name = "VL_PLANO")
         private Double vlPlano;
 
-        @Column(name = "ID_SERVICO_PLANO")
-        private BigInteger idServicoPlano;
 
         @ManyToMany(cascade = CascadeType.ALL)
         @Cascade(value = org.hibernate.annotations.CascadeType.DELETE_ORPHAN)

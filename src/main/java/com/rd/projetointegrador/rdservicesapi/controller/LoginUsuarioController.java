@@ -49,6 +49,11 @@ public class LoginUsuarioController {
         return service.esqueceuASenha(email);
     }
 
+    @PostMapping("/login/conferir-senha/{idUsuario}")
+    public ResponseEntity conferirSenha(@RequestBody String email, @PathVariable("idUsuario") BigInteger idUsuario ) {
+        return service.conferirSenha(email, idUsuario);
+    }
+
     //-----------------------------------------------------------------------------------------------------
 
 
@@ -81,8 +86,8 @@ public class LoginUsuarioController {
     @GetMapping("/login/medico")
     public ResponseEntity getAcesso(@RequestBody LoginUsuario login) throws NoSuchAlgorithmException {
         try{
-         String retorno = service.validarAcesso(login);
-        return ResponseEntity.status(HttpStatus.OK).body(retorno);
+            String retorno = service.validarAcesso(login);
+            return ResponseEntity.status(HttpStatus.OK).body(retorno);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }

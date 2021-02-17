@@ -57,17 +57,17 @@ public class LoginUsuarioService {
     public LoginUsuario conversaoLoginUsuarioDTO(LoginUsuarioEntity loginUsuarioEntity, LoginUsuario loginUsuario) {
 
         try {
-        loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
-        loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
+            loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+            loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
 
-        //TODO: Preciso decoficar a senha?
+        //TODO: decodificar???
         loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
 
-        return loginUsuario;
+            return loginUsuario;
 
         }catch (Exception e) {
-        System.out.print(e.getMessage());
-        return null;
+            System.out.print(e.getMessage());
+            return null;
         }
 
     }
@@ -84,7 +84,7 @@ public class LoginUsuarioService {
 
     }
     public LoginUsuarioEntity getAcessoByEmail(String email) {
-        return loginUsuarioRepository.findByDsEmail(email);
+        return loginUsuarioRepository.findOneByDsEmail(email);
     }
 
     //MÉTODO RETORNANDO A DTO
@@ -106,7 +106,8 @@ public class LoginUsuarioService {
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
         try {
-            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+            LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
+
             String login = loginUsuarioEntity.getDsEmail();
             String senha = loginUsuarioEntity.getDsSenha();
 
@@ -140,6 +141,27 @@ public class LoginUsuarioService {
 
         } catch(Exception e) {
             ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Não há usuário cadastrado para este e-mail.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+        }
+
+    }
+
+    //MÉTODO ESQUECI A SENHA
+    public ResponseEntity conferirSenha(String senha, BigInteger idUsuario){
+        try {
+        senha = codificar(senha);
+        LoginUsuarioEntity loginExistente = getAcesso(idUsuario);
+
+        if(senha.equals(loginExistente.getDsSenha())) {
+            ResultData resultData = new ResultData(HttpStatus.OK.value(), "Senha correta");
+            return ResponseEntity.status(HttpStatus.OK).body(resultData);
+        } else {
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "A senha não confere");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+        }
+
+        } catch(Exception e) {
+            ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Impossível conferir a senha");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }
 
@@ -179,7 +201,8 @@ public class LoginUsuarioService {
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
-        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findByDsEmail(emailTela);
+        LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
+
         String login = loginUsuarioEntity.getDsEmail();
         String senha = loginUsuarioEntity.getDsSenha();
 
@@ -252,4 +275,3 @@ public class LoginUsuarioService {
 
 
 }
-
