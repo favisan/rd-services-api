@@ -19,4 +19,10 @@ public class EspMedController {
     public ResponseEntity getEspByAgenda (@PathVariable("idTipoConsulta") BigInteger id){
         return ResponseEntity.ok().body(espMedService.getEspByAgenda(id));
     }
+
+    //Grupo2 - Consultar espMed pela id
+    @GetMapping("/especialidade/{idEspMed}")
+    public ResponseEntity listarTipoConsultaPorId(@PathVariable("idEspMed") BigInteger idEspMed){
+        return ResponseEntity.status(HttpStatus.OK).body(espMedService.getEspMedbyId(idEspMed));
+    }
 }

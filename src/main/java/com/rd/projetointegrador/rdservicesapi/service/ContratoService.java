@@ -39,33 +39,33 @@ public class ContratoService {
     //MÉTODO: conversão de Entity para DTO
     public Contrato conversaoContratoDTO(ContratoEntity contratoEntity, Contrato contrato) {
 
-            contrato.setIdContrato(contratoEntity.getIdContrato());
-            contrato.setDsContrato(contratoEntity.getDsContrato());
+        contrato.setIdContrato(contratoEntity.getIdContrato());
+        contrato.setDsContrato(contratoEntity.getDsContrato());
 
-            if(contratoEntity.getDtVigencia() != null) {
-                String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
-                contrato.setDtVigencia(dtVigencia);
-            }
+        if(contratoEntity.getDtVigencia() != null) {
+            String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
+            contrato.setDtVigencia(dtVigencia);
+        }
 
-            Planos plano = new Planos();
-            plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
-            contrato.setPlano(plano);
+        Planos plano = new Planos();
+        plano = planosService.conversaoPlanoDTO(contratoEntity.getPlanosEntity(), plano);
+        contrato.setPlano(plano);
 
-            contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
+        contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
 
-            return contrato;
+        return contrato;
     }
 
     //MÉTODO: conversão de DTO para Entity
     public ContratoEntity conversaoContratoEntity(Contrato contrato, ContratoEntity contratoEntity) {
         try {
-        //pegar plano
-        PlanosEntity planosEntity = planosRepository.findById(contrato.getPlano().getIdPlano()).get();
+            //pegar plano
+            PlanosEntity planosEntity = planosRepository.findById(contrato.getPlano().getIdPlano()).get();
 
-        //pegar usuario
-        UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
+            //pegar usuario
+            UsuarioEntity usuarioEntity = usuarioRepository.findById(contrato.getIdUsuario()).get();
 
-        contratoEntity.setDsContrato(contrato.getDsContrato());
+            contratoEntity.setDsContrato(contrato.getDsContrato());
 
             if(!contrato.getDtVigencia().equals("")) {
                 Date dataVigencia = SDF.parse(contrato.getDtVigencia());

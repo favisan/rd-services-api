@@ -19,6 +19,7 @@ public class AgServico {
     private Date dtDataHora;
     private BigInteger idPedido;
 
-    private String endLoja;
-    private String dsServico;
+    private Loja loja;
+    private Servico servico;
+
 }

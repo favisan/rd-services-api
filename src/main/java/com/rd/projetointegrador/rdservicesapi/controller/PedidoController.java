@@ -30,5 +30,4 @@ public class PedidoController {
     public List<PedidoEntity> buscarPedidos(BigInteger idPedido) {
         return pedidoRepository.findAll();
     }
-
 }

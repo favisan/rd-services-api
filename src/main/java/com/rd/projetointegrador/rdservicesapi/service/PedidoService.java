@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service
 public class PedidoService {
-
     // List<AgServicoEntity> agendamentos
     //percorrer o array de ag e pegar o serviço e o valor que vai ser exibido na página de pgmto.
     //Calcular total.
@@ -51,9 +50,7 @@ public class PedidoService {
     @Autowired private PedidoRepository pedidoRepository;
     @Autowired private AgServicoRepository agServicoRepository;
     @Autowired private PagamentoRepository pagamentoRepository;
-
     @Autowired private TipoPagamentoRepository tpRepository;
-
 
     SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -92,7 +89,7 @@ public class PedidoService {
         // 3 - Salvar agendamento;
         // 4 - Salvar pagamento.
 
-        try { PedidoEntity pedido  = new PedidoEntity();
+       try { PedidoEntity pedido  = new PedidoEntity();
             pedido.setIdPaciente(id);
             pedido.setVlTotal(totalPedido);
 
@@ -143,4 +140,5 @@ public class PedidoService {
             return "Erro ao criar agendamento.";
         }
     }
+
 }

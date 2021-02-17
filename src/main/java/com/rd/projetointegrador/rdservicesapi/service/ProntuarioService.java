@@ -49,6 +49,8 @@ public class ProntuarioService {
             p.setDsPlano(entity.getDsPlano());
             p.setDsObservacoes(entity.getDsObservacoes());
 
+            prontuarios.add(p);
+
         }
 
         return prontuarios;
@@ -65,4 +67,32 @@ public class ProntuarioService {
 
         return p;
     }
+
+    public Prontuario conversaoProntuarioDto(ProntuarioEntity prontuarioEntity) {
+
+        Prontuario prontuario= new Prontuario();
+
+        prontuario.setIdProntuario(prontuarioEntity.getIdProntuario());
+        prontuario.setDsPlano(prontuarioEntity.getDsPlano());
+        prontuario.setDsSubjetivo(prontuarioEntity.getDsSubjetivo());
+        prontuario.setDsAvaliacao(prontuarioEntity.getDsAvaliacao());
+        prontuario.setDsObservacoes(prontuarioEntity.getDsObservacoes());
+        prontuario.setDsObjetivo(prontuarioEntity.getDsObjetivo());
+
+        return prontuario;
+    }
+
+
+    public ProntuarioEntity conversaoProntuarioEntity(Prontuario prontuario){
+
+        ProntuarioEntity entity = new ProntuarioEntity();
+        entity.setDsSubjetivo(prontuario.getDsSubjetivo());
+        entity.setDsAvaliacao(prontuario.getDsAvaliacao());
+        entity.setDsObjetivo(prontuario.getDsObjetivo());
+        entity.setDsPlano(prontuario.getDsPlano());
+        entity.setDsObservacoes(prontuario.getDsObservacoes());
+
+        return entity;
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
-import com.rd.projetointegrador.rdservicesapi.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

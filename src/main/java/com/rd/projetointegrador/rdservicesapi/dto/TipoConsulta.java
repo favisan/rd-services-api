@@ -9,6 +9,9 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TipoConsulta {
+
     private BigInteger idTipoConsulta;
+
     private String dsTipoConsulta;
+
 }

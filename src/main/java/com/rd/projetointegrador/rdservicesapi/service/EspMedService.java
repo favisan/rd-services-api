@@ -5,6 +5,7 @@ import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.AgendaRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.EspMedRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class EspMedService {
 
     @Autowired
     private AgendaRepository agendaRepository;
+    @Autowired
+    private EspMedRepository repository;
 
     //Grupo2 - Listar as especialidades médicas das agendas médicas disponíveis
     public Set<EspMed> getEspByAgenda(BigInteger idTipoConsulta) {
@@ -60,5 +66,24 @@ public class EspMedService {
         }
         return especialidadesDto;
     }
+
+    //Grupo2 - Get tipo de consulta dto by id
+    public EspMed getEspMedbyId(BigInteger idEspMed){
+        EspMedEntity espMedEntity = repository.findById(idEspMed).get();
+        EspMed espMedDTO = new EspMed();
+        espMedDTO.setIdEspMed(espMedEntity.getIdEspMed());
+        espMedDTO.setDsEspMed(espMedEntity.getDsEspMed());
+
+        return espMedDTO;
     }
 
+    //MÉTODO: conversão de Entity para DTO
+    public EspMed conversaoEspMedDTO(EspMedEntity espMedEntity, EspMed espMed) {
+
+        espMed.setIdEspMed(espMedEntity.getIdEspMed());
+        espMed.setDsEspMed(espMedEntity.getDsEspMed());
+
+        return espMed;
+    }
+
+}
