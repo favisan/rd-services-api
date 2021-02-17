@@ -74,8 +74,8 @@ public class UsuarioService {
                 usuarioEntity.setUf(ufEntity);
             }
 
-            if (usuario.getIdPreco() != null) {
-                PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
+            if (usuario.getPreco() != null) {
+                PrecoEntity precoEntity = precoRepository.findById(usuario.getPreco().getIdPreco()).get();
                 usuarioEntity.setPreco(precoEntity);
             }
 
@@ -127,8 +127,11 @@ public class UsuarioService {
         }
 
         PrecoEntity precoEntity = usuarioEntity.getPreco();
+
         if (precoEntity != null) {
-            usuario.setIdPreco(precoEntity.getIdPreco());
+            Preco preco = new Preco();
+            preco.setVlConsulta(precoEntity.getVlConsulta());
+            usuario.setPreco(preco);
         }
 
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());
@@ -244,7 +247,6 @@ public class UsuarioService {
 
 
     //GRUPO4 --------------------------------------------------------------------------
-    //TODO: PEGAR COM A STEICY DE NOVO
 
     //BUSCAR MEDICO POR ID OK
 
@@ -308,7 +310,6 @@ public class UsuarioService {
     public List<UsuarioEntity> getMedicos() {
         return repository.findAll();
     }
-
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional

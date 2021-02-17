@@ -14,6 +14,12 @@ public class AgPacienteController {
     @Autowired private AgPacienteService service;
     @Autowired private UsuarioRepository usuarioRepository;
 
+    //Grupo2 - Consultar agenda de paciente pela id da agPaciente
+    @GetMapping("/agPacientePorId/{idAgPaciente}")
+    public ResponseEntity listarAgPacienteporId(@PathVariable("idAgPaciente") BigInteger idAgPaciente){
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPacientePorId(idAgPaciente));
+    }
+
      //Grupo2 - Consultar agendas de paciente filtradas pela Id do Usuario
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){

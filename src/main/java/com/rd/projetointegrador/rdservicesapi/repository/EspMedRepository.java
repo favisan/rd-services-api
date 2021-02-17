@@ -12,3 +12,4 @@ import java.util.Optional;
 @Repository
 public interface EspMedRepository extends JpaRepository<EspMedEntity, BigInteger> {
 }
+

@@ -8,7 +8,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Agenda {
+
+public class
+Agenda {
     private BigInteger idAgenda;
     private OutputMedico medico;
     private TipoConsulta tipoConsulta;

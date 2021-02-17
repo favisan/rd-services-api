@@ -15,7 +15,7 @@ public class AgPaciente {
 
     private BigInteger idAgPaciente;
 
-    private BigInteger idPaciente;
+    private Usuario paciente;
 
     private Agenda agenda;
 
@@ -24,7 +24,6 @@ public class AgPaciente {
     private BigInteger idTipoConfirmacao;
 
     private StatusConsulta statusConsulta;
-
 
 }
 

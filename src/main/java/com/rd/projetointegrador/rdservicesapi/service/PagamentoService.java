@@ -23,6 +23,8 @@ public class PagamentoService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private TipoPagamentoRepository tpRepository;
 
+    @Autowired private UsuarioService usuarioService;
+
     //MÉTODO: conversão de DTO para Entity
     public PagamentoEntity conversaoPagamentoEntity(Pagamento pagamento, PagamentoEntity pagamentoEntity) {
 
@@ -57,10 +59,12 @@ public class PagamentoService {
 
         AgPaciente agPaciente = new AgPaciente();
         agPaciente.setIdAgPaciente(pagamentoEntity.getAgPacienteEntity().getIdAgPaciente());
-        agPaciente.setIdPaciente(pagamentoEntity.getAgPacienteEntity().getPaciente().getIdUsuario());
-        //TODO: Ver se é necessário setar todos os campos
-        pagamento.setAgPaciente(agPaciente);
 
+        Usuario paciente = new Usuario();
+        paciente = usuarioService.conversaoUsuarioDTO(pagamentoEntity.getAgPacienteEntity().getPaciente(), paciente);
+        agPaciente.setPaciente(paciente);
+
+        pagamento.setAgPaciente(agPaciente);
         pagamento.setIdNF(pagamentoEntity.getIdNF());
         pagamento.setIdPedido(pagamentoEntity.getIdPedido());
         pagamento.setVlPagamento(pagamentoEntity.getVlPagamento());
@@ -70,6 +74,7 @@ public class PagamentoService {
 
         return pagamento;
     }
+
     //MÉTODO: conversão de ListaDTO para ListaEntity()
     public List<PagamentoEntity> conversaoPagamentosEntity(List<Pagamento> pagamentos,List<PagamentoEntity> pagamentosEntities) {
 
