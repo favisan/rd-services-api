@@ -20,6 +20,7 @@ public class AgPacienteService {
     @Autowired private AgPacienteRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
+    @Autowired private PagamentoService pagamentoService;
 
 
     //Grupo2 - Convertendo AgPacienteEntity para DTO
@@ -73,7 +74,6 @@ public class AgPacienteService {
         periodo.setHoraInicial(agPacienteEntity.getAgenda().getPeriodo().getHoraInicial());
         agendaDTO.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         agendaDTO.setData(agPacienteEntity.getAgenda().getData());
-
         agendaDTO.setMedico(medico);
         agendaDTO.setPeriodo(periodo);
         agPacienteDto.setAgenda(agendaDTO);
@@ -95,14 +95,15 @@ public class AgPacienteService {
     //Grupo2 - Cadastrar nova Agenda de Paciente
 
     @Transactional
-    public AgPaciente setAgPaciente (CadastroAgPaciente cadastroAgPaciente){
+    public OutputAgPacientePagamento setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento){
+        OutputAgPacientePagamento output = new OutputAgPacientePagamento();
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
         //mudando status da consulta para agendada
         status.setIdStatusConsulta(BigInteger.valueOf(1));
         LocalDateTime data = LocalDateTime.now();
-        agPacienteEntity.setAgenda(agendaRepository.findById(cadastroAgPaciente.getIdAgenda()).get());
-        agPacienteEntity.setPaciente(usuarioRepository.findById(cadastroAgPaciente.getIdUsuario()).get());
+        agPacienteEntity.setAgenda(agendaRepository.findById(cadastroAgPacientePagamento.getIdAgenda()).get());
+        agPacienteEntity.setPaciente(usuarioRepository.findById(cadastroAgPacientePagamento.getIdUsuario()).get());
         agPacienteEntity.setDtSolicitacao(data);
         agPacienteEntity.setStatusConsulta(status);
         //mudando disponibilidade da agenda médica para agendada
@@ -110,8 +111,16 @@ public class AgPacienteService {
         //convertendo para DTO
         AgPaciente agPaciente = new AgPaciente();
         conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
-        
-        return agPaciente;
+        //passando a AgendaDTO para a DTO de resposta
+        output.setAgPaciente(agPaciente);
+        //passando o pagamento para a DTO de resposta
+        if (cadastroAgPacientePagamento.getTipoPgto().equals(1)){
+            output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
+        } else if (cadastroAgPacientePagamento.getTipoPgto().equals(2)){
+            output.setPagamento(pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente()));
+        }
+
+        return output;
     }
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
 

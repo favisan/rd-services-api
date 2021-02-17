@@ -2,11 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
 import com.rd.projetointegrador.rdservicesapi.dto.AgendamentoOutput;
-import com.rd.projetointegrador.rdservicesapi.dto.CadastroAgPaciente;
-import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
-import com.rd.projetointegrador.rdservicesapi.service.EspMedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

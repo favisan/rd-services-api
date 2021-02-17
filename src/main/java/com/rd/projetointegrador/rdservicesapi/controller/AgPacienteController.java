@@ -1,5 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
-import com.rd.projetointegrador.rdservicesapi.dto.CadastroAgPaciente;
+import com.rd.projetointegrador.rdservicesapi.dto.CadastroAgPacientePagamento;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import com.rd.projetointegrador.rdservicesapi.service.AgPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,8 @@ public class AgPacienteController {
 
     //Grupo2 - Cadastrar nova Agenda do Paciente
     @PostMapping ("/agPaciente/cadastrar")
-    public ResponseEntity cadastrarAgPaciente(@RequestBody CadastroAgPaciente cadastroAgPaciente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setAgPaciente(cadastroAgPaciente));
+    public ResponseEntity cadastrarAgPaciente(@RequestBody CadastroAgPacientePagamento cadastroAgPacientePagamento) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setAgPaciente(cadastroAgPacientePagamento));
     }
 
 }

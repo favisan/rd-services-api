@@ -1,9 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
+import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
 import com.rd.projetointegrador.rdservicesapi.dto.Pagamento;
-import com.rd.projetointegrador.rdservicesapi.dto.PagamentoCartao;
-import com.rd.projetointegrador.rdservicesapi.dto.PagamentoPlano;
-import com.rd.projetointegrador.rdservicesapi.entity.PagamentoEntity;
 import com.rd.projetointegrador.rdservicesapi.service.CartaoService;
 import com.rd.projetointegrador.rdservicesapi.service.PagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -63,14 +60,14 @@ public class PagamentoController {
 
     //Grupo2 - Cadastro de Pagamento de consulta feito com cartão
     @PostMapping("/pagamento/cartao")
-    public ResponseEntity setPagamentoCartao(@RequestBody PagamentoCartao pagtoCartao) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(pagtoCartao));
+    public ResponseEntity setPagamentoCartao(@RequestBody Integer parcelas, Cartao cartao, BigInteger idAgPaciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComCartao(parcelas, cartao, idAgPaciente));
     }
 
     //Grupo 2 - Cadastro de Pagamento de consulta feito com plano
     @PostMapping("/pagamento/plano")
-    public ResponseEntity setPagamentoPlano(@RequestBody PagamentoPlano pagtoPlano) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(pagtoPlano));
+    public ResponseEntity setPagamentoPlano(@RequestBody BigInteger idAgPaciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoComPlano(idAgPaciente));
     }
 
 }
