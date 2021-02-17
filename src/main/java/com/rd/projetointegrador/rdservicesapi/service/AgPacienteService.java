@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class git AgPacienteService {
+public class AgPacienteService {
 
     @Autowired private AgPacienteRepository repository;
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private AgendaRepository agendaRepository;
 
-    //TODO: Input ou Output médico
+
     //Grupo2 - Convertendo AgPacienteEntity para DTO
     public AgPaciente conversaoAgPacienteParaDTO (AgPacienteEntity agPacienteEntity, AgPaciente agPaciente){
         agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
@@ -30,7 +30,7 @@ public class git AgPacienteService {
         agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         //nomeMedico
         UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
-        InputMedico medicoDto = new InputMedico();
+        OutputMedico medicoDto = new OutputMedico();
         medicoDto.setNome(medicoEntity.getNmNome());
         //especialidade
         EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
@@ -38,9 +38,7 @@ public class git AgPacienteService {
         espMedDto.setIdEspMed(espMedEntity.getIdEspMed());
         espMedDto.setDsEspMed(espMedEntity.getDsEspMed());
         medicoDto.setEspMed(espMedDto);
-
-        //TODO: MedicoDTO
-        //agenda.setMedico(medicoDto);
+        agenda.setMedico(medicoDto);
 
         //data
         agenda.setData(agPacienteEntity.getAgenda().getData());
@@ -60,13 +58,13 @@ public class git AgPacienteService {
         return agPaciente;
     }
 
-    //TODO: Input ou Output médico
+
     //Grupo2 - Get AgPaciente pelo idAgenda
     public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
         AgPacienteEntity agPacienteEntity= repository.findById(idAgPaciente).get();
         AgPaciente agPacienteDto = new AgPaciente();
         Agenda agendaDTO = new Agenda();
-        InputMedico medico = new InputMedico();
+        OutputMedico medico = new OutputMedico();
         EspMed espMed = new EspMed();
         Periodo periodo = new Periodo();
         espMed.setDsEspMed(agPacienteEntity.getAgenda().getMedico().getEspMed().getDsEspMed());
@@ -76,8 +74,7 @@ public class git AgPacienteService {
         agendaDTO.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         agendaDTO.setData(agPacienteEntity.getAgenda().getData());
 
-        //TODO: Input ou Output médico
-        //agendaDTO.setMedico(medico);
+        agendaDTO.setMedico(medico);
         agendaDTO.setPeriodo(periodo);
         agPacienteDto.setAgenda(agendaDTO);
         return agPacienteDto;
