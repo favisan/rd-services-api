@@ -110,6 +110,7 @@ public class AgPacienteService {
         //convertendo para DTO
         AgPaciente agPaciente = new AgPaciente();
         conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
+        
         return agPaciente;
     }
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
