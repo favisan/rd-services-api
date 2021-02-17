@@ -2,6 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.repository;
 
 import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.CardapioEntity;
+import com.rd.projetointegrador.rdservicesapi.entity.TipoRefeEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

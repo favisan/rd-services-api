@@ -49,6 +49,7 @@ public class CardapioService {
             OutputProgramaNutricional op = new OutputProgramaNutricional();
 
             op.setNome(IdPaciente.getNmNome());
+            op.setDtNascimento(IdPaciente.getDtNascimento());
             op.setVlAltura(ultimoAtend.getVlAltura());
             op.setVlPeso(ultimoAtend.getVlPeso());
             op.setDsHabitosVicios(ultimoAtend.getDsHabitosVicios());
@@ -61,6 +62,7 @@ public class CardapioService {
         OutputProgramaNutricional op = new OutputProgramaNutricional();
 
         op.setNome(IdPaciente.getNmNome());
+     // COMO COLOCA?   op.setDtNascimento();
         op.setVlAltura(0.0F);
         op.setVlPeso(0.0F);
         op.setDsHabitosVicios("");
