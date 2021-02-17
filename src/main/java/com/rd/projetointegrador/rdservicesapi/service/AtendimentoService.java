@@ -80,16 +80,11 @@ public class AtendimentoService {
 
         AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
 
-        AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
-        atendimentoEntity = repository.findByAgPaciente(agPacienteEntity);
-
         AtendimentoOutput atendimentoOutput = new AtendimentoOutput();
-        atendimentoOutput.setIdAtendimento(atendimentoEntity.getIdAtendimento());
-        atendimentoOutput.setData(atendimentoEntity.getAgPaciente().getAgenda().getData());
-        atendimentoOutput.setNomePaciente(atendimentoEntity.getPaciente().getNmNome());
-        atendimentoOutput.setDataNasc(atendimentoEntity.getPaciente().getDtNascimento());
-        atendimentoOutput.setGenero(atendimentoEntity.getPaciente().getGenero().getDsGenero());
-        atendimentoOutput.setIdProntuario(atendimentoEntity.getProntuario().getIdProntuario());
+        atendimentoOutput.setData(agPacienteEntity.getAgenda().getData());
+        atendimentoOutput.setNomePaciente(agPacienteEntity.getPaciente().getNmNome());
+        atendimentoOutput.setDataNasc(agPacienteEntity.getPaciente().getDtNascimento());
+        atendimentoOutput.setGenero(agPacienteEntity.getPaciente().getGenero().getDsGenero());
 
         return atendimentoOutput;
 
