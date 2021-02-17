@@ -19,7 +19,7 @@ public class AtendimentoOutput {
 
     private String nomePaciente;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale="pt-BR", timezone = "Brazil/East")
     private Integer idade;
 
     private String genero;

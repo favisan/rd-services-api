@@ -106,7 +106,7 @@ public class AtendimentoService {
 
     //Cadastrando atendimento
     @Transactional
-    public String cadastrarAtendimento(Atendimento atendimento) {
+    public Boolean cadastrarAtendimento(Atendimento atendimento) {
 
         AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
 
@@ -135,7 +135,7 @@ public class AtendimentoService {
 
         alterarStatusAgPaciente(idAgPaciente);
 
-        return "Atendimento registrado com sucesso!";
+        return true;
     }
 
     //Alterar status do AgPaciente para realizada e a disponibilidade da agenda para 4 (Grupo 4)

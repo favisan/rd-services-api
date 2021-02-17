@@ -317,7 +317,7 @@ public class UsuarioService {
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional
-    public String alterarMedico(InputMedico inputMedico, BigInteger id) {
+    public boolean alterarMedico(InputMedico inputMedico, BigInteger id) {
         UsuarioEntity entity = repository.findById(id).get();
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
@@ -359,12 +359,12 @@ public class UsuarioService {
         }
         entity.setContatos(contatosEntity);
         repository.save(entity);
-        return "Alteração realizado com sucesso";
+        return true;
     }
 
     //CADASTRAR MEDICO OK
     @Transactional
-    public boolean cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
+    public Boolean cadastrarMedico(InputMedico inputMedico) throws NoSuchAlgorithmException {
 
         UsuarioEntity entity = new UsuarioEntity();
 
