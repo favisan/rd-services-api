@@ -85,6 +85,17 @@ public class AgendaService {
         return agendasDto;
     }
 
+    //Grupo2 - Filtra as agendas disponiveis por data
+    public List<Agenda> filtrarAgendasDispPorData (List<Agenda> agendasDisponiveis, Date data){
+        List <Agenda> agendasFiltradas = new ArrayList<>();
+        for (Agenda agenda : agendasDisponiveis){
+            if (agenda.getData().equals(data)){
+                agendasFiltradas.add(agenda);
+            }
+        }
+        return agendasFiltradas;
+    }
+
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada
     @Transactional
     public boolean mudarDisponibilidadeParaAgendada(BigInteger idAgenda) {

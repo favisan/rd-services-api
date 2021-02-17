@@ -41,6 +41,12 @@ public class AgendaController {
         return ResponseEntity.status(HttpStatus.OK).body(agendaService.mudarDisponibilidadeParaAgendada(id));
     }
 
+    //Grupo2 - Filtra as agendas disponiveis por data
+    @GetMapping("agenda/filtro/{agendas}/{data}")
+    public ResponseEntity filtrarAgendasDisp (@PathVariable("agendas") List<Agenda> agendas, @PathVariable("data") Date data) {
+        return ResponseEntity.status(HttpStatus.OK).body(agendaService.filtrarAgendasDispPorData(agendas, data));
+    }
+
     //LISTA TODAS AS AGENDAS (Grupo 4)
     @GetMapping("/agenda")
     public ResponseEntity getAgendas() {
