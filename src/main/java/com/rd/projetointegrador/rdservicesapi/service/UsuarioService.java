@@ -13,8 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
+
 import java.util.Optional;
 import java.security.NoSuchAlgorithmException;
 
@@ -24,23 +26,33 @@ public class UsuarioService {
     //GRUPO1
 
     //repositories
-    @Autowired private UsuarioRepository repository;
-    @Autowired private GeneroRepository generoRepository;
-    @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
-    @Autowired private UfRepository ufRepository;
-    @Autowired private EspecialidadeRepository especialidadeRepository;
-    @Autowired private TipoContatoRepository tipoContatoRepository;
-    @Autowired private LoginUsuarioRepository loginUsuarioRepository;
-    @Autowired private PrecoRepository precoRepository;
+    @Autowired
+    private UsuarioRepository repository;
+    @Autowired
+    private GeneroRepository generoRepository;
+    @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
+    @Autowired
+    private UfRepository ufRepository;
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
+    @Autowired
+    private TipoContatoRepository tipoContatoRepository;
+    @Autowired
+    private LoginUsuarioRepository loginUsuarioRepository;
+    @Autowired
+    private PrecoRepository precoRepository;
 
     //services
     //@Autowired private UfService ufService;
-    @Autowired private EnderecoService enderecoService;
-    @Autowired private CidadeService cidadeService;
-    @Autowired private LoginUsuarioService loginUsuarioService;
+    @Autowired
+    private EnderecoService enderecoService;
+    @Autowired
+    private CidadeService cidadeService;
+    @Autowired
+    private LoginUsuarioService loginUsuarioService;
 
     SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-
 
     //MÉTODO: conversão de DTO para Entity
     public UsuarioEntity conversaoUsuarioEntity(Usuario usuario, UsuarioEntity usuarioEntity) {
@@ -49,17 +61,17 @@ public class UsuarioService {
             GeneroEntity genero = generoRepository.findById(usuario.getIdGenero()).get();
             usuarioEntity.setGenero(genero);
 
-            if(usuario.getIdEspMedica() != null) {
+            if (usuario.getIdEspMedica() != null) {
                 EspMedEntity espMedEntity = especialidadeRepository.findById(usuario.getIdEspMedica()).get();
                 usuarioEntity.setEspMed(espMedEntity);
             }
 
-            if(usuario.getIdUfCrm() != null) {
+            if (usuario.getIdUfCrm() != null) {
                 UfEntity ufEntity = ufRepository.findById(usuario.getIdUfCrm()).get();
                 usuarioEntity.setUf(ufEntity);
             }
 
-            if(usuario.getIdPreco() != null) {
+            if (usuario.getIdPreco() != null) {
                 PrecoEntity precoEntity = precoRepository.findById(usuario.getIdPreco()).get();
                 usuarioEntity.setPreco(precoEntity);
             }
@@ -80,12 +92,13 @@ public class UsuarioService {
 
             return usuarioEntity;
 
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
 
         return null;
     }
+
     //MÉTODO: conversão de Entity para DTO
     public Usuario conversaoUsuarioDTO(UsuarioEntity usuarioEntity, Usuario usuario) {
 
@@ -96,22 +109,22 @@ public class UsuarioService {
         usuario.setIdUsuario(usuarioEntity.getIdUsuario());
 
         GeneroEntity generoEntity = usuarioEntity.getGenero();
-        if(generoEntity != null) {
+        if (generoEntity != null) {
             usuario.setIdGenero(generoEntity.getIdGenero());
         }
 
-        EspMedEntity espMedEntity= usuarioEntity.getEspMed();
-        if(espMedEntity != null) {
+        EspMedEntity espMedEntity = usuarioEntity.getEspMed();
+        if (espMedEntity != null) {
             usuario.setIdEspMedica(espMedEntity.getIdEspMed());
         }
 
         UfEntity ufEntity = usuarioEntity.getUf();
-        if(ufEntity != null) {
+        if (ufEntity != null) {
             usuario.setIdUfCrm(usuarioEntity.getUf().getIdUf());
         }
 
         PrecoEntity precoEntity = usuarioEntity.getPreco();
-        if(precoEntity != null) {
+        if (precoEntity != null) {
             usuario.setIdPreco(precoEntity.getIdPreco());
         }
 
@@ -125,10 +138,11 @@ public class UsuarioService {
 
         return usuario;
     }
+
     //MÉTODO: conversão ListaDTO para ListaEntity
     public List<UsuarioEntity> conversaoUsuariosEntity(List<Usuario> usuarios, List<UsuarioEntity> usuariosEntity) {
 
-        for(Usuario usuario: usuarios) {
+        for (Usuario usuario : usuarios) {
             UsuarioEntity usuarioEntity = new UsuarioEntity();
             usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
 
@@ -137,10 +151,11 @@ public class UsuarioService {
 
         return usuariosEntity;
     }
+
     //MÉTODO: conversão listaEntity para ListaDTO
     public List<Usuario> conversaoUsuariosDTO(List<UsuarioEntity> usuariosEntities, List<Usuario> usuarios) {
 
-        for(UsuarioEntity usuarioEntity: usuariosEntities) {
+        for (UsuarioEntity usuarioEntity : usuariosEntities) {
             Usuario usuario = new Usuario();
             usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
 
@@ -155,26 +170,30 @@ public class UsuarioService {
         Optional<UsuarioEntity> optional = repository.findById(idUsuario);
         return optional.get();
     }
+
     public List<UsuarioEntity> getUsuarios() {
         return repository.findAll();
 
     }
+
     public List<UsuarioEntity> consultarPorNome(String nmUsuario) {
         return repository.findByNmNome(nmUsuario);
     }
-    public List<UsuarioEntity> consultarPorCpf(String nrCpf){
+
+    public List<UsuarioEntity> consultarPorCpf(String nrCpf) {
         return repository.findByNrCpf(nrCpf);
     }
 
     //MÉTODOS RETORNANDO A DTO
     public Usuario getUsuarioDTO(BigInteger idUsuario) {
-            UsuarioEntity usuarioEntity = getUsuario(idUsuario);
-            Usuario usuario = new Usuario();
+        UsuarioEntity usuarioEntity = getUsuario(idUsuario);
+        Usuario usuario = new Usuario();
 
-            usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
+        usuario = conversaoUsuarioDTO(usuarioEntity, usuario);
 
-            return usuario;
+        return usuario;
     }
+
     public List<Usuario> getUsuariosDTO() {
         List<UsuarioEntity> usuarioEntities = getUsuarios();
         List<Usuario> usuarios = new ArrayList<>();
@@ -185,14 +204,14 @@ public class UsuarioService {
     }
 
     @Transactional
-    public String cadastrarUsuario(Usuario usuario){
+    public String cadastrarUsuario(Usuario usuario) {
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
 
         String cpf = usuarioEntity.getNrCpf();
         List<UsuarioEntity> usuarioExistente = repository.findByNrCpf(cpf);
 
-        if(usuarioExistente.isEmpty()) {
+        if (usuarioExistente.isEmpty()) {
 
             usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
             repository.save(usuarioEntity);
@@ -204,7 +223,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public String alterarUsuario(Usuario usuario, BigInteger idUsuario){
+    public String alterarUsuario(Usuario usuario, BigInteger idUsuario) {
 
         UsuarioEntity usuarioEntity = getUsuario(idUsuario);
         usuarioEntity = conversaoUsuarioEntity(usuario, usuarioEntity);
@@ -214,7 +233,7 @@ public class UsuarioService {
     }
 
     //EXCLUSÃO OU BLOQUEIO????
-    public String excluirUsuario(BigInteger idUsuario){
+    public String excluirUsuario(BigInteger idUsuario) {
         repository.deleteById(idUsuario);
         return "Exclusão de usuário realizada com sucesso";
 
@@ -284,7 +303,6 @@ public class UsuarioService {
     public List<UsuarioEntity> getMedicos() {
         return repository.findAll();
     }
-
 
     //ALTERAR CADASTRO DE PERFIL DO MEDICO
     @Transactional
@@ -414,7 +432,7 @@ public class UsuarioService {
 
     public BigInteger getUsuarioPorCPF(String cpf) {
 
-        UsuarioEntity user= repository.findOneByNrCpf(cpf);
+        UsuarioEntity user = repository.findOneByNrCpf(cpf);
         return user.getIdUsuario();
     }
 

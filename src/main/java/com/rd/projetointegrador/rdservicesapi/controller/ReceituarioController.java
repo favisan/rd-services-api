@@ -36,13 +36,13 @@ public class ReceituarioController {
         }
     }
 
-    //EXIBIR LISTAS DA TELA DE RECEITUÁRIO E CAMPOS DESABILITADOS PREENCHIDOS
-    @GetMapping("/receituario/{idMedico}/{idPaciente}")
-    public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
-
-    }
+//    //EXIBIR LISTAS DA TELA DE RECEITUÁRIO E CAMPOS DESABILITADOS PREENCHIDOS
+//    @GetMapping("/receituario/{idMedico}/{idPaciente}")
+//    public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
+//
+//    }
 
     //CADASTRAR RECEITUÁRIO
     @PostMapping("/receituario")

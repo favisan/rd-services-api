@@ -36,7 +36,6 @@ public class EnderecoService {
 
         return enderecoEntity;
     }
-
     //MÉTODO: conversão de Entity para DTO
     public Endereco conversaoEnderecoDTO(EnderecoEntity enderecoEntity, Endereco endereco) {
 
@@ -44,13 +43,14 @@ public class EnderecoService {
         endereco.setDsEndereco(enderecoEntity.getDsEndereco());
         endereco.setDsBairro(enderecoEntity.getDsBairro());
         endereco.setDsComplemento(enderecoEntity.getDsComplemento());
+
         Cidade cidade = cidadeService.buscarCidadeId(enderecoEntity.getCidade().getIdCidade());
         endereco.setCidade(cidade);
+
         endereco.setNrCep(enderecoEntity.getNrCep());
 
         return endereco;
     }
-
     //MÉTODO: conversão ListaDTO para ListaEntity
     public List<EnderecoEntity> conversaoEnderecosEntities(List<Endereco> enderecos, List<EnderecoEntity> enderecosEntities){
 
@@ -63,7 +63,6 @@ public class EnderecoService {
 
         return enderecosEntities;
     }
-
     //MÉTODO: conversão listaEntity para ListaDTO
     public List<Endereco> conversaoEnderecosDTO(List<EnderecoEntity> enderecosEntities, List<Endereco> enderecos){
 
@@ -75,4 +74,6 @@ public class EnderecoService {
         }
         return enderecos;
     }
+
 }
+

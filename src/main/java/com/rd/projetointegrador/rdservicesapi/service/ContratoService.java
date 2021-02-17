@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +54,6 @@ public class ContratoService {
             contrato.setIdUsuario(contratoEntity.getUsuario().getIdUsuario());
 
             return contrato;
-
-
-
     }
 
     //MÉTODO: conversão de DTO para Entity
@@ -102,50 +100,49 @@ public class ContratoService {
         return contratosByUser;
     }
 
-    //Grupo2
+    //Grupo2 - Listar os contratos pela id do usuário
     public Contrato getContratoDTOByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
-        ContratoEntity contratoByUser = repository.findOneByUsuario(usuarioEntity);
+        ContratoEntity contratoEntity = repository.findOneByUsuario(usuarioEntity);
+        //convertendo ContratoEntity em ContratoDTO
         Planos plano = new Planos();
-        plano.setIdPlano(contratoByUser.getPlanosEntity().getIdPlano());
-        plano.setNmPlano(contratoByUser.getPlanosEntity().getNmPlano());
-        plano.setDsPlano(contratoByUser.getPlanosEntity().getDsPlano());
+        plano.setIdPlano(contratoEntity.getPlanosEntity().getIdPlano());
+        plano.setNmPlano(contratoEntity.getPlanosEntity().getNmPlano());
+        plano.setDsPlano(contratoEntity.getPlanosEntity().getDsPlano());
         Contrato contrato = new Contrato();
-        contrato.setIdContrato(contratoByUser.getIdContrato());
-        String dtVigencia = SDF.format(contratoByUser.getDtVigencia());
+        contrato.setIdContrato(contratoEntity.getIdContrato());
+        String dtVigencia = SDF.format(contratoEntity.getDtVigencia());
         contrato.setDtVigencia(dtVigencia);
         contrato.setPlano(plano);
         return contrato;
     }
 
-//    @Transactional
-//    public String cadastrarContrato(Contrato contrato) {
-//
-//        ContratoEntity contratoEntity = new ContratoEntity();
-//        contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
-//
-//        repository.save(contratoEntity);
-//
-//        return "Contrato cadastrado com sucesso";
-//
-//    }
+    @Transactional
+    public String cadastrarContrato(Contrato contrato) {
 
-//    @Transactional
-//    public String alterarContrato(Contrato contrato, BigInteger idContrato) {
-//
-//        ContratoEntity contratoEntity = getContrato(idContrato);
-//        contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
-//
-//        repository.save(contratoEntity);
-//        return "Alteração realizada com sucesso";
-//    }
+        ContratoEntity contratoEntity = new ContratoEntity();
+        contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
+
+        repository.save(contratoEntity);
+
+        return "Contrato cadastrado com sucesso";
+
+    }
+
+    @Transactional
+    public String alterarContrato(Contrato contrato, BigInteger idContrato) {
+
+        ContratoEntity contratoEntity = getContrato(idContrato);
+        contratoEntity = conversaoContratoEntity(contrato, contratoEntity);
+
+        repository.save(contratoEntity);
+        return "Alteração realizada com sucesso";
+    }
 
     //Confirmar se haverá ou não exclusão do contrato
     public String excluirContrato(BigInteger idContrato) {
         repository.deleteById(idContrato);
         return "Exclusão de contrato realizada com sucesso";
     }
-
-
 
 }

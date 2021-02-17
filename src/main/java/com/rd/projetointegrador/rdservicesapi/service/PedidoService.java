@@ -69,6 +69,9 @@ public class PedidoService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
+    @Autowired private TipoPagamentoRepository tpRepository;
+
+
     SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
 
     @Transactional
@@ -132,7 +135,8 @@ public class PedidoService {
 
             PagamentoEntity pagamento = new PagamentoEntity();
             pagamento.setIdCartao(cartao.getIdCartao());
-            pagamento.setIdFormaPgt(BigInteger.valueOf(1L));
+            TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(1L)).get();
+            pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
             pagamento.setIdPedido(pedidoSalvo.getIdPedido());
             pagamento.setVlPagamento(totalPedido);
             pagamento.setDtPagamento(new Date());
@@ -142,7 +146,8 @@ public class PedidoService {
         }
 
         PagamentoEntity pagamento = new PagamentoEntity();
-        pagamento.setIdFormaPgt(BigInteger.valueOf(3L));
+        TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(3L)).get();
+        pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
         pagamento.setIdPedido(pedidoSalvo.getIdPedido());
         pagamento.setVlPagamento(totalPedido);
         pagamento.setDtPagamento(new Date());

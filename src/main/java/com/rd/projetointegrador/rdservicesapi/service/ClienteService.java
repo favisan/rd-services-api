@@ -8,11 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,8 +40,6 @@ public class ClienteService {
     @Autowired private LembreteService lembreteService;
     @Autowired private EnderecoService enderecoService;
 
-    SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
-    SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public ResponseEntity cadastrarCliente(InputCliente inputUsuario){

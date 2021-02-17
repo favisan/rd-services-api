@@ -11,10 +11,14 @@ import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Optional;
+import java.util.Set;
+
+
 @Service
 public class CartaoService {
     //GRUPO1
@@ -32,10 +36,12 @@ public class CartaoService {
             UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
+
             Date dtValidade = SDF.parse(cartao.getDtValidade());
             cartaoEntity.setDtValidade(dtValidade);
             Date dtEmissao = SDF.parse(cartao.getDtEmissao());
             cartaoEntity.setDtEmissao(dtEmissao);
+
             cartaoEntity.setNmNome(cartao.getNmNome());
             cartaoEntity.setUsuario(usuarioEntity);
             return cartaoEntity;
@@ -43,7 +49,6 @@ public class CartaoService {
             System.out.println(e.getMessage());
         }
         return null;
-
     }
     //MÉTODO: conversão de Entity para DTO
     public Cartao conversaoCartaoDTO(CartaoEntity cartaoEntity, Cartao cartao) {
@@ -62,6 +67,7 @@ public class CartaoService {
         cartao.setUsuario(usuario);
         return cartao;
     }
+
     //MÉTODOS RETORNANDO A ENTITY
     public CartaoEntity getCartao(BigInteger idCartao) {
         Optional<CartaoEntity> optional = repository.findById(idCartao);
@@ -74,14 +80,25 @@ public class CartaoService {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
         return repository.findByUsuario(usuarioEntity);
     }
-    //GRUPO2
-    public List<CartaoEntity> getCartaobyUsuario(UsuarioEntity usuario) {
+
+
+    //Grupo2 - Listar os cartões pela id do Usuario
+    public List<Cartao> getCartaobyUsuario(UsuarioEntity usuario) {
         List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
-        return listaCartoes;
-    }
+        List<Cartao> listaCartaoDTO = new ArrayList<>();
+        //Convertendo CartaoEntity em CartaoDTO
+        for (CartaoEntity cartaoEntity: listaCartoes){
+            Cartao cartaoDTO = new Cartao();
+            Cartao cartaoConversao = conversaoCartaoDTO(cartaoEntity, cartaoDTO);
+            listaCartaoDTO.add(cartaoConversao);
+        }
+        return listaCartaoDTO;
+   }
+
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
         CartaoEntity cartaoEntity = new CartaoEntity();
+
         repository.save(cartaoEntity);
         if(usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
             repository.save(cartaoEntity);
@@ -89,6 +106,7 @@ public class CartaoService {
         }
         return "Erro ao cadastrar cartão";
     }
+
     @Transactional
     public String alterarCartao(Cartao cartao, BigInteger idCartao) {
         CartaoEntity cartaoEntity = repository.findById(idCartao).get();

@@ -60,6 +60,10 @@ public class UsuarioController {
         }
     }
 
+
+    //GRUPO4
+    //LISTAR TODOS OS MEDICOS
+
     @GetMapping("/medico/{id}")
     public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
         try {
@@ -69,8 +73,6 @@ public class UsuarioController {
         }
     }
 
-    //GRUPO4
-    //LISTAR TODOS OS MEDICOS
     @GetMapping("/medicos")
     public ResponseEntity getmedicos(){
         try{
