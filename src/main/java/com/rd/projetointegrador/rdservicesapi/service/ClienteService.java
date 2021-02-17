@@ -262,9 +262,11 @@ public class ClienteService {
         Contrato contrato = new Contrato();
         contrato = contratoService.conversaoContratoDTO(contratoEntities.get(contratoEntities.size()-1), contrato);
 
+        Cartao cartao = new Cartao();
         if(!cartaoEntities.isEmpty()) {
-            Cartao cartao = new Cartao();
             cartao = cartaoService.conversaoCartaoDTO(cartaoEntities.get(cartaoEntities.size() - 1), cartao);
+            inputCliente.setCartao(cartao);
+        } else {
             inputCliente.setCartao(cartao);
         }
 
