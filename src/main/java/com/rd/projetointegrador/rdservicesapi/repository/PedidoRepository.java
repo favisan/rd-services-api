@@ -9,4 +9,5 @@ import java.util.List;
 public interface PedidoRepository extends JpaRepository<PedidoEntity, BigInteger> {
 
     List<PedidoEntity> findByIdPaciente(BigInteger idPaciente);
+
 }

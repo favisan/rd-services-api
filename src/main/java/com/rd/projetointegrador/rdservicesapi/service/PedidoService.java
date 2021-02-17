@@ -41,32 +41,15 @@ public class PedidoService {
     }
     */
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CartaoRepository cartaoRepository;
-
-    @Autowired
-    private ServicoRepository servicoRepository;
-
-    @Autowired
-    private LojaRepository lojaRepository;
-
-    @Autowired
-    private StatusRepository statusRepository;
-
-    @Autowired
-    private ContratoRepository contratoRepository;
-
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private AgServicoRepository agServicoRepository;
-
-    @Autowired
-    private PagamentoRepository pagamentoRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private CartaoRepository cartaoRepository;
+    @Autowired private ServicoRepository servicoRepository;
+    @Autowired private LojaRepository lojaRepository;
+    @Autowired private StatusRepository statusRepository;
+    @Autowired private ContratoRepository contratoRepository;
+    @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private AgServicoRepository agServicoRepository;
+    @Autowired private PagamentoRepository pagamentoRepository;
 
     @Transactional
     public String cadastrarAgendamento (List<AgServico> lista, BigInteger id, Cartao cartao) {
@@ -89,13 +72,13 @@ public class PedidoService {
 
         List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
         ContratoEntity contratoEntity = listContratoEntity.get(0);
-
         List<ServicoPlanoEntity> listaServicos = contratoEntity.getPlanosEntity().getServicos();
-        boolean cobreServico = false;
+
+        boolean planoCobreServico = false;
 
         for (ServicoPlanoEntity s : listaServicos) {
             if (s.getIdServicoPlano() == BigInteger.valueOf(1L)) {
-                cobreServico = true;
+                planoCobreServico = true;
             }
         }
 
@@ -114,7 +97,7 @@ public class PedidoService {
             agServicoRepository.save(ag);
         }
 
-        if (!cobreServico) {
+        if (!planoCobreServico) {
             CartaoEntity cartaoEntity = new CartaoEntity();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
