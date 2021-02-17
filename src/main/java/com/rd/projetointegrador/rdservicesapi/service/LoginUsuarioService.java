@@ -213,13 +213,12 @@ public class LoginUsuarioService {
         }
     }
 
-    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
+    //ALTERAR SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
     public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
 
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
-        loginUsuarioEntity.setDsEmail(login.getDsEmail());
         loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
 
         UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();

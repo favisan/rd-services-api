@@ -35,7 +35,7 @@ public class Atendimento {
 
     private String dsProblemasSaude;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale="pt-BR", timezone = "Brazil/East")
     private Date dtAtendimento;
 
 }

@@ -17,15 +17,11 @@ public class AtendimentoOutput {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date data;
 
-    private BigInteger idAtendimento;
-
     private String nomePaciente;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dataNasc;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale="pt-BR", timezone = "Brazil/East")
+    private Integer idade;
 
     private String genero;
-
-    private BigInteger idProntuario;
 
 }

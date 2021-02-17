@@ -15,7 +15,7 @@ public class Agenda {
     private OutputMedico medico;
     private TipoConsulta tipoConsulta;
     private Periodo periodo;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale="pt-BR", timezone = "Brazil/East")
     private Date data;
     private Integer disponibilidade;
 }

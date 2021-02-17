@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -75,15 +78,26 @@ public class AtendimentoService {
         return atendimentos;
     }
 
+    //Calcular idade
+    public  Integer calcularIdade(final Date dtNascimento) {
+        LocalDate dataNascimento = dtNascimento.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate();
+        final LocalDate dataAtual = LocalDate.now();
+        final Period periodo = Period.between(dataNascimento, dataAtual);
+        return periodo.getYears();
+    }
+
     //Preenchendo a tela Atendimento com os dados que são fixos na tela
     public AtendimentoOutput preencherAtendimento(BigInteger idAgPaciente){
 
         AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
 
+        Date dtNascimento = agPacienteEntity.getPaciente().getDtNascimento();
+        Integer idade  = calcularIdade(dtNascimento);
+
         AtendimentoOutput atendimentoOutput = new AtendimentoOutput();
         atendimentoOutput.setData(agPacienteEntity.getAgenda().getData());
         atendimentoOutput.setNomePaciente(agPacienteEntity.getPaciente().getNmNome());
-        atendimentoOutput.setDataNasc(agPacienteEntity.getPaciente().getDtNascimento());
+        atendimentoOutput.setIdade(idade);
         atendimentoOutput.setGenero(agPacienteEntity.getPaciente().getGenero().getDsGenero());
 
         return atendimentoOutput;
@@ -92,7 +106,7 @@ public class AtendimentoService {
 
     //Cadastrando atendimento
     @Transactional
-    public String cadastrarAtendimento(Atendimento atendimento) {
+    public Boolean cadastrarAtendimento(Atendimento atendimento) {
 
         AtendimentoEntity atendimentoEntity = new AtendimentoEntity();
 
@@ -121,7 +135,7 @@ public class AtendimentoService {
 
         alterarStatusAgPaciente(idAgPaciente);
 
-        return "Atendimento registrado com sucesso!";
+        return true;
     }
 
     //Alterar status do AgPaciente para realizada e a disponibilidade da agenda para 4 (Grupo 4)

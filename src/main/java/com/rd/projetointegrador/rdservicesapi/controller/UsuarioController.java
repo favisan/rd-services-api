@@ -101,7 +101,7 @@ public class UsuarioController {
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @PutMapping("/medico/{idUsuario}")
     public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
-        try{ String retorno = service.alterarMedico(inputMedico, id);
+        try{ Boolean retorno = service.alterarMedico(inputMedico, id);
             return ResponseEntity.ok().body(retorno);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar dados");
