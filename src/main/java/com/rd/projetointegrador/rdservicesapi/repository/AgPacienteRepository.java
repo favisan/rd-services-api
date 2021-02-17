@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface AgPacienteRepository extends JpaRepository<AgPacienteEntity, BigInteger> {
-    Optional<AgPacienteEntity> findByIdAgPaciente(BigInteger idAgPaciente);
     List<AgPacienteEntity> findByPaciente(UsuarioEntity paciente);
 
 }

@@ -154,7 +154,7 @@ public class PagamentoService {
         List<CartaoEntity> listaCartoes = new ArrayList<>();
         listaCartoes = cartaoRepository.findByUsuario(agPaciente.getPaciente());
         pagamentoEntity.setIdCartao(listaCartoes.get(0).getIdCartao());
-        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoCartao.getIdAgPaciente()).get());
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(pagtoCartao.getIdAgPaciente()).get());
         TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
         formaPgto.setIdFormaPagamento(BigInteger.valueOf(1));
         pagamentoEntity.setTipoPagamentoEntity(formaPgto);
@@ -171,7 +171,7 @@ public class PagamentoService {
     @Transactional
     public Pagamento setPagamentoComPlano(PagamentoPlano pagtoPlano){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findByIdAgPaciente(pagtoPlano.getIdAgPaciente()).get());
+        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(pagtoPlano.getIdAgPaciente()).get());
         TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
         formaPgto.setIdFormaPagamento(BigInteger.valueOf(3));
         pagamentoEntity.setTipoPagamentoEntity(formaPgto);

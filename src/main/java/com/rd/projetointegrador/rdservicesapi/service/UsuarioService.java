@@ -93,7 +93,9 @@ public class UsuarioService {
 
         PrecoEntity precoEntity = usuarioEntity.getPreco();
         if(precoEntity != null) {
-            usuario.setIdPreco(precoEntity.getIdPreco());
+            Preco preco = new Preco();
+            preco.setVlConsulta(precoEntity.getVlConsulta());
+            usuario.setPreco(preco);
         }
 
         usuario.setIdTipoUsuario(usuarioEntity.getTipoUsuario().getIdTipoUsuario());

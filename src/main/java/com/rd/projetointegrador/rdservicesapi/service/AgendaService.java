@@ -20,7 +20,6 @@ public class AgendaService {
     @Autowired private AgendaRepository agendaRepository;
     @Autowired private TipoConsultaRepository tipoConsultaRepository;
     @Autowired private PeriodoRepository periodoRepository;
-    @Autowired private AgPacienteRepository agPacienteRepository;
 
     //Grupo2 - Lista de agendas médicas disponíveis por especialidade e por tipo de consulta
      public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
@@ -68,12 +67,11 @@ public class AgendaService {
 
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada
     @Transactional
-    public RespostaString mudarDisponibilidadeParaAgendada(BigInteger idAgPaciente){
-        AgPacienteEntity agPaciente = agPacienteRepository.findByIdAgPaciente(idAgPaciente).get();
-        agPaciente.getAgenda().setDisponibilidade(2);
-        RespostaString resposta = new RespostaString();
-        resposta.setResposta("Consulta agendada");
-        return resposta;
+    public boolean mudarDisponibilidadeParaAgendada(BigInteger idAgenda){
+        AgendaEntity agenda = agendaRepository.findById(idAgenda).get();
+        agenda.setDisponibilidade(2);
+
+        return true;
     }
 
     public List<AgendaEntity> getAgendas() {

@@ -26,7 +26,7 @@ public class Usuario {
     private String nrCpf;
     private String nrCrm;
     private String dsEndImg;
-    private BigInteger idPreco;
+    private Preco Preco;
 
     private List<Endereco> enderecos;
 }

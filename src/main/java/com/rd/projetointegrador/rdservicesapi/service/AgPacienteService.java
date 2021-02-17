@@ -66,7 +66,7 @@ public class AgPacienteService {
 
     //Grupo2 - Get AgPaciente pelo idAgenda
     public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
-        AgPacienteEntity agPacienteEntity= repository.findByIdAgPaciente(idAgPaciente).get();
+        AgPacienteEntity agPacienteEntity= repository.findById(idAgPaciente).get();
         AgPaciente agPacienteDto = new AgPaciente();
         Agenda agendaDTO = new Agenda();
         InputMedico medico = new InputMedico();
@@ -128,7 +128,7 @@ public class AgPacienteService {
     public RespostaString cancelarAgPaciente(BigInteger idAgPaciente){
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(3));
-        AgPacienteEntity agPaciente = repository.findByIdAgPaciente(idAgPaciente).get();
+        AgPacienteEntity agPaciente = repository.findById(idAgPaciente).get();
         agPaciente.setStatusConsulta(status);
         agPaciente.getAgenda().setDisponibilidade(1);
 
