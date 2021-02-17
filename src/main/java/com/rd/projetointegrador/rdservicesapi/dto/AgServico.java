@@ -18,4 +18,7 @@ public class AgServico {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date dtDataHora;
     private BigInteger idPedido;
+
+    private String endLoja;
+    private String dsServico;
 }
