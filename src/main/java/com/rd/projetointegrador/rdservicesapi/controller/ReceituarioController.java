@@ -32,10 +32,10 @@ public class ReceituarioController {
         }
     }
     //EXIBIR LISTAS DA TELA DE RECEITUÁRIO E CAMPOS DESABILITADOS PREENCHIDOS
-    @GetMapping("/receituario/{idMedico}/{idPaciente}")
-    public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente) {
+    @GetMapping("/receituario/{idMedico}/{idPaciente}/{idAgPaciente}")
+    public ResponseEntity getReceituarios(@PathVariable("idMedico") BigInteger idMedico,@PathVariable("idPaciente") BigInteger idPaciente, @PathVariable BigInteger idAgPaciente) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente));
+            return ResponseEntity.status(HttpStatus.OK).body(receituarioService.preencherReceituario(idMedico, idPaciente, idAgPaciente));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar dados!");

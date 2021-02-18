@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.repository;
 
+import com.rd.projetointegrador.rdservicesapi.dto.AgPaciente;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,5 +18,6 @@ public interface AtendimentoRepository extends JpaRepository<AtendimentoEntity, 
     //Grupo3
      List<AtendimentoEntity> findByPacienteOrderByDtAtendimento(UsuarioEntity usuarioEntity);
      List<AtendimentoEntity>  findByMedicoOrderByDtAtendimentoDesc(UsuarioEntity medico);
+     AtendimentoEntity findByAgPaciente(AgPacienteEntity agPaciente);
 
 }
