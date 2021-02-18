@@ -21,7 +21,7 @@ public class InputMedico {
     private String nome;
     private String nrCpf;
     private  String dsEndImg;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtNascimento;
     private String nrCrm;
     private List<Endereco> enderecos;
