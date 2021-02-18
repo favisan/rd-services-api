@@ -1,4 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.service;
+
 import com.rd.projetointegrador.rdservicesapi.dto.Cartao;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.repository.CartaoRepository;
@@ -22,9 +23,12 @@ import java.util.Set;
 @Service
 public class CartaoService {
     //GRUPO1
-    @Autowired private CartaoRepository repository;
-    @Autowired private UsuarioRepository usuarioRepository;
-    @Autowired private UsuarioService usuarioService;
+    @Autowired
+    private CartaoRepository repository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -34,22 +38,28 @@ public class CartaoService {
 
         try {
             UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
+            System.out.println("Passou usuário");
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
 
             Date dtValidade = SDF.parse(cartao.getDtValidade());
             cartaoEntity.setDtValidade(dtValidade);
-            Date dtEmissao = SDF.parse(cartao.getDtEmissao());
-            cartaoEntity.setDtEmissao(dtEmissao);
+
+            if (!cartao.getDtEmissao().equals("") && cartao.getDtEmissao() != null) {
+                Date dtEmissao = SDF.parse(cartao.getDtEmissao());
+                cartaoEntity.setDtEmissao(dtEmissao);
+            }
+            System.out.println("Passou a data de emissão");
 
             cartaoEntity.setNmNome(cartao.getNmNome());
             cartaoEntity.setUsuario(usuarioEntity);
             return cartaoEntity;
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
+
     //MÉTODO: conversão de Entity para DTO
     public Cartao conversaoCartaoDTO(CartaoEntity cartaoEntity, Cartao cartao) {
 
@@ -59,11 +69,13 @@ public class CartaoService {
 
         String dtValidade = SDF.format(cartaoEntity.getDtValidade());
         cartao.setDtValidade(dtValidade);
-        String dtEmissao = SDF.format(cartaoEntity.getDtEmissao());
-        cartao.setDtEmissao(dtEmissao);
-        cartao.setNmNome( cartaoEntity.getNmNome());
+        if (cartaoEntity.getDtEmissao() != null) {
+            String dtEmissao = SDF.format(cartaoEntity.getDtEmissao());
+            cartao.setDtEmissao(dtEmissao);
+        }
+        cartao.setNmNome(cartaoEntity.getNmNome());
         Usuario usuario = new Usuario();
-        usuario = usuarioService.conversaoUsuarioDTO(cartaoEntity.getUsuario(),usuario);
+        usuario = usuarioService.conversaoUsuarioDTO(cartaoEntity.getUsuario(), usuario);
         cartao.setUsuario(usuario);
         return cartao;
     }
@@ -73,9 +85,11 @@ public class CartaoService {
         Optional<CartaoEntity> optional = repository.findById(idCartao);
         return optional.get();
     }
+
     public List<CartaoEntity> getCartoes() {
         return repository.findAll();
     }
+
     public List<CartaoEntity> getCartaoByUsuario(BigInteger idUsuario) {
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
         return repository.findByUsuario(usuarioEntity);
@@ -95,12 +109,13 @@ public class CartaoService {
         return listaCartaoDTO;
    }
 
+
     @Transactional
     public String cadastrarCartao(Cartao cartao) {
         CartaoEntity cartaoEntity = new CartaoEntity();
 
         repository.save(cartaoEntity);
-        if(usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
+        if (usuarioRepository.existsById(cartao.getUsuario().getIdUsuario())) {
             repository.save(cartaoEntity);
             return "Cartao Cadastrado com sucesso";
         }
@@ -114,6 +129,7 @@ public class CartaoService {
         repository.save(cartaoEntity);
         return "Alteração  de cartão realizada com sucesso";
     }
+
     public String excluirCartao(BigInteger idCartao) {
         repository.deleteById(idCartao);
         return "Exclusão do cartão realizada com sucesso";
