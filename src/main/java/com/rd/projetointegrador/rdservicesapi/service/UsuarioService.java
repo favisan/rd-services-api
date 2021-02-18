@@ -76,7 +76,7 @@ public class UsuarioService {
             usuarioEntity.setDtNascimento(dataNascimento);
             usuarioEntity.setNrCpf(usuario.getNrCpf());
             usuarioEntity.setNrCrm(usuario.getNrCrm());
-            usuarioEntity.setDsEndImg("/assets/grupo1/img/avatar/"+usuario.getDsEndImg());
+            usuarioEntity.setDsEndImg(usuario.getDsEndImg());
 
             return usuarioEntity;
 
