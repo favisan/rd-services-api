@@ -2,11 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.controller;
 
 import com.rd.projetointegrador.rdservicesapi.dto.AgendaOutput;
 import com.rd.projetointegrador.rdservicesapi.dto.AgendamentoOutput;
-import com.rd.projetointegrador.rdservicesapi.dto.CadastroAgPaciente;
-import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.service.AgendaService;
-import com.rd.projetointegrador.rdservicesapi.service.EspMedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +34,12 @@ public class AgendaController {
     @GetMapping("agenda/disponibilidade/{idAgPaciente}")
     public ResponseEntity mudarDisponibilidade(@PathVariable("idAgPaciente") BigInteger id) {
         return ResponseEntity.status(HttpStatus.OK).body(agendaService.mudarDisponibilidadeParaAgendada(id));
+    }
+
+    //Grupo2 - Filtra as agendas disponiveis por data
+    @GetMapping("agenda/filtro/{agendas}/{data}")
+    public ResponseEntity filtrarAgendasDisp (@PathVariable("agendas") List<Agenda> agendas, @PathVariable("data") Date data) {
+        return ResponseEntity.status(HttpStatus.OK).body(agendaService.filtrarAgendasDispPorData(agendas, data));
     }
 
     //LISTA TODAS AS AGENDAS (Grupo 4)

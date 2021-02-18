@@ -33,6 +33,14 @@ public class AgServicoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
+    @Autowired
+    private ServicoService servicoService;
+
+    @Autowired
+    private LojaService lojaService;
+
+
+
 
     @Transactional
     public String cancelarAgendamento(BigInteger id){
@@ -127,10 +135,10 @@ public class AgServicoService {
             a.setIdLoja(ag.getIdLoja().getIdLoja());
 
             LojaEntity loja = lojaRepository.findById(a.getIdLoja()).get();
-            a.setEndLoja(loja.getEnderecos().get(0).getDsEndereco());
+            a.setLoja(lojaService.conversaoLojaDTO(loja));
 
             ServicoEntity servico = servicoRepository.findById(a.getIdServico()).get();
-            a.setDsServico(servico.getNome());
+            a.setServico(servicoService.conversaoEntityParaDTO(servico));
 
             a.setIdStatus(ag.getIdStatus().getId());
             a.setDtDataHora(ag.getDtDataHora());

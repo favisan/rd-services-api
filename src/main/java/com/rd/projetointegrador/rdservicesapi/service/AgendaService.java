@@ -43,7 +43,6 @@ public class AgendaService {
 
 
     //Grupo2 - Lista de agendas médicas disponíveis por especialidade e por tipo de consulta
-    //TODO: RESOLVER OUTPUT OU INPUT MÉDICO
     public List<Agenda> getAgendaByEspecialidade(BigInteger idEsp, BigInteger idConsulta) {
         List<AgendaEntity> agendaPorTipoConsulta = new ArrayList<>();
         //Se consulta=2, retornar as agendas com status presencial; se consulta=1(online), traz todas as agendas
@@ -66,7 +65,7 @@ public class AgendaService {
         for (AgendaEntity agendaEntity : agendaFinal) {
             Agenda agendaDto = new Agenda();
             agendaDto.setIdAgenda(agendaEntity.getIdAgenda());
-            InputMedico medicoDto = new InputMedico();
+            OutputMedico medicoDto = new OutputMedico();
             medicoDto.setNome(agendaEntity.getMedico().getNmNome());
             medicoDto.setDsEndImg(agendaEntity.getMedico().getDsEndImg());
             Preco precoDto = new Preco();
@@ -75,8 +74,7 @@ public class AgendaService {
             EspMed espMedDto = new EspMed();
             espMedDto.setDsEspMed(agendaEntity.getMedico().getEspMed().getDsEspMed());
             medicoDto.setEspMed(espMedDto);
-            //TODO
-            //agendaDto.setMedico(medicoDto);
+            agendaDto.setMedico(medicoDto);
             Periodo periodoDto = new Periodo();
             periodoDto.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
             periodoDto.setDsPerido(agendaEntity.getPeriodo().getDsPeriodo());
@@ -85,6 +83,17 @@ public class AgendaService {
             agendasDto.add(agendaDto);
         }
         return agendasDto;
+    }
+
+    //Grupo2 - Filtra as agendas disponiveis por data
+    public List<Agenda> filtrarAgendasDispPorData (List<Agenda> agendasDisponiveis, Date data){
+        List <Agenda> agendasFiltradas = new ArrayList<>();
+        for (Agenda agenda : agendasDisponiveis){
+            if (agenda.getData().equals(data)){
+                agendasFiltradas.add(agenda);
+            }
+        }
+        return agendasFiltradas;
     }
 
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para agendada

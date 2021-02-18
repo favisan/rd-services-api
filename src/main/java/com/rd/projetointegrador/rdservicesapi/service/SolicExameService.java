@@ -1,10 +1,7 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
-import com.rd.projetointegrador.rdservicesapi.repository.ProntuarioRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.SolicExameRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.TipoExameRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigInteger;
@@ -22,6 +19,11 @@ public class SolicExameService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private AtendimentoRepository atendimentoRepository;
+    @Autowired
+    private AgPacienteRepository agPacienteRepository;
+
     public String inserirSolicExame(SolicExame solicExame) {
         SolicExameEntity entity = new SolicExameEntity();
         BigInteger idProntuario = solicExame.getProntuario().getIdProntuario();
@@ -115,12 +117,21 @@ public class SolicExameService {
         return solicitacao;
     }
     //FORMULÁRIO INICIAL
-    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico, BigInteger idPaciente){
+    public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico, BigInteger idPaciente, BigInteger idAgPaciente){
         SolicExameOutput output = new SolicExameOutput();
+
+        AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
+
+        AtendimentoEntity atendimentoEntity = atendimentoRepository.findByAgPaciente(agPacienteEntity);
+
+        BigInteger idProntuario = atendimentoEntity.getProntuario().getIdProntuario();
+
+        output.setIdProntuario(idProntuario);
         output.setListaTipoExame(tipoRepository.findAll());
         output.setMedico(usuarioService.getMedico(idMedico));
         UsuarioEntity usuario = usuarioRepository.findById(idPaciente).get();
         output.setNomePaciente(usuario.getNmNome());
+
         return output;
     }
     //MÉTODO PARA LISTAR É SÓ PARA TESTE

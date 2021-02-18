@@ -38,14 +38,19 @@ public class ServicoService {
         List<Servico> servicosDTO = new ArrayList<>();
 
         for(ServicoEntity servicoEntity : servicosEntities){
-            Servico servicoDTO = new Servico();
-            servicoDTO.setId(servicoEntity .getId().longValue());
-            servicoDTO.setNome(servicoEntity.getNome());
-            servicoDTO.setPreco(servicoEntity.getPreco());
-
-            servicosDTO.add(servicoDTO);
+            servicosDTO.add(conversaoEntityParaDTO(servicoEntity));
         }
         return servicosDTO;
+    }
+
+    public Servico conversaoEntityParaDTO(ServicoEntity servico){
+
+        Servico servicoDTO = new Servico();
+        servicoDTO.setId(servico .getId().longValue());
+        servicoDTO.setNome(servico.getNome());
+        servicoDTO.setPreco(servico.getPreco());
+
+        return servicoDTO;
     }
 
     @Transactional

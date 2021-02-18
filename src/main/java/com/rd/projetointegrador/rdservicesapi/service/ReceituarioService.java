@@ -15,6 +15,9 @@ public class ReceituarioService {
     @Autowired private ProntuarioRepository prontuarioRepository;
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private TipoReceitaRepository tipoReceitaRepository;
+    @Autowired private AtendimentoRepository atendimentoRepository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
+
     //Service
     @Autowired private TipoReceitaService tipoReceitaService;
     @Autowired private FormaFarmacService formaFarmacService;
@@ -53,8 +56,16 @@ public class ReceituarioService {
         return "Receituário inserido com sucesso!";
     }
     //Preenchendo a tela Receituário com listas para os selects do front e dados que são fixos na tela
-    public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente){
+    public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente, BigInteger idAgPaciente){
         ReceituarioOutput receituarioOutput = new ReceituarioOutput();
+
+        AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
+
+        AtendimentoEntity atendimentoEntity = atendimentoRepository.findByAgPaciente(agPacienteEntity);
+
+        BigInteger idProntuario = atendimentoEntity.getProntuario().getIdProntuario();
+
+        receituarioOutput.setIdProntuario(idProntuario);
         receituarioOutput.setListaTipoReceita(tipoReceitaService.listarTiposDeReceita());
         receituarioOutput.setNomePaciente(usuarioService.getUsuario(idPaciente).getNmNome());
         receituarioOutput.setListaMedicacao(medicacaoService.listarMedicacoes());
