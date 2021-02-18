@@ -96,8 +96,10 @@ public class AtendimentoService {
 
         AtendimentoOutput atendimentoOutput = new AtendimentoOutput();
         atendimentoOutput.setData(agPacienteEntity.getAgenda().getData());
+        atendimentoOutput.setIdPaciente(agPacienteEntity.getPaciente().getIdUsuario());
         atendimentoOutput.setNomePaciente(agPacienteEntity.getPaciente().getNmNome());
         atendimentoOutput.setIdade(idade);
+        atendimentoOutput.setIdAgPaciente(idAgPaciente);
         atendimentoOutput.setGenero(agPacienteEntity.getPaciente().getGenero().getDsGenero());
 
         return atendimentoOutput;
