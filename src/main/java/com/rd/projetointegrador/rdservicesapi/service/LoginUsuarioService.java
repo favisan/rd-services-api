@@ -219,7 +219,7 @@ public class LoginUsuarioService {
 
     //ALTERAR SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
-    public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
+    public Boolean alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
 
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
@@ -229,7 +229,7 @@ public class LoginUsuarioService {
         loginUsuarioEntity.setUsuario(usuario);
 
         loginUsuarioRepository.save(loginUsuarioEntity);
-        return "Alteração realizada com sucesso";
+        return true;
     }
 
     //VALIDAR DADOS ESQUECEU A SENHA

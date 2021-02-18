@@ -14,10 +14,11 @@ public interface AtendimentoRepository extends JpaRepository<AtendimentoEntity, 
     //Grupo 4
     List<AtendimentoEntity> findByProntuario(ProntuarioEntity prontuario);
     List<AtendimentoEntity> findByPacienteOrderByDtAtendimentoDesc(UsuarioEntity paciente);
+    AtendimentoEntity findByAgPaciente(AgPacienteEntity agPaciente);
 
     //Grupo3
      List<AtendimentoEntity> findByPacienteOrderByDtAtendimento(UsuarioEntity usuarioEntity);
      List<AtendimentoEntity>  findByMedicoOrderByDtAtendimentoDesc(UsuarioEntity medico);
-     AtendimentoEntity findByAgPaciente(AgPacienteEntity agPaciente);
+
 
 }

@@ -339,41 +339,43 @@ public class UsuarioService {
         entity.setNrCpf(inputMedico.getNrCpf());
         entity.setNrCrm(inputMedico.getNrCrm());
 
+        List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
+        for (EnderecoEntity endereco : enderecosEntity) {
+            //CidadeEntity cidadeEntity = cidadeRepository.findById(endereco.getCidade().getIdCidade()).get();
+            UfEntity ufEntity1 = new UfEntity();
+            ufEntity1.setIdUf(inputMedico.getEnderecos().get(0).getCidade().getUf().getIdUf());
+            CidadeEntity cidadeEntity = new CidadeEntity();
+            cidadeEntity.setIdCidade(inputMedico.getEnderecos().get(0).getCidade().getIdCidade());
+            cidadeEntity.setUf(ufEntity1);
+            endereco.setCidade(cidadeEntity);
+            endereco.setDsComplemento(inputMedico.getEnderecos().get(0).getDsComplemento());
+            endereco.setDsEndereco(inputMedico.getEnderecos().get(0).getDsEndereco());
+            endereco.setDsBairro(inputMedico.getEnderecos().get(0).getDsBairro());
+            endereco.setNrCep(inputMedico.getEnderecos().get(0).getNrCep());
+        }
+        System.out.println("Vai atualizar o usuario.");
+        repository.save(entity);
+        System.out.println("Usuario atualizado.");
+
+        List<ContatoEntity> contatosEntity = entity.getContatos();
+        for (ContatoEntity contato : contatosEntity) {
+            contato.setIdUsuario(entity.getIdUsuario());
+            TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
+            contato.setTipoContato(tpContatoEntity);
+            contato.setDsContato(inputMedico.getContatos().get(0).getDsContato());
+            System.out.println("Vai atualizar o ctto.");
+            contatoRepository.save(contato);
+            System.out.println("Ctto atualizado.");
+        }
+
         PrecoEntity precoEntity = new PrecoEntity();
         Preco preco = inputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
+        System.out.println("Vai atualizar preço.");
         precoRepository.save(precoEntity);
+        System.out.println("Preco atualizado.");
         entity.setPreco(precoEntity);
 
-        List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
-        for (Endereco endereco : inputMedico.getEnderecos()) {
-            EnderecoEntity enderecoEntity = new EnderecoEntity();
-            CidadeEntity cidadeEntity = enderecoEntity.getCidade();
-            Cidade cidade = new Cidade();
-            cidade.setIdCidade(cidadeEntity.getIdCidade());
-            UfEntity ufEntity1 = enderecoEntity.getCidade().getUf();
-            Uf uf1 = new Uf();
-            uf1.setIdUf(ufEntity1.getIdUf());
-            cidade.setUf(uf1);
-            endereco.setCidade(cidade);
-            enderecoEntity.setDsComplemento(endereco.getDsComplemento());
-            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
-            enderecoEntity.setDsBairro(endereco.getDsBairro());
-            enderecoEntity.setNrCep(endereco.getNrCep());
-        }
-        entity.setEnderecos(enderecosEntity);
-
-        List<ContatoEntity> contatosEntity = entity.getContatos();
-        for (Contato contato : inputMedico.getContatos()) {
-            ContatoEntity contatoEntity = new ContatoEntity();
-            TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
-            contatoEntity.setTipoContato(tpContatoEntity);
-            contatoEntity.setDsContato(contato.getDsContato());
-            contatoRepository.save(contatoEntity);
-        }
-        entity.setContatos(contatosEntity);
-
-        repository.save(entity);
         return true;
     }
 
@@ -412,8 +414,10 @@ public class UsuarioService {
             enderecoEntity.setDsEndereco(endereco.getDsEndereco());
             enderecoEntity.setDsBairro(endereco.getDsBairro());
             enderecoEntity.setNrCep(endereco.getNrCep());
+
             enderecosEntity.add(enderecoEntity);
         }
+
         entity.setEnderecos(enderecosEntity);
 
         repository.save(entity);

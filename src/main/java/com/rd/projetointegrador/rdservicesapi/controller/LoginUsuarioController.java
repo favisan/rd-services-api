@@ -102,7 +102,7 @@ public class LoginUsuarioController {
     //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
     @PutMapping("/login/{idUsuario}")
     public ResponseEntity alterarAcesso(@RequestBody LoginUsuario login, @PathVariable("idUsuario") BigInteger idUsuario) throws NoSuchAlgorithmException {
-        String retorno = service.alterarDadosLogin(login, idUsuario);
+        Boolean retorno = service.alterarDadosLogin(login, idUsuario);
         return ResponseEntity.ok().body(retorno);
     }
 
