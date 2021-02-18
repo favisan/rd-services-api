@@ -105,8 +105,9 @@ public class ClienteService {
 
                 //Entidade Cartao
                 if (!inputUsuario.getCartao().getNrCartao().equals("") && inputUsuario.getCartao().getCodSeguranca() != null) {
-                    System.out.println("Entrou no if!");
-                    inputUsuario.getCartao().getUsuario().setIdUsuario(novoId);
+                    inputUsuario.getUsuario().setIdUsuario(novoId);
+                    inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
+                    System.out.println("Inseriu Id!");
                     cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
                     cartaoRepository.save(cartaoEntity);
                     System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
@@ -302,8 +303,11 @@ public class ClienteService {
         inputCliente.setUsuario(usuario);
         inputCliente.setLoginUsuario(loginUsuario);
         inputCliente.setContrato(contrato);
-        inputCliente.setDdd(contatoEntities.get(contatoEntities.size() - 1).getNrDdd());
-        inputCliente.setCelular(contatoEntities.get(contatoEntities.size() - 1).getDsContato());
+
+        if(!contatoEntities.isEmpty()) {
+            inputCliente.setDdd(contatoEntities.get(contatoEntities.size() - 1).getNrDdd());
+            inputCliente.setCelular(contatoEntities.get(contatoEntities.size() - 1).getDsContato());
+        }
 
         return inputCliente;
 

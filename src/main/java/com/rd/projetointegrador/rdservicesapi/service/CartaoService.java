@@ -35,16 +35,17 @@ public class CartaoService {
 
         try {
             UsuarioEntity usuarioEntity = usuarioRepository.findById(cartao.getUsuario().getIdUsuario()).get();
+            System.out.println("Passou usuário");
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
 
             Date dtValidade = SDF.parse(cartao.getDtValidade());
             cartaoEntity.setDtValidade(dtValidade);
-            if (cartao.getDtEmissao() != null) {
+            if (!cartao.getDtEmissao().equals("") && cartao.getDtEmissao() != null) {
                 Date dtEmissao = SDF.parse(cartao.getDtEmissao());
                 cartaoEntity.setDtEmissao(dtEmissao);
             }
-
+            System.out.println("Passou a data de emissão");
             cartaoEntity.setNmNome(cartao.getNmNome());
             cartaoEntity.setUsuario(usuarioEntity);
             return cartaoEntity;
