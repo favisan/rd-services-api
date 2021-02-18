@@ -18,12 +18,13 @@ public class ServicoService {
     private ServicoRepository repository;
 
 
-    public ServicoEntity getServico(BigInteger id){
+    public Servico getServico(BigInteger id){
         System.out.println("ID: " + id);
         Optional<ServicoEntity> optional = repository.findById(id);
         ServicoEntity entity = optional.get();
+        Servico servico = conversaoEntityParaDTO(entity);
 
-        return entity;
+        return servico;
     }
 
     public List<ServicoEntity> getServicos2(){

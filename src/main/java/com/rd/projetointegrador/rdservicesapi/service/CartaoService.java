@@ -98,13 +98,17 @@ public class CartaoService {
     //Grupo2 - Listar os cartões pela id do Usuario
     public List<Cartao> getCartaobyUsuario(UsuarioEntity usuario) {
         List<CartaoEntity> listaCartoes = repository.findByUsuario(usuario);
+        System.out.println("listaCartoesEntity" + listaCartoes);
         List<Cartao> listaCartaoDTO = new ArrayList<>();
         //Convertendo CartaoEntity em CartaoDTO
         for (CartaoEntity cartaoEntity: listaCartoes){
             Cartao cartaoDTO = new Cartao();
+
             Cartao cartaoConversao = conversaoCartaoDTO(cartaoEntity, cartaoDTO);
+            System.out.println("cartao convertido" + cartaoConversao);
             listaCartaoDTO.add(cartaoConversao);
         }
+
         return listaCartaoDTO;
    }
 
