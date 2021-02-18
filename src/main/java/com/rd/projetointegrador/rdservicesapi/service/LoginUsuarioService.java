@@ -2,6 +2,7 @@ package com.rd.projetointegrador.rdservicesapi.service;
 
 import com.rd.projetointegrador.rdservicesapi.dto.LoginUsuario;
 import com.rd.projetointegrador.rdservicesapi.dto.ResultData;
+import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.LoginUsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
@@ -44,7 +45,9 @@ public class LoginUsuarioService {
 
             loginUsuarioEntity.setIdUsuario(loginUsuario.getIdUsuario());
             loginUsuarioEntity.setDsEmail(loginUsuario.getDsEmail());
-            loginUsuarioEntity.setDsSenha(codificar(loginUsuario.getDsSenha()));
+            if(!loginUsuario.getDsSenha().equals("")) {
+                loginUsuarioEntity.setDsSenha(codificar(loginUsuario.getDsSenha()));
+            }
 
             return loginUsuarioEntity;
 
@@ -114,8 +117,9 @@ public class LoginUsuarioService {
             if (emailTela.equals(login) && senhaTela.equals(senha)) {
 
                 loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+                Number tipoUsuario = usuarioRepository.findById(loginUsuarioEntity.getIdUsuario()).get().getTipoUsuario().getIdTipoUsuario();
 
-                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Acesso Permitido", loginUsuario);
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Acesso Permitido", loginUsuario, tipoUsuario);
                 return ResponseEntity.status(HttpStatus.OK).body(resultData);
             } else {
                 ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário ou Senha incorretos!");
