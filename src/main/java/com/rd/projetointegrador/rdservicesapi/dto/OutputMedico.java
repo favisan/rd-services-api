@@ -20,7 +20,7 @@ public class OutputMedico {
     private Preco preco;
     private String nome;
     private String nrCpf;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dtNascimento;
     private String nrCrm;
     private List<Endereco> enderecos;
