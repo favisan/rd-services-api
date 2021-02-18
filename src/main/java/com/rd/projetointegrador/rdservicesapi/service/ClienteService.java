@@ -184,18 +184,22 @@ public class ClienteService {
             }
 
             //Entidade Cartao
-            if (!inputUsuario.getCartao().getNrCartao().equals(cartaoEntity.getNrCartao())) {
-                System.out.println("Cartão atual: " + cartaoEntity.getNrCartao());
-                inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
-                CartaoEntity newCartaoEntity = new CartaoEntity();
-                newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
-                cartaoRepository.save(newCartaoEntity);
+            if (inputUsuario.getCartao().getNrCartao() != null) {
+                if (!inputUsuario.getCartao().getNrCartao().equals(cartaoEntity.getNrCartao())) {
 
-                System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getNrCartao());
-                System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getIdCartao());
-            } else {
-                cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-                cartaoRepository.save(cartaoEntity);
+                    System.out.println("Cartão atual: " + cartaoEntity.getNrCartao());
+
+                    inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
+                    CartaoEntity newCartaoEntity = new CartaoEntity();
+                    newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
+                    cartaoRepository.save(newCartaoEntity);
+
+                    System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getNrCartao());
+                    System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getIdCartao());
+                } else {
+                    cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+                    cartaoRepository.save(cartaoEntity);
+                }
             }
 
             //Entidade Contato
