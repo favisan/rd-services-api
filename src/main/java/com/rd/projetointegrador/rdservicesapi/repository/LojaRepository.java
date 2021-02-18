@@ -18,7 +18,7 @@ public interface LojaRepository extends JpaRepository<LojaEntity, BigInteger> {
                     " INNER JOIN TB_ENDERECO E ON  (LE.ID_ENDERECO = E.ID_ENDERECO) " +
                     " INNER JOIN TB_CIDADE C ON (E.ID_CIDADE = C.ID_CIDADE) " +
                     " INNER JOIN TB_UF U ON (C.ID_UF = U.ID_UF) " +
-                    " WHERE E.DS_BAIRRO LIKE %:local1% OR C.DS_CIDADE LIKE %:local2% OR E.DS_COMPLEMENTO LIKE %:local3% ",
+                    " WHERE E.DS_BAIRRO LIKE %:local1% OR C.DS_CIDADE LIKE %:local2% OR E.DS_ENDERECO LIKE %:local3% ",
             nativeQuery = true)
     List<LojaEntity> getLojasPorLocalidade(@Param("local1") String local1,
                                            @Param("local2") String local2,

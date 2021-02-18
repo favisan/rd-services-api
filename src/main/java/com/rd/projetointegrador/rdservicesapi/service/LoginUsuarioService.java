@@ -60,17 +60,17 @@ public class LoginUsuarioService {
     public LoginUsuario conversaoLoginUsuarioDTO(LoginUsuarioEntity loginUsuarioEntity, LoginUsuario loginUsuario) {
 
         try {
-        loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
-        loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
+            loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
+            loginUsuario.setDsEmail(loginUsuarioEntity.getDsEmail());
 
         //TODO: decodificar???
         loginUsuario.setDsSenha(loginUsuarioEntity.getDsSenha());
 
-        return loginUsuario;
+            return loginUsuario;
 
         }catch (Exception e) {
-        System.out.print(e.getMessage());
-        return null;
+            System.out.print(e.getMessage());
+            return null;
         }
 
     }
@@ -110,6 +110,7 @@ public class LoginUsuarioService {
 
         try {
             LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
+
             String login = loginUsuarioEntity.getDsEmail();
             String senha = loginUsuarioEntity.getDsSenha();
 
@@ -205,6 +206,7 @@ public class LoginUsuarioService {
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
+
         String login = loginUsuarioEntity.getDsEmail();
         String senha = loginUsuarioEntity.getDsSenha();
 
@@ -215,13 +217,12 @@ public class LoginUsuarioService {
         }
     }
 
-    //ALTERAR LOGIN E SENHA SE ACESSO TELA PERFIL DO MEDICO
+    //ALTERAR SENHA SE ACESSO TELA PERFIL DO MEDICO
     @Transactional
     public String alterarDadosLogin(LoginUsuario login, BigInteger idUsuario) throws NoSuchAlgorithmException {
 
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(idUsuario);
 
-        loginUsuarioEntity.setDsEmail(login.getDsEmail());
         loginUsuarioEntity.setDsSenha(codificar(login.getDsSenha()));
 
         UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
@@ -277,4 +278,3 @@ public class LoginUsuarioService {
 
 
 }
-

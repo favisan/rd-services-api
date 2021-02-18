@@ -1,15 +1,10 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rd.projetointegrador.rdservicesapi.dto.AgServico;
 import com.rd.projetointegrador.rdservicesapi.dto.Status;
-import com.rd.projetointegrador.rdservicesapi.entity.AgServicoEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.LojaEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.PedidoEntity;
-import com.rd.projetointegrador.rdservicesapi.entity.StatusEntity;
-import com.rd.projetointegrador.rdservicesapi.repository.AgServicoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.LojaRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.PedidoRepository;
-import com.rd.projetointegrador.rdservicesapi.repository.StatusRepository;
+import com.rd.projetointegrador.rdservicesapi.entity.*;
+import com.rd.projetointegrador.rdservicesapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +29,17 @@ public class AgServicoService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private ServicoRepository servicoRepository;
+
+    @Autowired
+    private ServicoService servicoService;
+
+    @Autowired
+    private LojaService lojaService;
+
+
 
 
     @Transactional
@@ -67,6 +73,81 @@ public class AgServicoService {
         return repository.findByIdLojaAndDtDataHoraBetweenAndIdStatus(loja,data1, data2, status);
     }
 
+    public List<String> getAgendamentosIndisponiveis(BigInteger id, String data) throws ParseException {
+
+        System.out.println("DATA: "+data);
+
+        String from = data + " 00:00:00";
+        String to = data + " 23:59:59";
+
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date data1 = formato.parse(from);
+        Date data2 = formato.parse(to);
+
+        LojaEntity loja = lojaRepository.findById(id).get();
+        StatusEntity status = statusRepository.findById(BigInteger.valueOf(3l)).get(); //Status = Agendada
+
+        List<AgServicoEntity> ag =  repository.findByIdLojaAndDtDataHoraBetweenAndIdStatus(loja,data1, data2, status);
+
+        List<String> indisponiveis = getDatasString(ag);
+
+        return indisponiveis;
+    }
+
+    public List<String> getDatasString(List<AgServicoEntity> agendamentos){
+
+        List<String> datas = new ArrayList<>();
+        for (AgServicoEntity ag: agendamentos){
+            String dt = ag.getDtDataHora().toString().split(" ")[1];
+            dt = dt.split(":")[0] +":"+ dt.split(":")[1] ;
+            datas.add(dt);
+        }
+        return datas;
+    }
+
+    public List<AgServico> getAgendamentosUsuario(BigInteger id){
+
+        List<PedidoEntity> pedidos = pedidoRespository.findByIdPaciente(id);
+        List<AgServicoEntity> agendamentos = new ArrayList<>();
+
+        //pegar todos os agendamentos do usuário
+        for(PedidoEntity p: pedidos){
+            for (AgServicoEntity a: p.getAgendamentos()){
+                agendamentos.add(a);
+            }
+        }
+
+        //transformar em agendamentos DTO
+        List<AgServico> agDTO = conversaoAgEntityParaDTO(agendamentos);
+
+        return agDTO;
+    }
+
+    public List<AgServico> conversaoAgEntityParaDTO(List<AgServicoEntity> agendamentos){
+
+        List<AgServico> agDTO = new ArrayList<>();
+
+        for(AgServicoEntity ag: agendamentos){
+
+            AgServico a = new AgServico();
+            a.setIdAgendamento(ag.getIdAgendamento());
+            a.setIdServico(ag.getIdServico().getId());
+            a.setIdLoja(ag.getIdLoja().getIdLoja());
+
+            LojaEntity loja = lojaRepository.findById(a.getIdLoja()).get();
+            a.setLoja(lojaService.conversaoLojaDTO(loja));
+
+            ServicoEntity servico = servicoRepository.findById(a.getIdServico()).get();
+            a.setServico(servicoService.conversaoEntityParaDTO(servico));
+
+            a.setIdStatus(ag.getIdStatus().getId());
+            a.setDtDataHora(ag.getDtDataHora());
+            a.setIdPedido(ag.getPedido().getIdPedido());
+
+            agDTO.add(a);
+        }
+        return agDTO;
+    }
 
     public Map<Status, List<AgServico>> getAgendamentos(BigInteger id){
 

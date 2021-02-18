@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service
 public class PedidoService {
-
     // List<AgServicoEntity> agendamentos
     //percorrer o array de ag e pegar o serviço e o valor que vai ser exibido na página de pgmto.
     //Calcular total.
@@ -42,32 +41,16 @@ public class PedidoService {
     }
     */
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private CartaoRepository cartaoRepository;
-
-    @Autowired
-    private ServicoRepository servicoRepository;
-
-    @Autowired
-    private LojaRepository lojaRepository;
-
-    @Autowired
-    private StatusRepository statusRepository;
-
-    @Autowired
-    private ContratoRepository contratoRepository;
-
-    @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private AgServicoRepository agServicoRepository;
-
-    @Autowired
-    private PagamentoRepository pagamentoRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private CartaoRepository cartaoRepository;
+    @Autowired private ServicoRepository servicoRepository;
+    @Autowired private LojaRepository lojaRepository;
+    @Autowired private StatusRepository statusRepository;
+    @Autowired private ContratoRepository contratoRepository;
+    @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private AgServicoRepository agServicoRepository;
+    @Autowired private PagamentoRepository pagamentoRepository;
+    @Autowired private TipoPagamentoRepository tpRepository;
 
     SimpleDateFormat SDF2 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -92,13 +75,13 @@ public class PedidoService {
 
         List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
         ContratoEntity contratoEntity = listContratoEntity.get(0);
-
         List<ServicoPlanoEntity> listaServicos = contratoEntity.getPlanosEntity().getServicos();
-        boolean cobreServico = false;
+
+        boolean planoCobreServico = false;
 
         for (ServicoPlanoEntity s : listaServicos) {
             if (s.getIdServicoPlano() == BigInteger.valueOf(1L)) {
-                cobreServico = true;
+                planoCobreServico = true;
             }
         }
 
@@ -106,7 +89,7 @@ public class PedidoService {
         // 3 - Salvar agendamento;
         // 4 - Salvar pagamento.
 
-        try { PedidoEntity pedido  = new PedidoEntity();
+       try { PedidoEntity pedido  = new PedidoEntity();
             pedido.setIdPaciente(id);
             pedido.setVlTotal(totalPedido);
 
@@ -117,7 +100,7 @@ public class PedidoService {
             agServicoRepository.save(ag);
         }
 
-        if (!cobreServico) {
+        if (!planoCobreServico) {
             CartaoEntity cartaoEntity = new CartaoEntity();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
@@ -132,7 +115,8 @@ public class PedidoService {
 
             PagamentoEntity pagamento = new PagamentoEntity();
             pagamento.setIdCartao(cartao.getIdCartao());
-            pagamento.setIdFormaPgt(BigInteger.valueOf(1L));
+            TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(1L)).get();
+            pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
             pagamento.setIdPedido(pedidoSalvo.getIdPedido());
             pagamento.setVlPagamento(totalPedido);
             pagamento.setDtPagamento(new Date());
@@ -142,7 +126,8 @@ public class PedidoService {
         }
 
         PagamentoEntity pagamento = new PagamentoEntity();
-        pagamento.setIdFormaPgt(BigInteger.valueOf(3L));
+        TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(3L)).get();
+        pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
         pagamento.setIdPedido(pedidoSalvo.getIdPedido());
         pagamento.setVlPagamento(totalPedido);
         pagamento.setDtPagamento(new Date());
@@ -155,4 +140,5 @@ public class PedidoService {
             return "Erro ao criar agendamento.";
         }
     }
+
 }

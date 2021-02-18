@@ -63,7 +63,7 @@ public class CardapioController {
     }
 
     //Exibir dados do paciente
-    @GetMapping("/programaNutricional/{idUsuario}")
+    @GetMapping("/programa-nutricional/{idUsuario}")
     public ResponseEntity  exibirDadosPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
        return ResponseEntity.status(HttpStatus.OK).body(cardapioService.exibirDadosPaciente(idUsuario));
     }

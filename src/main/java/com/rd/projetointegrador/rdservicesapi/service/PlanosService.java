@@ -1,6 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.service;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Genero;
 import com.rd.projetointegrador.rdservicesapi.dto.Planos;
 import com.rd.projetointegrador.rdservicesapi.dto.ServicoPlano;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
@@ -10,7 +9,6 @@ import com.rd.projetointegrador.rdservicesapi.repository.ServicoPlanoRepository;
 import com.rd.projetointegrador.rdservicesapi.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -135,17 +133,25 @@ public class PlanosService {
 
     }
 
-    //GRUPO2
-
-    public List<PlanosEntity> getPlanobyUsuario(BigInteger id) {
+    //Grupo2 - Listar planos pela Id do Usuario
+    public List<Planos> getPlanobyUsuario(BigInteger id) {
         UsuarioEntity usuario = usuarioRepository.findById(id).get();
         List<ContratoEntity> contratos = contratoRepository.findByUsuario(usuario);
         List<PlanosEntity> listaPlanos = new ArrayList<>();
+        List <Planos> planosDto = new ArrayList<>();
         for (ContratoEntity contratoEntity : contratos) {
             PlanosEntity plano = contratoEntity.getPlanosEntity();
             listaPlanos.add(plano);
         }
-        return listaPlanos;
+        for (PlanosEntity planoEntity : listaPlanos){
+            Planos plano = new Planos();
+            plano.setIdPlano(planoEntity.getIdPlano());
+            plano.setNmPlano(planoEntity.getNmPlano());
+            plano.setDsPlano(planoEntity.getDsPlano());
+            planosDto.add(plano);
+        }
+
+        return planosDto;
     }
 
 

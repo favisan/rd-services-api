@@ -1,10 +1,13 @@
 package com.rd.projetointegrador.rdservicesapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import javax.annotation.Resource;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_TIPO_REFEICAO")
@@ -19,5 +22,7 @@ public class TipoRefeEntity implements Serializable {
     @Column(name = "DS_TIPO_REFEICAO")
     private String dsTipoRefeicao;
 
-   // private List<Cardapio> listCardapio;
+    @JsonIgnore
+    @OneToMany(mappedBy = "idTipoRefeicao")
+    private List<CardapioEntity> cardapios;
 }

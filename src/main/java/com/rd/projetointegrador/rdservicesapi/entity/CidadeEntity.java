@@ -24,5 +24,4 @@ public class CidadeEntity implements Serializable {
 
     @Column(name="DS_CIDADE")
     private String dsCidade;
-
 }

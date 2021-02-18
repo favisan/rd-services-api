@@ -10,7 +10,10 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Periodo {
+
     private BigInteger idPeriodo;
+
     private String dsPerido;
+
     private Time horaInicial;
 }
