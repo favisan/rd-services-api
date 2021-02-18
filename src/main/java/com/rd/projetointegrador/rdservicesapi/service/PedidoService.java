@@ -66,14 +66,14 @@ public class PedidoService {
             AgServicoEntity agServicoEntity = new AgServicoEntity();
             agServicoEntity.setIdServico(servicoRepository.findById(ag.getIdServico()).get());
             agServicoEntity.setIdLoja(lojaRepository.findById(ag.getIdLoja()).get());
-            agServicoEntity.setIdStatus(statusRepository.findById(ag.getIdStatus()).get());
+            agServicoEntity.setIdStatus(statusRepository.findById(BigInteger.valueOf(3l)).get());
             agServicoEntity.setDtDataHora(ag.getDtDataHora());
             listaEntity.add(agServicoEntity);
 
             totalPedido += agServicoEntity.getIdServico().getPreco();
         }
 
-        List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
+        /*List<ContratoEntity> listContratoEntity = contratoRepository.findByUsuarioOrderByDtVigencia(user);
         ContratoEntity contratoEntity = listContratoEntity.get(0);
         List<ServicoPlanoEntity> listaServicos = contratoEntity.getPlanosEntity().getServicos();
 
@@ -83,7 +83,7 @@ public class PedidoService {
             if (s.getIdServicoPlano() == BigInteger.valueOf(1L)) {
                 planoCobreServico = true;
             }
-        }
+        } */
 
         // 2 - Salvar pedido;
         // 3 - Salvar agendamento;
@@ -100,7 +100,7 @@ public class PedidoService {
             agServicoRepository.save(ag);
         }
 
-        if (!planoCobreServico) {
+        //if (!planoCobreServico) {
             CartaoEntity cartaoEntity = new CartaoEntity();
             cartaoEntity.setNrCartao(cartao.getNrCartao());
             cartaoEntity.setCodSeguranca(cartao.getCodSeguranca());
@@ -123,17 +123,17 @@ public class PedidoService {
 
             pagamentoRepository.save(pagamento);
             return "Agendamento realizado com sucesso";
-        }
+        //}
 
-        PagamentoEntity pagamento = new PagamentoEntity();
-        TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(3L)).get();
-        pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
-        pagamento.setIdPedido(pedidoSalvo.getIdPedido());
-        pagamento.setVlPagamento(totalPedido);
-        pagamento.setDtPagamento(new Date());
+//        PagamentoEntity pagamento = new PagamentoEntity();
+//        TipoPagamentoEntity tipoPagamentoEntity = tpRepository.findById(BigInteger.valueOf(3L)).get();
+//        pagamento.setTipoPagamentoEntity(tipoPagamentoEntity);
+//        pagamento.setIdPedido(pedidoSalvo.getIdPedido());
+//        pagamento.setVlPagamento(totalPedido);
+//        pagamento.setDtPagamento(new Date());
 
-        pagamentoRepository.save(pagamento);
-        return "Agendamento realizado com sucesso";
+//        pagamentoRepository.save(pagamento);
+ //       return "Agendamento realizado com sucesso";
         }
 
         catch (Exception e) {
