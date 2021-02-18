@@ -139,9 +139,15 @@ public class LoginUsuarioService {
         try {
             LoginUsuarioEntity loginExistente = getAcessoByEmail(email);
 
-            //TOOO: envio de email para o endereço escolhido?
-            ResultData resultData = new ResultData(HttpStatus.OK.value(), "Senha de acesso enviada para o email de cadastro");
-            return ResponseEntity.status(HttpStatus.OK).body(resultData);
+            if(loginExistente != null) {
+
+                //TOOO: envio de email para o endereço escolhido?
+                ResultData resultData = new ResultData(HttpStatus.OK.value(), "Senha de acesso enviada para o email de cadastro");
+                return ResponseEntity.status(HttpStatus.OK).body(resultData);
+            } else {
+                ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Não há usuário cadastrado para este e-mail.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
+            }
 
         } catch(Exception e) {
             ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Não há usuário cadastrado para este e-mail.");
