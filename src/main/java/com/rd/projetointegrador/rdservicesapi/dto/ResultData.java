@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 @Data
@@ -18,6 +19,8 @@ public class ResultData<T> {
 
     private T retorno;
 
+    private Number tipoUsuario;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dtTimestampErro = new Date();
 
@@ -30,6 +33,13 @@ public class ResultData<T> {
         this.status = status;
         this.mensagem = mensagem;
         this.retorno = retorno;
+    }
+
+    public ResultData(Integer status, String mensagem, T retorno, Number tipoUsuario){
+        this.status = status;
+        this.mensagem = mensagem;
+        this.retorno = retorno;
+        this.tipoUsuario = tipoUsuario;
     }
 
 }

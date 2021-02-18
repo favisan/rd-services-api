@@ -163,7 +163,9 @@ public class ClienteService {
             System.out.println("Alterou Usuário: " + usuarioEntity.getIdUsuario());
 
             //Entidade LoginUsuario
-            if (!inputUsuario.getLoginUsuario().getDsEmail().equals("") && !inputUsuario.getLoginUsuario().getDsSenha().equals("")) {
+            //TODO: REVER MÉTODO DE TROCA USUÁRIO. Está passando a senha codificada como string senha e recodificando :(
+            // && !inputUsuario.getLoginUsuario().getDsSenha().equals("")
+            if (!inputUsuario.getLoginUsuario().getDsEmail().equals("")) {
                 loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
                 loginUsuarioRepository.save(loginUsuarioEntity);
                 System.out.println("Alterou Login: " + loginUsuarioEntity.getDsEmail());
@@ -186,7 +188,7 @@ public class ClienteService {
 
             //Entidade Cartao
             if (!inputUsuario.getCartao().getNrCartao().equals(cartaoEntity.getNrCartao())) {
-                System.out.println("Cartão atual: "+cartaoEntity.getNrCartao());
+                System.out.println("Cartão atual: " + cartaoEntity.getNrCartao());
                 inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
                 CartaoEntity newCartaoEntity = new CartaoEntity();
                 newCartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), newCartaoEntity);
@@ -253,7 +255,7 @@ public class ClienteService {
 
 
         List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
-        ContratoEntity contratoEntity = contratoEntities.get(contratoEntities.size()-1);
+        ContratoEntity contratoEntity = contratoEntities.get(contratoEntities.size() - 1);
 
         PlanosEntity planosEntity = contratoEntity.getPlanosEntity();
         Planos plano = new Planos();
@@ -270,9 +272,11 @@ public class ClienteService {
     }
 
     public InputCliente getInputClienteDTO(BigInteger id) {
-        InputCliente inputCliente = new InputCliente();
 
         UsuarioEntity usuarioEntity = usuarioRepository.findById(id).get();
+
+        InputCliente inputCliente = new InputCliente();
+
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);
         List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
         List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
@@ -302,6 +306,7 @@ public class ClienteService {
         inputCliente.setCelular(contatoEntities.get(contatoEntities.size() - 1).getDsContato());
 
         return inputCliente;
+
     }
 
 }

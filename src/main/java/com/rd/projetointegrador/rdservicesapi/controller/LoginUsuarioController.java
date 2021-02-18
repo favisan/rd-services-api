@@ -50,8 +50,13 @@ public class LoginUsuarioController {
     }
 
     @PostMapping("/login/conferir-senha/{idUsuario}")
-    public ResponseEntity conferirSenha(@RequestBody String email, @PathVariable("idUsuario") BigInteger idUsuario ) {
+    public ResponseEntity conferirSenha(@RequestBody String email, @PathVariable("idUsuario") BigInteger idUsuario) {
         return service.conferirSenha(email, idUsuario);
+    }
+
+    @PostMapping("/criptografar")
+    public String criptografar(@RequestBody String senha) throws NoSuchAlgorithmException{
+        return service.codificar(senha);
     }
 
 
