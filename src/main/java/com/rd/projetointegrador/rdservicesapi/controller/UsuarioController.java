@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 import com.rd.projetointegrador.rdservicesapi.dto.InputMedico;
+import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.dto.Usuario;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.repository.LoginUsuarioRepository;
@@ -79,8 +80,8 @@ public class UsuarioController {
     }
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @PutMapping("/medico/{idUsuario}")
-    public ResponseEntity alterarMedico(@RequestBody InputMedico inputMedico, @PathVariable("idUsuario") BigInteger id){
-        try{ Boolean retorno = service.alterarMedico(inputMedico, id);
+    public ResponseEntity alterarMedico(@RequestBody OutputMedico outputMedico, @PathVariable("idUsuario") BigInteger id){
+        try{ Boolean retorno = service.alterarMedico(outputMedico, id);
             return ResponseEntity.ok().body(retorno);
         } catch (Exception e) {
             e.printStackTrace();
