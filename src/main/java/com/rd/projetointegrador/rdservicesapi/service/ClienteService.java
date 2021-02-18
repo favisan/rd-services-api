@@ -304,7 +304,7 @@ public class ClienteService {
         inputCliente.setLoginUsuario(loginUsuario);
         inputCliente.setContrato(contrato);
 
-        if(!contatoEntities.isEmpty()) {
+        if (!contatoEntities.isEmpty()) {
             inputCliente.setDdd(contatoEntities.get(contatoEntities.size() - 1).getNrDdd());
             inputCliente.setCelular(contatoEntities.get(contatoEntities.size() - 1).getDsContato());
         }
