@@ -265,22 +265,29 @@ public class UsuarioService {
         user.setIdUsuario(entity.getIdUsuario());
         user.setNome(entity.getNmNome());
         user.setNrCrm(entity.getNrCrm());
+
         UfEntity ufEntity = entity.getUf();
         Uf uf = new Uf();
+        uf.setIdUf(ufEntity.getIdUf());
         uf.setDsUf(ufEntity.getDsUf());
         user.setUfCrm(uf);
+
         EspMedEntity espMedEntity = entity.getEspMed();
         EspMed espMed = new EspMed();
+        espMed.setIdEspMed(espMedEntity.getIdEspMed());
         espMed.setDsEspMed(espMedEntity.getDsEspMed());
         user.setEspMed(espMed);
+
         user.setNome(entity.getNmNome());
         user.setDtNascimento(entity.getDtNascimento());
         user.setNrCpf(entity.getNrCpf());
         user.setNrCrm(entity.getNrCrm());
+
         PrecoEntity precoEntity = entity.getPreco();
         Preco preco = new Preco();
         preco.setVlConsulta(precoEntity.getVlConsulta());
         user.setPreco(preco);
+
         List<ContatoEntity> contatosEntity = entity.getContatos();
         List<Contato> contatos = new ArrayList<>();
         for (ContatoEntity contatoEntity : contatosEntity) {
@@ -290,6 +297,7 @@ public class UsuarioService {
             contatos.add(contato);
         }
         user.setContatos(contatos);
+
         List<EnderecoEntity> enderecoEntities = entity.getEnderecos();
         List<Endereco> enderecos = new ArrayList<>();
         for (EnderecoEntity enderecoEntity : enderecoEntities) {
@@ -304,7 +312,7 @@ public class UsuarioService {
             Uf uf1 = new Uf();
             uf1.setIdUf(ufEntity1.getIdUf());
             uf1.setDsUf(ufEntity1.getDsUf());
-            cidade.setUf(uf);
+            cidade.setUf(uf1);
             endereco.setCidade(cidade);
             endereco.setDsComplemento(enderecoEntity.getDsComplemento());
             endereco.setNrCep(enderecoEntity.getNrCep());
