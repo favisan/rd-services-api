@@ -41,7 +41,7 @@ public class CartaoService {
 
             Date dtValidade = SDF.parse(cartao.getDtValidade());
             cartaoEntity.setDtValidade(dtValidade);
-            if (!cartao.getDtEmissao().equals("") && cartao.getDtEmissao() != null) {
+            if(cartao.getDtEmissao() != null && !cartao.getDtEmissao().equals("")) {
                 Date dtEmissao = SDF.parse(cartao.getDtEmissao());
                 cartaoEntity.setDtEmissao(dtEmissao);
             }
