@@ -28,6 +28,8 @@ public class UsuarioService {
     //repositories
 
     @Autowired
+    private ContatoRepository contatoRepository;
+    @Autowired
     private UsuarioRepository repository;
     @Autowired
     private GeneroRepository generoRepository;
@@ -45,6 +47,8 @@ public class UsuarioService {
     private PrecoRepository precoRepository;
     @Autowired
     private CidadeRepository cidadeRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     //services
     //@Autowired private UfService ufService;
@@ -318,21 +322,29 @@ public class UsuarioService {
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @Transactional
     public boolean alterarMedico(InputMedico inputMedico, BigInteger id) {
+
         UsuarioEntity entity = repository.findById(id).get();
+
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
+
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
+
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
+
         entity.setNmNome(inputMedico.getNome());
         entity.setDtNascimento(inputMedico.getDtNascimento());
         entity.setNrCpf(inputMedico.getNrCpf());
         entity.setNrCrm(inputMedico.getNrCrm());
+
         PrecoEntity precoEntity = new PrecoEntity();
         Preco preco = inputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
+        precoRepository.save(precoEntity);
         entity.setPreco(precoEntity);
+
         List<EnderecoEntity> enderecosEntity = entity.getEnderecos();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
@@ -350,14 +362,17 @@ public class UsuarioService {
             enderecoEntity.setNrCep(endereco.getNrCep());
         }
         entity.setEnderecos(enderecosEntity);
+
         List<ContatoEntity> contatosEntity = entity.getContatos();
         for (Contato contato : inputMedico.getContatos()) {
             ContatoEntity contatoEntity = new ContatoEntity();
             TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
             contatoEntity.setTipoContato(tpContatoEntity);
             contatoEntity.setDsContato(contato.getDsContato());
+            contatoRepository.save(contatoEntity);
         }
         entity.setContatos(contatosEntity);
+
         repository.save(entity);
         return true;
     }
@@ -370,18 +385,18 @@ public class UsuarioService {
 
         EspMedEntity espEntity = especialidadeRepository.findById(inputMedico.getEspMed().getIdEspMed()).get();
         entity.setEspMed(espEntity);
+
         UfEntity ufEntity = ufRepository.findById(inputMedico.getUf().getIdUf()).get();
         entity.setUf(ufEntity);
+
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(2)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
+
         entity.setNmNome(inputMedico.getNome());
         entity.setDtNascimento(inputMedico.getDtNascimento());
         entity.setNrCpf(inputMedico.getNrCpf());
         entity.setNrCrm(inputMedico.getNrCrm());
-        PrecoEntity precoEntity = new PrecoEntity();
-        Preco preco = inputMedico.getPreco();
-        precoEntity.setVlConsulta(preco.getVlConsulta());
-        entity.setPreco(precoEntity);
+
         List<EnderecoEntity> enderecosEntity = new ArrayList<>();
         for (Endereco endereco : inputMedico.getEnderecos()) {
             EnderecoEntity enderecoEntity = new EnderecoEntity();
@@ -400,6 +415,15 @@ public class UsuarioService {
             enderecosEntity.add(enderecoEntity);
         }
         entity.setEnderecos(enderecosEntity);
+
+        repository.save(entity);
+
+        PrecoEntity precoEntity = new PrecoEntity();
+        Preco preco = inputMedico.getPreco();
+        precoEntity.setVlConsulta(preco.getVlConsulta());
+        precoRepository.save(precoEntity);
+        entity.setPreco(precoEntity);
+
         List<ContatoEntity> contatosEntity = new ArrayList<>();
         for (Contato contato : inputMedico.getContatos()) {
             ContatoEntity contatoEntity = new ContatoEntity();
@@ -407,9 +431,10 @@ public class UsuarioService {
             contatoEntity.setTipoContato(tpContatoEntity);
             contatoEntity.setDsContato(contato.getDsContato());
             contatosEntity.add(contatoEntity);
+            contatoRepository.save(contatoEntity);
         }
         entity.setContatos(contatosEntity);
-        repository.save(entity);
+
         LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
         LoginUsuario loginUsuario = inputMedico.getLogin();
         loginUsuarioEntity.setIdUsuario(entity.getIdUsuario());
@@ -418,7 +443,6 @@ public class UsuarioService {
         loginUsuarioRepository.save(loginUsuarioEntity);
 
         return true;
-
     }
 
     //EXIBIR TELA DE PERFIL DO MEDICO OK
