@@ -1,4 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.service;
+
 import com.rd.projetointegrador.rdservicesapi.dto.*;
 import com.rd.projetointegrador.rdservicesapi.entity.*;
 import com.rd.projetointegrador.rdservicesapi.repository.*;
@@ -7,23 +8,20 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class SolicExameService {
-    @Autowired
-    private SolicExameRepository repository;
-    @Autowired
-    private TipoExameRepository tipoRepository;
-    @Autowired
-    private ProntuarioRepository prontuarioRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private UsuarioService usuarioService;
-    @Autowired
-    private AtendimentoRepository atendimentoRepository;
-    @Autowired
-    private AgPacienteRepository agPacienteRepository;
 
+    @Autowired private SolicExameRepository repository;
+    @Autowired private TipoExameRepository tipoRepository;
+    @Autowired private ProntuarioRepository prontuarioRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
+    @Autowired private AtendimentoRepository atendimentoRepository;
+    @Autowired private AgPacienteRepository agPacienteRepository;
+
+    @Autowired private UsuarioService usuarioService;
+
+    //Cadastrar solicitação de exames
     public String inserirSolicExame(SolicExame solicExame) {
         SolicExameEntity entity = new SolicExameEntity();
         BigInteger idProntuario = solicExame.getProntuario().getIdProntuario();
@@ -47,6 +45,8 @@ public class SolicExameService {
         repository.save(entity);
         return "Cadastro realizado com sucesso!";
     }
+
+    //Listar solicitações de exames por id de prontuário
     public List<SolicExame> listarSolicExamePorIdProntuario(BigInteger idProntuario) {
         ProntuarioEntity prontuario = prontuarioRepository.findById(idProntuario).get();
         List<SolicExameEntity> solicitacoes = repository.findByProntuario(prontuario);
@@ -84,6 +84,8 @@ public class SolicExameService {
         }
         return lista;
     }
+
+    //Buscar solicitação de exame por id
     public SolicExame exibirSolicExamePorIdSolicitacao(BigInteger idSolicExame){
         SolicExameEntity solic = repository.findById(idSolicExame).get();
         SolicExame solicitacao = new SolicExame();
@@ -116,6 +118,7 @@ public class SolicExameService {
         solicitacao.setMedico(medico);
         return solicitacao;
     }
+
     //FORMULÁRIO INICIAL
     public SolicExameOutput preencherSolicitacaoInicial(BigInteger idMedico, BigInteger idPaciente, BigInteger idAgPaciente){
         SolicExameOutput output = new SolicExameOutput();
@@ -134,7 +137,8 @@ public class SolicExameService {
 
         return output;
     }
-    //MÉTODO PARA LISTAR É SÓ PARA TESTE
+
+    //MÉTODO PARA LISTAR TODAS AS SOLICITAÇÕES DE EXAMES
     public List<SolicExame> listarSolicExame() {
         List<SolicExameEntity> exames = repository.findAll();
         List<SolicExame> listaExame = new ArrayList<>();
@@ -171,4 +175,5 @@ public class SolicExameService {
         }
         return listaExame;
     }
+
 }

@@ -1,7 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.repository;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Agenda;
-import com.rd.projetointegrador.rdservicesapi.dto.InputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.AgendaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.TipoConsultaEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;

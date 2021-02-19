@@ -95,6 +95,7 @@ public class LoginUsuarioController {
             String retorno = service.validarAcesso(login);
             return ResponseEntity.status(HttpStatus.OK).body(retorno);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }
     }
@@ -112,6 +113,7 @@ public class LoginUsuarioController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.acessoSemSenha(medico));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Dados invalidos");
         }
     }

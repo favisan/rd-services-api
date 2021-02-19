@@ -13,8 +13,7 @@ import java.util.List;
 public class ViaAdmService {
 
     //Repository
-    @Autowired
-    private ViaAdmRepository viaAdmRepository;
+    @Autowired private ViaAdmRepository viaAdmRepository;
 
     //Listar todas as vias de adm
     public List<ViaAdm> listarViasAdm() {

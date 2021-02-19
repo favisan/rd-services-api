@@ -8,10 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgendamentoOutput {
+
     private BigInteger idAgPaciente;
     private UsuarioEntity paciente;
     private AgendaEntity agenda;

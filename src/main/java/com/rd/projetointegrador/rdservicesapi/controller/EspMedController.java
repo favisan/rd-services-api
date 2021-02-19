@@ -12,6 +12,7 @@ import java.math.BigInteger;
 
 @RestController
 public class EspMedController {
+
     @Autowired private EspMedService espMedService;
 
     //Grupo2 - Consulta às especialidades médicas das agendas disponíveis

@@ -1,7 +1,5 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
-import com.rd.projetointegrador.rdservicesapi.dto.Cidade;
-import com.rd.projetointegrador.rdservicesapi.dto.OutputMedico;
 import com.rd.projetointegrador.rdservicesapi.entity.EspMedEntity;
 import com.rd.projetointegrador.rdservicesapi.entity.UfEntity;
 import lombok.AllArgsConstructor;

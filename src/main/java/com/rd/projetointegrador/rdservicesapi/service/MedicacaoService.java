@@ -13,8 +13,7 @@ import java.util.List;
 public class MedicacaoService {
 
     //Repository
-    @Autowired
-    private MedicacaoRepository medicacaoRepository;
+    @Autowired private MedicacaoRepository medicacaoRepository;
 
     //Listar todas as medicações
     public List<Medicacao> listarMedicacoes() {

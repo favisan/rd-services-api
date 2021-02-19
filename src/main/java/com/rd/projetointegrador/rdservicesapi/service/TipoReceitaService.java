@@ -13,8 +13,7 @@ import java.util.List;
 public class TipoReceitaService {
 
     //Repository
-    @Autowired
-    private TipoReceitaRepository tipoReceitaRepository;
+    @Autowired private TipoReceitaRepository tipoReceitaRepository;
 
     //Listar todos os tipos de receitas
     public List<TipoReceita> listarTiposDeReceita() {

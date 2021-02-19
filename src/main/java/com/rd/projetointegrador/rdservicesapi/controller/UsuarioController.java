@@ -52,16 +52,18 @@ public class UsuarioController {
         }
     }
     //GRUPO4
-    //LISTAR TODOS OS MEDICOS
+
     //BUSCAR MEDICO POR ID OK
     @GetMapping("/medico/{id}")
     public ResponseEntity getMedico(@PathVariable("id") BigInteger id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.getMedico(id));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar médico");
         }
     }
+
     //LISTAR TODOS OS MEDICOS OK
     @GetMapping("/medicos")
     public ResponseEntity getmedicos(){
@@ -69,15 +71,22 @@ public class UsuarioController {
             List<UsuarioEntity> usuarios = service.getMedicos();
             return ResponseEntity.status(HttpStatus.OK).body(usuarios);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar lista de médicos");
         }
     }
-    //EXIBIR TELA DE PERFIL DO MEDICO DEU RUIM
+
+    //EXIBIR TELA DE PERFIL DO MEDICO
     @GetMapping("/perfilMedico/{idMedico}")
     public ResponseEntity mostrarTelaPerfil(@PathVariable("idMedico") BigInteger idMedico){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaPerfil(idMedico));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.mostrarTelaPerfil(idMedico));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao exibir dados.");
+        }
     }
+
     //ALTERAR CADASTRO DE PERFIL DO MEDICO OK
     @PutMapping("/medico/{idUsuario}")
     public ResponseEntity alterarMedico(@RequestBody OutputMedico outputMedico, @PathVariable("idUsuario") BigInteger id){
@@ -88,13 +97,19 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao alterar dados");
         }
     }
+
     //EXIBIR LISTAS DA TELA DE CADASTRO DO MEDICO OK
     @CrossOrigin
     @GetMapping("/cadastroMedico")
     public ResponseEntity mostrarTelaCadastro(){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(service.mostrarTelaCadastro());
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.mostrarTelaCadastro());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao exibir dados.");
+        }
     }
+
     //CADASTRAR MEDICO Ok
     @PostMapping("/medico")
     public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {

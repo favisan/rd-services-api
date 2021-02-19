@@ -11,13 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.ParseException;
 import java.util.Date;
-import java.sql.Time;
-import java.util.*;
 
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -105,8 +100,8 @@ public class AgendaService {
         return true;
     }
 
-
     //--------------------------------------------------------------------------------
+
     //Listar todas as agendas (Grupo 4)
     public List<Agenda> getAgendas() {
         List<AgendaEntity> agendaEntity = agendaRepository.findAll();
@@ -126,12 +121,11 @@ public class AgendaService {
             for (Periodo periodo : periodos) {
                 AgendaOutput agendaOutput = new AgendaOutput();
                 agendaOutput.setPeriodo(periodo);
-                agendaOutput.setDisponibilidade(1);
+                agendaOutput.setDisponibilidade(2);
                 agendaOutput.setIdTipoConsulta(BigInteger.valueOf(1));
                 OutputMedico medico = new OutputMedico();
                 agendaOutput.setMedico(medico);
                 agendasOutput.add(agendaOutput);
-
             }
             return agendasOutput;
         }
@@ -147,17 +141,8 @@ public class AgendaService {
         return agendasOutput;
     }
 
-    public List<Agenda> getAgendasPorData(Date data) {
-        //Pegando todas as agendas por data
-        List<AgendaEntity> agendasEntity = agendaRepository.findByData(data);
-        List<Agenda> agendas = new ArrayList<>();
-        agendas = converterAgendasToDTO(agendasEntity, agendas);
-        return agendas;
-    }
-
     //Listar agendas com disponibilidade 2 por data (Grupo 4)
     public List<AgendaEntity> getAgendasPorDataDisponibilidade(Date data) {
-        //Pegando todas as agendas do dia com disponibilidade 2
         List<AgendaEntity> agendas = agendaRepository.findByDataAndDisponibilidade(data, 2);
         return agendas;
     }
@@ -180,16 +165,20 @@ public class AgendaService {
         return agendamentos;
     }
 
+    //Buscar Agendas por data
+    public List<AgendaEntity> getAgendasPorData(Date data) {
+
+        List<AgendaEntity> agendasEntity = agendaRepository.findByData(data);
+        return agendasEntity;
+    }
+
     //Cadastrar lista de agendas (Grupo 4)
     @Transactional
     public Boolean cadastrarAgendaPorDia(Date data, List<AgendaOutput> agendasNova) {
-        //a data tem que ser capturada do front e a partir dela que esse array de agendas será retornado
         List<AgendaEntity> agendasPorData = new ArrayList<>();
-        agendasPorData = converterAgendasToEntity(getAgendasPorData(data), agendasPorData);
+        agendasPorData = getAgendasPorData(data);
         if (agendasPorData.size() > 0) {
-            //converter entity para dto
-            List<Agenda> agendaDTO = new ArrayList<>();
-            excluirAgendas(converterAgendasToDTO(agendasPorData, agendaDTO));
+            excluirAgendas(agendasPorData);
             for (AgendaOutput agenda : agendasNova) {
                 AgendaEntity agendaEntity = new AgendaEntity();
                 BigInteger medico = agenda.getMedico().getIdUsuario();
@@ -226,26 +215,28 @@ public class AgendaService {
     }
 
     //Excluir lista de agendas (Grupo 4)
-    public String excluirAgendas(List<Agenda> agendas) {
-        for (Agenda agenda : agendas) {
+    public void excluirAgendas(List<AgendaEntity> agendas) {
+        for (AgendaEntity agenda : agendas) {
             BigInteger id = agenda.getIdAgenda();
             Integer flag = agenda.getDisponibilidade();
+            System.out.println(id);
+            System.out.println(flag);
             if (!flag.equals(2) && !flag.equals(3) && !flag.equals(4)) {
                 agendaRepository.deleteById(id);
+                System.out.println(id);
             }
         }
-        return "Operação realizada com sucesso!";
     }
 
     //Alterar status do AgPaciente para cancelada e a disponibilidade da agenda para 3 (Grupo 4)
-    public String alterarStatusAgPaciente(BigInteger idAgPaciente) {
+    public Boolean alterarStatusAgPaciente(BigInteger idAgPaciente) {
         AgPacienteEntity agPacienteEntity = agPacienteRepository.findById(idAgPaciente).get();
         StatusConsultaEntity status = new StatusConsultaEntity();
         status.setIdStatusConsulta(BigInteger.valueOf(3));
         agPacienteEntity.setStatusConsulta(status);
         agPacienteEntity.getAgenda().setDisponibilidade(3);
         agPacienteEntity = agPacienteRepository.save(agPacienteEntity);
-        return "Agendamento alterado com sucesso";
+        return true;
     }
 
     //Convertendo de Entity para DTO (Grupo 4)
@@ -313,6 +304,27 @@ public class AgendaService {
         return agendasEntity;
     }
 
+    //Convertendo de DTO para Entity (Grupo 4)
+    public AgendaEntity converterAgendaOutputToEntity(AgendaOutput agenda, AgendaEntity agendaEntity) {
+        //PEGAR A ENTITY USUARIO Medico
+        BigInteger idMedico = agenda.getMedico().getIdUsuario();
+        UsuarioEntity medicoEntity = usuarioRepository.findById(idMedico).get();
+        //PEGAR A ENTITY Tipo de consulta
+        BigInteger idTipoConsulta = agenda.getIdTipoConsulta();
+        TipoConsultaEntity tipoConsultaEntity = tipoConsultaRepository.findById(idTipoConsulta).get();
+        //PEGAR A ENTITY Periodo
+        BigInteger idPeriodo = agenda.getPeriodo().getIdPeriodo();
+        PeriodoEntity periodoEntity = periodoRepository.findById(idPeriodo).get();
+        //SETANDO OS VALORES NA ENTITY Agenda
+        //receituarioEntity.setPaciente(pacienteEntity);
+        agendaEntity.setMedico(medicoEntity);
+        agendaEntity.setTipoConsulta(tipoConsultaEntity);
+        agendaEntity.setPeriodo(periodoEntity);
+        agendaEntity.setData(agenda.getData());
+        agendaEntity.setDisponibilidade(agenda.getDisponibilidade());
+        return agendaEntity;
+    }
+
     //Convertendo AgPaciente de Entity para DTO (Grupo 4)
     public AgendamentoOutput converterAgPacienteToDTO(AgPacienteEntity agPacienteEntity, AgendamentoOutput agPaciente) {
         //SETANDO OS VALORES NA DTO Agenda
@@ -324,4 +336,5 @@ public class AgendaService {
         agPaciente.setStatusConsulta(agPacienteEntity.getStatusConsulta());
         return agPaciente;
     }
+
 }

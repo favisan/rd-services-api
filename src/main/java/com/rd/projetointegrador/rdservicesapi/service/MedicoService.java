@@ -11,17 +11,12 @@ import java.util.List;
 @Service
 public class MedicoService {
 
-    //services
+    //Services
     @Autowired private UfService ufService;
-
     @Autowired private EnderecoService enderecoService;
-
     @Autowired private CidadeService cidadeService;
-
     @Autowired private ContatoService contatoService;
-
     @Autowired private EspMedService espMedService;
-
     @Autowired private PrecoService precoService;
 
     //MÉTODO: conversão de Entity para DTO

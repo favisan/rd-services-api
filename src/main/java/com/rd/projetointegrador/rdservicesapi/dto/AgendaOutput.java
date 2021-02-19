@@ -11,10 +11,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgendaOutput {
+
+    private BigInteger idAgenda;
     private OutputMedico medico;
-    private Periodo periodo;
-    private Integer disponibilidade;
     private BigInteger idTipoConsulta;
+    private Periodo periodo;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale="pt-BR", timezone = "Brazil/East")
     private Date data;
+    private Integer disponibilidade;
 }

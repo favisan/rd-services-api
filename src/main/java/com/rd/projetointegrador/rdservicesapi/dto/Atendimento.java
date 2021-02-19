@@ -1,12 +1,10 @@
 package com.rd.projetointegrador.rdservicesapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.rd.projetointegrador.rdservicesapi.entity.AgPacienteEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data

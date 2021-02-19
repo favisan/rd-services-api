@@ -15,29 +15,40 @@ public class ProntuarioController {
 
     @Autowired ProntuarioService service;
 
+    //Buscar prontuário por Id
     @GetMapping("/prontuario/{id}")
     public ResponseEntity buscarProntuarioId(@PathVariable("id") BigInteger id) {
-
-        Prontuario p = service.buscarProntuarioId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(p);
+        try {
+            Prontuario p = service.buscarProntuarioId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(p);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar prontuário!");
+        }
     }
 
+    //Listar todos os prontuários
     @GetMapping("/prontuario")
-    public ResponseEntity getProntuario(@RequestBody Prontuario prontuario) {
-
-        List<Prontuario> prontuarios = service.listarProntuarios(prontuario);
-        return ResponseEntity.status(HttpStatus.OK).body(prontuarios);
+    public ResponseEntity getProntuarios() {
+        try {
+            List<Prontuario> prontuarios = service.listarProntuarios();
+            return ResponseEntity.status(HttpStatus.OK).body(prontuarios);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar prontuários!");
+        }
 
     }
 
+    //Cadastrar prontuário
     @PostMapping("/prontuario")
     public ResponseEntity cadastrarProntuario(@RequestBody Prontuario prontuario) {
-
-    if(prontuario.getIdProntuario() == null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo id é obrigatório");
-    }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarProntuario(prontuario));
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarProntuario(prontuario));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar prontuário!");
+        }
     }
 
 }

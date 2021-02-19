@@ -8,8 +8,10 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class ReceituarioService {
+
     //Repository
     @Autowired private ReceituarioRepository receituarioRepository;
     @Autowired private ProntuarioRepository prontuarioRepository;
@@ -34,6 +36,7 @@ public class ReceituarioService {
         receituario = converterReceituarioToDTO(receituarioEntity, receituario);
         return receituario;
     }
+
     //Consultar todos os receituários vinculados a um mesmo Id de prontuário
     public List<ReceituarioInput> listarReceituarioPorIdProntuario(BigInteger idProntuario){
         //Buscando A Entity Prontuario por Id
@@ -45,6 +48,7 @@ public class ReceituarioService {
         receituarios = converterReceituariosToDTO(receituariosEntity,receituarios);
         return receituarios;
     }
+
     //Inserir um receituário
     @Transactional
     public String inserirReceituario(ReceituarioInput receituario) {
@@ -55,6 +59,7 @@ public class ReceituarioService {
         receituarioRepository.save(receituarioEntity);
         return "Receituário inserido com sucesso!";
     }
+
     //Preenchendo a tela Receituário com listas para os selects do front e dados que são fixos na tela
     public ReceituarioOutput preencherReceituario(BigInteger idMedico, BigInteger idPaciente, BigInteger idAgPaciente){
         ReceituarioOutput receituarioOutput = new ReceituarioOutput();
@@ -74,6 +79,7 @@ public class ReceituarioService {
         receituarioOutput.setMedico(usuarioService.getMedico(idMedico));
         return receituarioOutput;
     }
+
     //Convertendo de Entity para DTO
     public ReceituarioInput converterReceituarioToDTO(ReceituarioEntity receituarioEntity, ReceituarioInput receituario) {
         //PEGAR A DTO Usuario paciente
@@ -118,6 +124,7 @@ public class ReceituarioService {
         receituario.setPrescricoes(prescricoes);
         return receituario;
     }
+
     //Convertendo listaEntity para ListaDTO
     public List<ReceituarioInput> converterReceituariosToDTO(List<ReceituarioEntity> receituariosEntity, List<ReceituarioInput> receituarios) {
         for(ReceituarioEntity receituarioEntity : receituariosEntity) {
@@ -127,6 +134,7 @@ public class ReceituarioService {
         }
         return receituarios;
     }
+
     //Convertendo de DTO para Entity
     public ReceituarioEntity converterReceituarioToEntity(ReceituarioInput receituario, ReceituarioEntity receituarioEntity) {
         //PEGAR A ENTITY USUARIO Paciente

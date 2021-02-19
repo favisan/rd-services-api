@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigInteger;
 import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Agenda {
+
     private BigInteger idAgenda;
     private OutputMedico medico;
     private TipoConsulta tipoConsulta;
