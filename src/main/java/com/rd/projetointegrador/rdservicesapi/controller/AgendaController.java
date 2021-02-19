@@ -78,7 +78,7 @@ public class AgendaController {
     }
     //Cadastra uma lista de agendas (Grupo 4)
     @PostMapping("/agendas/{data}")
-    public ResponseEntity cadastrarAgendasPorDia(@PathVariable("data") String data, @RequestBody List<Agenda> agendas) throws ParseException {
+    public ResponseEntity cadastrarAgendasPorDia(@PathVariable("data") String data, @RequestBody List<AgendaOutput> agendas) throws ParseException {
         try {
             Date dt = new SimpleDateFormat("yyyy-MM-dd").parse(data);
             return ResponseEntity.status(HttpStatus.CREATED).body(agendaService.cadastrarAgendaPorDia(dt, agendas));
