@@ -95,7 +95,7 @@ public class AgPacienteService {
     //Grupo2 - Cadastrar nova Agenda de Paciente
 
     @Transactional
-    public OutputAgPacientePagamento setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento){
+    public OutputAgPacientePagamento setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento) {
         OutputAgPacientePagamento output = new OutputAgPacientePagamento();
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
         StatusConsultaEntity status = new StatusConsultaEntity();
@@ -114,11 +114,14 @@ public class AgPacienteService {
         //passando a AgendaDTO para a DTO de resposta
         output.setAgPaciente(agPaciente);
         //passando o pagamento para a DTO de resposta
-        if (cadastroAgPacientePagamento.getTipoPgto().equals(1)){
-            output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
-        } else if (cadastroAgPacientePagamento.getTipoPgto().equals(2)){
-            output.setPagamento(pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente()));
-        }
+//        if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(1)){
+//            output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
+//        } else if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(2)){
+//            output.setPagamento(pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente()));
+//        }
+        
+        output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
+
 
         return output;
     }
