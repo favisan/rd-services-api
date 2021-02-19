@@ -27,11 +27,11 @@ public class AgPacienteService {
     public AgPaciente conversaoAgPacienteParaDTO (AgPacienteEntity agPacienteEntity, AgPaciente agPaciente){
         agPaciente.setIdAgPaciente(agPacienteEntity.getIdAgPaciente());
         //idAgenda
-        Agenda agenda = new Agenda();
+        AgendaAgPcte agenda = new AgendaAgPcte();
         agenda.setIdAgenda(agPacienteEntity.getAgenda().getIdAgenda());
         //nomeMedico
         UsuarioEntity medicoEntity = agPacienteEntity.getAgenda().getMedico();
-        OutputMedico medicoDto = new OutputMedico();
+        MedicoAgPaciente medicoDto = new MedicoAgPaciente();
         medicoDto.setNome(medicoEntity.getNmNome());
         //especialidade
         EspMedEntity espMedEntity = agPacienteEntity.getAgenda().getMedico().getEspMed();
@@ -64,8 +64,8 @@ public class AgPacienteService {
     public AgPaciente getAgPacientePorId(BigInteger idAgPaciente){
         AgPacienteEntity agPacienteEntity= repository.findById(idAgPaciente).get();
         AgPaciente agPacienteDto = new AgPaciente();
-        Agenda agendaDTO = new Agenda();
-        OutputMedico medico = new OutputMedico();
+        AgendaAgPcte agendaDTO = new AgendaAgPcte();
+        MedicoAgPaciente medico = new MedicoAgPaciente();
         EspMed espMed = new EspMed();
         Periodo periodo = new Periodo();
         espMed.setDsEspMed(agPacienteEntity.getAgenda().getMedico().getEspMed().getDsEspMed());
@@ -93,37 +93,32 @@ public class AgPacienteService {
         return agPacientes;
     };
     //Grupo2 - Cadastrar nova Agenda de Paciente
-
     @Transactional
-    public OutputAgPacientePagamento setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento) {
-        OutputAgPacientePagamento output = new OutputAgPacientePagamento();
+    public boolean setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento) {
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
-        StatusConsultaEntity status = new StatusConsultaEntity();
-        //mudando status da consulta para agendada
-        status.setIdStatusConsulta(BigInteger.valueOf(1));
-        LocalDateTime data = LocalDateTime.now();
+
+        //agenda
         agPacienteEntity.setAgenda(agendaRepository.findById(cadastroAgPacientePagamento.getIdAgenda()).get());
+
+       //statusConsulta - setando para agendada
+        StatusConsultaEntity statusConsultaEntity = new StatusConsultaEntity();
+        statusConsultaEntity.setIdStatusConsulta(BigInteger.valueOf(1));
+        agPacienteEntity.setStatusConsulta(statusConsultaEntity);
+
+        //usuario
         agPacienteEntity.setPaciente(usuarioRepository.findById(cadastroAgPacientePagamento.getIdUsuario()).get());
-        agPacienteEntity.setDtSolicitacao(data);
-        agPacienteEntity.setStatusConsulta(status);
-        //mudando disponibilidade da agenda médica para agendada
+
         repository.save(agPacienteEntity);
-        //convertendo para DTO
-        AgPaciente agPaciente = new AgPaciente();
-        conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
-        //passando a AgendaDTO para a DTO de resposta
-        output.setAgPaciente(agPaciente);
-        //passando o pagamento para a DTO de resposta
-//        if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(1)){
-//            output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
-//        } else if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(2)){
-//            output.setPagamento(pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente()));
-//        }
-        
-        output.setPagamento(pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente()));
 
+        Boolean pagamentoOk = false;
+        if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(BigInteger.valueOf(1))){
+            pagamentoOk = pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente());
+       } else if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(BigInteger.valueOf(2))){
+            pagamentoOk = pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente());
+        }
+        System.out.println(pagamentoOk);
 
-        return output;
+        return true;
     }
     //Grupo2 - Mudar a disponibilidade da Agenda Médica para disponível e mudar o status consulta para cancelada quando o paciente cancela a consulta
 

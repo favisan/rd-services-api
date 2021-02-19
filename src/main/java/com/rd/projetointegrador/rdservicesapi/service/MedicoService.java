@@ -39,8 +39,8 @@ public class MedicoService {
         Preco preco = new Preco();
         preco = precoService.conversaoPrecoDTO(precoEntity, preco);
 
-        List<Endereco> enderecos = new ArrayList();
-        enderecos = enderecoService.conversaoEnderecosDTO(usuarioEntity.getEnderecos(), enderecos);
+//        List<Endereco> enderecos = new ArrayList();
+//        enderecos = enderecoService.conversaoEnderecosDTO(usuarioEntity.getEnderecos(), enderecos);
 
         List<Contato> contatos = new ArrayList();
         contatos = contatoService.conversaoContatosDTO(usuarioEntity.getContatos(), contatos);
@@ -53,7 +53,7 @@ public class MedicoService {
         medico.setNrCpf(usuarioEntity.getNrCpf());
         medico.setDtNascimento(usuarioEntity.getDtNascimento());
         medico.setNrCrm(usuarioEntity.getNrCrm());
-        medico.setEnderecos(enderecos);
+//        medico.setEnderecos(enderecos);
         medico.setContatos(contatos);
 
         return medico;

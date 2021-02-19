@@ -3,17 +3,11 @@ package com.rd.projetointegrador.rdservicesapi.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigInteger;
-import java.sql.Time;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Periodo {
-
-    private BigInteger idPeriodo;
-
-    private String dsPeriodo;
-
-    private Time horaInicial;
+public class MedicoAgPaciente {
+    private String nome;
+    private EspMed espMed;
 }

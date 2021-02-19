@@ -14,15 +14,8 @@ import java.time.LocalDateTime;
 public class AgPaciente {
 
     private BigInteger idAgPaciente;
-
-    private Usuario paciente;
-
-    private Agenda agenda;
-
-    private LocalDateTime dtSolicitacao;
-
-    private BigInteger idTipoConfirmacao;
-
+    private Paciente paciente;
+    private AgendaAgPcte agenda;
     private StatusConsulta statusConsulta;
 
 }

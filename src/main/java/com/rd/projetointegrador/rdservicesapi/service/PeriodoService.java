@@ -34,7 +34,7 @@ public class PeriodoService {
 
         //SETANDO OS VALORES NA DTO Periodo
         periodo.setIdPeriodo(periodoEntity.getIdPeriodo());
-        periodo.setDsPerido(periodoEntity.getDsPeriodo());
+        periodo.setDsPeriodo(periodoEntity.getDsPeriodo());
         periodo.setHoraInicial(periodoEntity.getHoraInicial());
 
         return periodo;
