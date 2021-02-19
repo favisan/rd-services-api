@@ -92,7 +92,7 @@ public class AgPacienteService {
         }
         return agPacientes;
     };
-    //Grupo2 - Cadastrar nova Agenda de Paciente
+    //Grupo2 - Cadastrar nova Agenda de Paciente e Pagamento
     @Transactional
     public boolean setAgPaciente (CadastroAgPacientePagamento cadastroAgPacientePagamento) {
         AgPacienteEntity agPacienteEntity = new AgPacienteEntity();
@@ -111,11 +111,7 @@ public class AgPacienteService {
         repository.save(agPacienteEntity);
 
         Boolean pagamentoOk = false;
-        if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(BigInteger.valueOf(1))){
-            pagamentoOk = pagamentoService.setPagamentoComPlano(agPacienteEntity.getIdAgPaciente());
-       } else if (cadastroAgPacientePagamento.getTipoPgto().getIdFormaPagamento().equals(BigInteger.valueOf(2))){
-            pagamentoOk = pagamentoService.setPagamentoComCartao(cadastroAgPacientePagamento.getNrParcelas(),cadastroAgPacientePagamento.getCartao(), agPacienteEntity.getIdAgPaciente());
-        }
+        pagamentoOk = pagamentoService.setPagamentoAgPaciente(cadastroAgPacientePagamento.getIdCartao(), agPacienteEntity.getIdAgPaciente());
         System.out.println(pagamentoOk);
 
         return true;
