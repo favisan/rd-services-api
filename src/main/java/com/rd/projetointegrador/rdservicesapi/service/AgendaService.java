@@ -121,8 +121,8 @@ public class AgendaService {
             for (Periodo periodo : periodos) {
                 AgendaOutput agendaOutput = new AgendaOutput();
                 agendaOutput.setPeriodo(periodo);
-                agendaOutput.setDisponibilidade(2);
-                agendaOutput.setIdTipoConsulta(BigInteger.valueOf(1));
+                agendaOutput.setDisponibilidade(1);
+                agendaOutput.setIdTipoConsulta(BigInteger.valueOf(2));
                 OutputMedico medico = new OutputMedico();
                 agendaOutput.setMedico(medico);
                 agendasOutput.add(agendaOutput);
