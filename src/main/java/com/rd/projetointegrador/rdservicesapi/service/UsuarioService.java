@@ -355,25 +355,19 @@ public class UsuarioService {
             endereco.setDsBairro(outputMedico.getEnderecos().get(0).getDsBairro());
             endereco.setNrCep(outputMedico.getEnderecos().get(0).getNrCep());
         }
-        System.out.println("Vai atualizar o usuario.");
         repository.save(entity);
-        System.out.println("Usuario atualizado.");
         List<ContatoEntity> contatosEntity = entity.getContatos();
         for (ContatoEntity contato : contatosEntity) {
             contato.setIdUsuario(entity.getIdUsuario());
             TipoContatoEntity tpContatoEntity = tipoContatoRepository.findById(BigInteger.valueOf(2)).get();
             contato.setTipoContato(tpContatoEntity);
             contato.setDsContato(outputMedico.getContatos().get(0).getDsContato());
-            System.out.println("Vai atualizar o ctto.");
             contatoRepository.save(contato);
-            System.out.println("Ctto atualizado.");
         }
         PrecoEntity precoEntity = new PrecoEntity();
         Preco preco = outputMedico.getPreco();
         precoEntity.setVlConsulta(preco.getVlConsulta());
-        System.out.println("Vai atualizar preço.");
         precoRepository.save(precoEntity);
-        System.out.println("Preco atualizado.");
         entity.setPreco(precoEntity);
         return true;
     }
