@@ -11,8 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartaoAgPaciente {
-    private BigInteger idCartao;
-    private Paciente usuario;
+    private Paciente paciente;
     private String nrCartao;
     private String codSeguranca;
     private Date dtValidade;

@@ -63,7 +63,6 @@ public class PagamentoService {
         Usuario paciente = new Usuario();
         paciente = usuarioService.conversaoUsuarioDTO(pagamentoEntity.getAgPacienteEntity().getPaciente(), paciente);
         Paciente pcte = new Paciente();
-        pcte.setIdPaciente(paciente.getIdUsuario());
         agPaciente.setPaciente(pcte);
 
         pagamento.setAgPaciente(agPaciente);
@@ -161,9 +160,8 @@ public class PagamentoService {
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
-    public boolean setPagamentoAgPaciente(BigInteger idCartao, BigInteger idAgPaciente){
+    public boolean setPagamentoAgPaciente(BigInteger idAgPaciente){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        pagamentoEntity.setIdCartao(idCartao);
         pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(idAgPaciente).get());
         pagamentoEntity.setVlPagamento(agPacienteRepository.findById(idAgPaciente).get().getAgenda().getMedico().getPreco().getVlConsulta());
         ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());

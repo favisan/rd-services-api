@@ -60,8 +60,8 @@ public class PagamentoController {
 
     //Grupo2 - Cadastro de Pagamento de consulta feito com cartão
     @PostMapping("/pagamento/cartao")
-    public ResponseEntity setPagamentoCartao(@RequestBody BigInteger idCartao, BigInteger idAgPaciente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoAgPaciente(idCartao, idAgPaciente));
+    public ResponseEntity setPagamentoCartao(@RequestBody BigInteger idAgPaciente) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.setPagamentoAgPaciente(idAgPaciente));
     }
 
 //    //Grupo 2 - Cadastro de Pagamento de consulta feito com plano

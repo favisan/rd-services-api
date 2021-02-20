@@ -111,7 +111,7 @@ public class AgPacienteService {
         repository.save(agPacienteEntity);
 
         Boolean pagamentoOk = false;
-        pagamentoOk = pagamentoService.setPagamentoAgPaciente(cadastroAgPacientePagamento.getIdCartao(), agPacienteEntity.getIdAgPaciente());
+        pagamentoOk = pagamentoService.setPagamentoAgPaciente(agPacienteEntity.getIdAgPaciente());
         System.out.println(pagamentoOk);
 
         return true;

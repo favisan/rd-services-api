@@ -10,5 +10,5 @@ import java.math.BigInteger;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Paciente {
-    private BigInteger idPaciente;
+    private String nomePaciente;
 }
