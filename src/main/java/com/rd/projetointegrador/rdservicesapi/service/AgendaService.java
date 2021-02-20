@@ -110,13 +110,11 @@ public class AgendaService {
         return agendas;
     }
 
-    //Listar horários por data (Grupo 4)
-    public List<AgendaOutput> getHorarios(Date data) {
-        List<AgendaEntity> agendasEntity = agendaRepository.findByData(data);
-        List<Agenda> agendas = new ArrayList<>();
-        agendas = converterAgendasToDTO(agendasEntity, agendas);
+    //Listar horários por data e id médico (Grupo 4)
+    public List<AgendaOutput> getHorarios(Date data, BigInteger idMedico) {
+        List<AgendaEntity> agendasEntity = agendaRepository.findByDataAndMedicoIdUsuario(data, idMedico);
         List<AgendaOutput> agendasOutput = new ArrayList<>();
-        if (agendas.size() == 0) {
+        if (agendasEntity.size() == 0) {
             List<Periodo> periodos = periodoService.listarPeriodos();
             for (Periodo periodo : periodos) {
                 AgendaOutput agendaOutput = new AgendaOutput();
@@ -129,11 +127,11 @@ public class AgendaService {
             }
             return agendasOutput;
         }
-        for (Agenda agenda : agendas) {
+        for (AgendaEntity agendaEntity : agendasEntity) {
             AgendaOutput agendaOutput = new AgendaOutput();
-            agendaOutput.setPeriodo(agenda.getPeriodo());
-            agendaOutput.setDisponibilidade(agenda.getDisponibilidade());
-            agendaOutput.setIdTipoConsulta(agenda.getTipoConsulta().getIdTipoConsulta());
+            agendaOutput.setPeriodo(periodoService.converterPeriodoDTO(agendaEntity.getPeriodo(), new Periodo()));
+            agendaOutput.setDisponibilidade(agendaEntity.getDisponibilidade());
+            agendaOutput.setIdTipoConsulta(agendaEntity.getTipoConsulta().getIdTipoConsulta());
             OutputMedico medico = new OutputMedico();
             agendaOutput.setMedico(medico);
             agendasOutput.add(agendaOutput);

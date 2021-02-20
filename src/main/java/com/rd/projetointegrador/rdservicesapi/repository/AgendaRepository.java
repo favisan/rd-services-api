@@ -19,6 +19,7 @@ public interface AgendaRepository extends JpaRepository<AgendaEntity, BigInteger
 
     //Grupo 4
     List<AgendaEntity> findByData(Date data);
+    List<AgendaEntity> findByDataAndMedicoIdUsuario(Date data, BigInteger idMedico);
     List<AgendaEntity> findByMedico(UsuarioEntity medico);
     List<AgendaEntity> findByDataAndDisponibilidade(Date data, Integer disponibilidade);
 

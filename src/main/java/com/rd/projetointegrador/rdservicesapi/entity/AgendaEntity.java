@@ -21,11 +21,11 @@ public class AgendaEntity implements Serializable {
     @JoinColumn(name="ID_MEDICO")
     private UsuarioEntity medico;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="ID_TIPO_CONSULTA")
     private TipoConsultaEntity tipoConsulta;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="ID_PERIODO")
     private PeriodoEntity periodo;
 

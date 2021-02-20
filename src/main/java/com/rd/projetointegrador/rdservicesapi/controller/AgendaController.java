@@ -61,11 +61,11 @@ public class AgendaController {
     }
 
     //LISTA OS HORARIOS FILTRANDO POR DIA (Grupo 4)
-    @GetMapping("/horarios/{data}")
-    public ResponseEntity getHorarios(@PathVariable("data") String diaDisponivel) {
+    @GetMapping("/horarios/{data}/{idMedico}")
+    public ResponseEntity getHorarios(@PathVariable("data") String diaDisponivel, @PathVariable("idMedico") BigInteger idMedico) {
         try {
             Date data = new SimpleDateFormat("yyyy-MM-dd").parse(diaDisponivel);
-            List<AgendaOutput> horarios = agendaService.getHorarios(data);
+            List<AgendaOutput> horarios = agendaService.getHorarios(data, idMedico);
             return ResponseEntity.status(HttpStatus.OK).body(horarios);
         } catch (Exception e) {
             e.printStackTrace();
