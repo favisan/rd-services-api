@@ -23,7 +23,7 @@ public class AgPacienteController {
      //Grupo2 - Consultar agendas de paciente filtradas pela Id do Usuario
     @GetMapping("/agPaciente/{idUsuario}")
     public ResponseEntity listarAgPaciente(@PathVariable("idUsuario") BigInteger idUsuario){
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(usuarioRepository.findById(idUsuario)));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAgPaciente(idUsuario));
     }
 
     //Grupo2 - Alterar a disponibilidade da agenda médica para disponível quando o paciente cancela a consulta

@@ -81,8 +81,8 @@ public class AgPacienteService {
     }
 
     //Grupo 2 - Listas as agendas do paciente pela idUsuario
-    public List<AgPaciente> getAgPaciente(Optional<UsuarioEntity> usuario){
-        List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuario.get());
+    public List<AgPaciente> getAgPaciente(BigInteger idUsuario){
+        List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuarioRepository.findById(idUsuario).get());
         List<AgPaciente> agPacientes = new ArrayList<>();
         AgPaciente agPaciente = new AgPaciente();
         //Convertendo AgPacienteEntity para AgPacienteDTO
@@ -90,6 +90,7 @@ public class AgPacienteService {
             conversaoAgPacienteParaDTO(agPacienteEntity,agPaciente);
             agPacientes.add(agPaciente);
         }
+        System.out.println(listaAgendas);
         return agPacientes;
     };
     //Grupo2 - Cadastrar nova Agenda de Paciente e Pagamento
