@@ -29,6 +29,11 @@ public class LojaService {
     private EnderecoService enderecoService;
 
 
+    public Loja getLojaById (BigInteger id){
+        LojaEntity lojaE = repository.findById(id).get();
+        return conversaoLojaDTO(lojaE);
+    }
+
     public List<Loja> getLojas(){
 
         List<LojaEntity> lojasEntities = repository.findAll();

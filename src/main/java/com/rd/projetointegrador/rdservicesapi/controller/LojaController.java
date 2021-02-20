@@ -30,6 +30,12 @@ public class LojaController {
         return ResponseEntity.ok(lojas);
     }//Retorna todas as lojas e seus respectivos endereços e contatos
 
+    @GetMapping("/loja/id/{id}")
+    public ResponseEntity getLoja(@PathVariable("id") BigInteger id){
+        Loja loja = service.getLojaById(id);
+        return ResponseEntity.ok(loja);
+    }//Retorna todas as lojas e seus respectivos endereços e contato
+
     @GetMapping("/lojas/{localidade}")
     public ResponseEntity consultarLojasPorLocalidade(@PathVariable("localidade") String localidade){
         List <Loja> lojas = service.getLojasPorLocalidade(localidade);
