@@ -1,5 +1,6 @@
 package com.rd.projetointegrador.rdservicesapi.controller;
 
+import com.rd.projetointegrador.rdservicesapi.entity.UsuarioEntity;
 import com.rd.projetointegrador.rdservicesapi.service.CardapioService;
 import com.rd.projetointegrador.rdservicesapi.entity.CardapioEntity;
 import com.rd.projetointegrador.rdservicesapi.dto.Cardapio;
@@ -42,6 +43,14 @@ public class CardapioController {
     @GetMapping("/cardapio/{idCardapio}")
     public  ResponseEntity buscarCardapio(@PathVariable("idCardapio") BigInteger idCardapio){
         return ResponseEntity.ok(cardapioService.buscarCardapio(idCardapio));
+    }
+
+    //Buscar cardápio por Paciente
+    @GetMapping("/cardapioPaciente/{idPaciente}")
+    public  ResponseEntity buscarCardapioPorPaciente(@PathVariable("idPaciente") UsuarioEntity idPaciente){
+        List<CardapioEntity> cardapiosPaciente = cardapioService.buscarCardapioPorPaciente(idPaciente);
+       // return ResponseEntity.ok(cardapioService.buscarCardapioPorPaciente(idPaciente));
+        return ResponseEntity.status(HttpStatus.OK).body(cardapiosPaciente);
     }
 
     //Listar todos os cardápios
