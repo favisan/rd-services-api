@@ -41,11 +41,11 @@ public class AgServicoController {
     }//Retorna todos os agendamentos de determinada loja durante um período especificado.
 
 
-   /* @GetMapping("/agservico/{id}")
-    public ResponseEntity getAgendamentos(@PathVariable("id") BigInteger id) {
+   @GetMapping("/agservico/map/{id}")
+    public ResponseEntity getAgendamentosMap(@PathVariable("id") BigInteger id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(service.getAgendamentos(id));
-    }//Retorna os agendamentos do paciente com id "id" por status (Agendado, Cancelado ou Relizado) */
+    }//Retorna os agendamentos do paciente com id "id" por status (Agendado, Cancelado ou Relizado)
 
     @GetMapping("/agservico/{id}")
     public ResponseEntity getAgendamentos(@PathVariable("id") BigInteger id) {

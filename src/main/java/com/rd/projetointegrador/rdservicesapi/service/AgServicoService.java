@@ -40,8 +40,6 @@ public class AgServicoService {
     private LojaService lojaService;
 
 
-
-
     @Transactional
     public String cancelarAgendamento(BigInteger id){
         StatusEntity statusEntity = statusRepository.findById(BigInteger.valueOf(2l)).get();
@@ -99,7 +97,10 @@ public class AgServicoService {
         List<String> datas = new ArrayList<>();
         for (AgServicoEntity ag: agendamentos){
             String dt = ag.getDtDataHora().toString().split(" ")[1];
-            dt = dt.split(":")[0] +":"+ dt.split(":")[1] ;
+            String dt1 = dt.split(":")[0];
+            Integer d= Integer.parseInt(dt1);
+            d +=2;
+            dt = String.valueOf(d)+":"+ dt.split(":")[1] ;
             datas.add(dt);
         }
         return datas;
@@ -134,13 +135,18 @@ public class AgServicoService {
             a.setIdServico(ag.getIdServico().getId());
             a.setIdLoja(ag.getIdLoja().getIdLoja());
 
-            LojaEntity loja = lojaRepository.findById(a.getIdLoja()).get();
-            a.setLoja(lojaService.conversaoLojaDTO(loja));
+            a.setLoja(lojaService.conversaoLojaDTO(ag.getIdLoja()));
+            a.setServico(servicoService.conversaoEntityParaDTO(ag.getIdServico()));
 
-            ServicoEntity servico = servicoRepository.findById(a.getIdServico()).get();
-            a.setServico(servicoService.conversaoEntityParaDTO(servico));
-
-            a.setIdStatus(ag.getIdStatus().getId());
+            int difData = ag.getDtDataHora().compareTo(java.util.Calendar.getInstance().getTime());
+                System.out.println("VALOR DE I: "+difData+" + PARA O ID: "+a.getIdAgendamento());
+                System.out.println("ID STATUS ANTES: "+ag.getIdStatus().getId());
+            if (difData < 0 && ag.getIdStatus().getId() == BigInteger.valueOf(3L)) {
+                a.setIdStatus(BigInteger.valueOf(1l));
+            }else {
+                a.setIdStatus(ag.getIdStatus().getId());
+            }
+            System.out.println("ID STATUS DEPOIS: "+a.getIdStatus());
             a.setDtDataHora(ag.getDtDataHora());
             a.setIdPedido(ag.getPedido().getIdPedido());
 
