@@ -84,13 +84,13 @@ public class AgPacienteService {
     public List<AgPaciente> getAgPaciente(BigInteger idUsuario){
         List<AgPacienteEntity> listaAgendas = repository.findByPaciente(usuarioRepository.findById(idUsuario).get());
         List<AgPaciente> agPacientes = new ArrayList<>();
-        AgPaciente agPaciente = new AgPaciente();
+
         //Convertendo AgPacienteEntity para AgPacienteDTO
-        for (AgPacienteEntity agPacienteEntity : listaAgendas){
-            conversaoAgPacienteParaDTO(agPacienteEntity,agPaciente);
+        for (AgPacienteEntity agPacienteEntity : listaAgendas) {
+            AgPaciente agPaciente = new AgPaciente();
+            conversaoAgPacienteParaDTO(agPacienteEntity, agPaciente);
             agPacientes.add(agPaciente);
         }
-        System.out.println(listaAgendas);
         return agPacientes;
     };
     //Grupo2 - Cadastrar nova Agenda de Paciente e Pagamento
