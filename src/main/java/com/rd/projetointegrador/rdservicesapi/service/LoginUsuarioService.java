@@ -28,17 +28,6 @@ public class LoginUsuarioService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private UsuarioService usuarioService;
 
-    //CRIPTOGRAFAR SENHA USUARIO
-    public String codificar(String senha) throws NoSuchAlgorithmException {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
-            return hash.toString(1);
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
     //MÉTODO: conversão de DTO para Entity
     public LoginUsuarioEntity conversaoLoginUsuarioEntity(LoginUsuario loginUsuario, LoginUsuarioEntity loginUsuarioEntity){
         try {
@@ -195,8 +184,38 @@ public class LoginUsuarioService {
 
     }
 
+    //---OBSOLETO---
+    @Transactional
+    public String cadastrarAcesso(LoginUsuario login){
+
+        LoginUsuarioEntity loginUsuarioEntityEx = loginUsuarioRepository.findById(login.getIdUsuario()).get();
+
+        if(loginUsuarioEntityEx == null) {
+            LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
+            loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
+
+            loginUsuarioEntity = loginUsuarioRepository.save(loginUsuarioEntity);
+
+            return "Login cadastrado com sucesso. Id: " + loginUsuarioEntity.getIdUsuario();
+        }
+
+        return "Login já existe";
+
+    }
+
 
     //GRUPO4
+
+    //CRIPTOGRAFAR SENHA USUARIO
+    public String codificar(String senha) throws NoSuchAlgorithmException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            BigInteger hash = new BigInteger(1, messageDigest.digest(senha.getBytes()));
+            return hash.toString(1);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
     //VALIDAR LOGIN E SENHA DE ACESSO TELA lOGIN
     @Transactional
@@ -255,26 +274,4 @@ public class LoginUsuarioService {
 
         return "";
     }
-
-
-    //---OBSOLETO---
-    @Transactional
-    public String cadastrarAcesso(LoginUsuario login){
-
-        LoginUsuarioEntity loginUsuarioEntityEx = loginUsuarioRepository.findById(login.getIdUsuario()).get();
-
-        if(loginUsuarioEntityEx == null) {
-            LoginUsuarioEntity loginUsuarioEntity = new LoginUsuarioEntity();
-            loginUsuarioEntity = conversaoLoginUsuarioEntity(login, loginUsuarioEntity);
-
-            loginUsuarioEntity = loginUsuarioRepository.save(loginUsuarioEntity);
-
-            return "Login cadastrado com sucesso. Id: " + loginUsuarioEntity.getIdUsuario();
-        }
-
-        return "Login já existe";
-
-    }
-
-
 }

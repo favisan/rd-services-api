@@ -85,8 +85,6 @@ public class LoginUsuarioController {
         }
     }
 
-
-
     //GRUPO4
     //VALIDAR ACESSO
     @GetMapping("/login/medico")
