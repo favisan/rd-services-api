@@ -22,7 +22,7 @@ public class ServicoController {
                 .body(service.getServico(id) );
     }/* Retorna um serviço pelo id */
 
-
+    
     @GetMapping("/servicos")
     public ResponseEntity getServicos(){
         List<Servico> servicos = service.getServicos();
