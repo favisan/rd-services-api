@@ -83,12 +83,7 @@ public class CardapioService {
 
     //buscar cardapio por id do paciente
     public List<CardapioEntity> buscarCardapioPorPaciente(UsuarioEntity idPaciente) {
-//        System.out.println("ID: " + idPaciente);
-//        Optional<CardapioEntity> optional = cardapioRepository.findById(idPaciente);
-//        CardapioEntity entity = optional.get();
-//
-//        return entity;
-        return cardapioRepository.findByPaciente(idPaciente);
+        return cardapioRepository.findByPacienteOrderByIdTipoRefeicao(idPaciente);
     }
 
     //lista todos os cardapios
@@ -100,16 +95,12 @@ public class CardapioService {
     // cadastra um novo cardapio
     @Transactional
     public String cadastrarCardapio(Cardapio cardapio) {
+
         CardapioEntity entity = new CardapioEntity();
 
-        BigInteger idTipoRefeicao = cardapio.getIdTipoRefeicao().getIdTipoRefeicao();
-        TipoRefeEntity tipoRefeEntity = tipoRefeRepository.findById(idTipoRefeicao).get();
-
-        BigInteger medico = cardapio.getIdMedico();
-        UsuarioEntity usuarioMedico = usuarioRepository.findById(medico).get();
-
-        BigInteger paciente = cardapio.getIdPaciente();
-        UsuarioEntity usuarioPaciente = usuarioRepository.findById(medico).get();
+        TipoRefeEntity tipoRefeEntity = tipoRefeRepository.findById(cardapio.getIdTipoRefeicao().getIdTipoRefeicao()).get();
+        UsuarioEntity usuarioMedico = usuarioRepository.findById(cardapio.getIdMedico()).get();
+        UsuarioEntity usuarioPaciente = usuarioRepository.findById(cardapio.getIdPaciente()).get();
 
         entity.setMedico(usuarioMedico);
         entity.setPaciente(usuarioPaciente);
@@ -121,7 +112,7 @@ public class CardapioService {
 
         cardapioRepository.save(entity);
 
-        System.out.println(cardapio.getIdCardapio() + " , " + cardapio.getIdMedico() + " , " + cardapio.getIdPaciente());
+        System.out.println(cardapio.getIdMedico() + " , " + cardapio.getIdPaciente());
 
         return "Cadastro realizado com sucesso";
     }

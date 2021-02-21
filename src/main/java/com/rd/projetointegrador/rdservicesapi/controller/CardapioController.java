@@ -49,7 +49,6 @@ public class CardapioController {
     @GetMapping("/cardapioPaciente/{idPaciente}")
     public  ResponseEntity buscarCardapioPorPaciente(@PathVariable("idPaciente") UsuarioEntity idPaciente){
         List<CardapioEntity> cardapiosPaciente = cardapioService.buscarCardapioPorPaciente(idPaciente);
-       // return ResponseEntity.ok(cardapioService.buscarCardapioPorPaciente(idPaciente));
         return ResponseEntity.status(HttpStatus.OK).body(cardapiosPaciente);
     }
 

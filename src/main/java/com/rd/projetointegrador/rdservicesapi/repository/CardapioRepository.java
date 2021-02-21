@@ -15,4 +15,5 @@ public interface CardapioRepository extends JpaRepository<CardapioEntity, BigInt
     //List<CardapioEntity> findByPaciente(UsuarioEntity paciente);
 
     List<CardapioEntity> findByPaciente(UsuarioEntity idPaciente);
+    List<CardapioEntity> findByPacienteOrderByIdTipoRefeicao(UsuarioEntity idPaciente);
 }
