@@ -113,7 +113,7 @@ public class UsuarioController {
     //CADASTRAR MEDICO Ok
     @PostMapping("/medico")
     public ResponseEntity cadastrarMedico(@RequestBody InputMedico inputMedico) throws NoSuchAlgorithmException {
-        if (service.consultarPorCpfMedico(inputMedico.getNrCpf()) != null) {
+        if (service.consultarPorCpfMedico(inputMedico.getNrCpf()) != null || loginUsuarioRepository.findOneByDsEmail(inputMedico.getLogin().getDsEmail()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cpf já cadastrado");
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarMedico(inputMedico));
