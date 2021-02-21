@@ -100,13 +100,17 @@ public class ClienteService {
                 System.out.println("Inseriu Contrato: " + contratoEntity.getIdContrato());
 
                 //Entidade Cartao
-                if (!inputUsuario.getCartao().getNrCartao().equals("") && inputUsuario.getCartao().getCodSeguranca() != null) {
-                    inputUsuario.getUsuario().setIdUsuario(novoId);
-                    inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
-                    System.out.println("Inseriu Id!");
-                    cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
-                    cartaoRepository.save(cartaoEntity);
-                    System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
+                if (inputUsuario.getCartao() != null) {
+                    if (inputUsuario.getCartao().getNrCartao() != null //número diferente de nulo
+                            && !inputUsuario.getCartao().getNrCartao().equals("") //número diferente de vazio
+                            && inputUsuario.getCartao().getCodSeguranca() != null) { //CVV diferente de nulo
+                        inputUsuario.getUsuario().setIdUsuario(novoId);
+                        inputUsuario.getCartao().setUsuario(inputUsuario.getUsuario());
+                        System.out.println("Inseriu Id!");
+                        cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
+                        cartaoRepository.save(cartaoEntity);
+                        System.out.println("Inseriu Cartão: " + cartaoEntity.getIdCartao());
+                    }
                 }
 
                 //Entidade Contato
@@ -146,7 +150,7 @@ public class ClienteService {
 
         CartaoEntity cartaoEntity = new CartaoEntity();
         if (inputUsuario.getCartao().getIdCartao() != null) {
-            System.out.println("Entrei aqui");
+            System.out.println("Capturei cartão existente.");
             cartaoEntity = cartaoRepository.findById(inputUsuario.getCartao().getIdCartao()).get();
         }
 
@@ -160,8 +164,6 @@ public class ClienteService {
             System.out.println("Alterou Usuário: " + usuarioEntity.getIdUsuario());
 
             //Entidade LoginUsuario
-            //TODO: REVER MÉTODO DE TROCA USUÁRIO. Está passando a senha codificada como string senha e recodificando :(
-            // && !inputUsuario.getLoginUsuario().getDsSenha().equals("")
             if (!inputUsuario.getLoginUsuario().getDsEmail().equals("")) {
                 loginUsuarioEntity = luService.conversaoLoginUsuarioEntity(inputUsuario.getLoginUsuario(), loginUsuarioEntity);
                 loginUsuarioRepository.save(loginUsuarioEntity);
@@ -171,7 +173,7 @@ public class ClienteService {
             //Entidade Contrato
             if (contratoEntity.getPlanosEntity().getIdPlano() != inputUsuario.getContrato().getPlano().getIdPlano()) {
                 System.out.println(inputUsuario.getContrato().getPlano().getIdPlano());
-                System.out.println("Antigo Contrato: " + contratoEntity.getIdContrato() + " / " + contratoEntity.getPlanosEntity().getIdPlano());
+                System.out.println("Antigo Contrato: " + contratoEntity.getIdContrato() + " / Antigo Plano: " + contratoEntity.getPlanosEntity().getIdPlano());
                 ContratoEntity newContratoEntity = new ContratoEntity();
                 inputUsuario.getContrato().setIdUsuario(usuarioEntity.getIdUsuario());
 
@@ -180,11 +182,14 @@ public class ClienteService {
                 newContratoEntity.setDtVigencia(java.util.Calendar.getInstance().getTime());
                 contratoRepository.save(newContratoEntity);
 
-                System.out.println("Alterou Contrato: " + newContratoEntity.getIdContrato() + " / " + newContratoEntity.getPlanosEntity().getIdPlano());
+                System.out.println("Alterou Contrato: " + newContratoEntity.getIdContrato() + " / Novo Plano:  " + newContratoEntity.getPlanosEntity().getIdPlano());
             }
 
             //Entidade Cartao
-            if (inputUsuario.getCartao().getNrCartao() != null) {
+            if (inputUsuario.getCartao().getNrCartao() != null //número diferente de nulo
+                    && !inputUsuario.getCartao().getNrCartao().equals("") //número diferente de vazio
+                    && inputUsuario.getCartao().getCodSeguranca() != null) { //CVV diferente de nulo
+
                 if (!inputUsuario.getCartao().getNrCartao().equals(cartaoEntity.getNrCartao())) {
 
                     System.out.println("Cartão atual: " + cartaoEntity.getNrCartao());
@@ -197,6 +202,7 @@ public class ClienteService {
                     System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getNrCartao());
                     System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getIdCartao());
                 } else {
+                    System.out.println("Cartão atual alterado: " + cartaoEntity.getNrCartao());
                     cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
                     cartaoRepository.save(cartaoEntity);
                 }
