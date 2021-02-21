@@ -21,7 +21,7 @@ public class Prescricao {
 
     private Integer vlQuantidade;
 
-    private Float vlConcentracao;
+    private String vlConcentracao;
 
     private String dsOrientacoes;
 

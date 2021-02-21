@@ -30,7 +30,7 @@ public class PrescricaoEntity {
     private Integer vlQuantidade;
 
     @Column(name="VL_CONCENTRACAO")
-    private Float vlConcentracao;
+    private String vlConcentracao;
 
     @Column(name="DS_ORIENTACOES")
     private String dsOrientacoes;
