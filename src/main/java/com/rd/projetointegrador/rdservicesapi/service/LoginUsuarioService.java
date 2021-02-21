@@ -105,28 +105,34 @@ public class LoginUsuarioService {
     @Transactional
     public ResponseEntity validarAcessoCliente(LoginUsuario loginUsuario) throws NoSuchAlgorithmException {
 
+        //email e senha da tela
         String emailTela = loginUsuario.getDsEmail();
         String senhaTela = codificar(loginUsuario.getDsSenha());
 
         try {
             LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByDsEmail(emailTela);
 
+            //pegar email e senha do banco
             String login = loginUsuarioEntity.getDsEmail();
             String senha = loginUsuarioEntity.getDsSenha();
 
+            //compara os dois
             if (emailTela.equals(login) && senhaTela.equals(senha)) {
 
+                //se for igual, passa o ID e o tipo de usuário
                 loginUsuario.setIdUsuario(loginUsuarioEntity.getIdUsuario());
                 Number tipoUsuario = usuarioRepository.findById(loginUsuarioEntity.getIdUsuario()).get().getTipoUsuario().getIdTipoUsuario();
 
                 ResultData resultData = new ResultData(HttpStatus.OK.value(), "Acesso Permitido", loginUsuario, tipoUsuario);
                 return ResponseEntity.status(HttpStatus.OK).body(resultData);
             } else {
+                //se ou senha ou email estiverem errados, devolve uma mensagem de erro
                 ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário ou Senha incorretos!");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
             }
 
         } catch(Exception e) {
+            //se nao encontrar, devolve uma mensagem de erro
             ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Acesso inexistente.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
         }

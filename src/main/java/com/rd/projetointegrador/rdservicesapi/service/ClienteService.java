@@ -122,15 +122,19 @@ public class ClienteService {
                 contatoRepository.save(contatoEntity);
                 System.out.println("Inseriu Contato: " + contatoEntity.getIdContato());
 
+
+                //retorno se tudo der certo
                 ResultData resultData = new ResultData(HttpStatus.OK.value(), "Usuário cadastrado com sucesso");
                 return ResponseEntity.status(HttpStatus.OK).body(resultData);
 
             } else {
+                //retorno se usuário já cadastrado
                 ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Usuário já cadastrado!");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
             }
 
         } catch (Exception e) {
+            //retorno se der algo errado
             System.out.println(e);
             ResultData resultData = new ResultData(HttpStatus.BAD_REQUEST.value(), "Erro ao cadastrar usuário.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultData);
@@ -190,6 +194,8 @@ public class ClienteService {
                     && !inputUsuario.getCartao().getNrCartao().equals("") //número diferente de vazio
                     && inputUsuario.getCartao().getCodSeguranca() != null) { //CVV diferente de nulo
 
+                //checa se o número que veio é diferente do número que já existe,
+                //se sim, cria um novo cartão
                 if (!inputUsuario.getCartao().getNrCartao().equals(cartaoEntity.getNrCartao())) {
 
                     System.out.println("Cartão atual: " + cartaoEntity.getNrCartao());
@@ -202,6 +208,8 @@ public class ClienteService {
                     System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getNrCartao());
                     System.out.println("Inseriu novo Cartão: " + newCartaoEntity.getIdCartao());
                 } else {
+                    //se o número do cartão for igual, altera as outras informações com as que vieram
+
                     System.out.println("Cartão atual alterado: " + cartaoEntity.getNrCartao());
                     cartaoEntity = cartaoService.conversaoCartaoEntity(inputUsuario.getCartao(), cartaoEntity);
                     cartaoRepository.save(cartaoEntity);
@@ -260,12 +268,15 @@ public class ClienteService {
         AreaDoCliente areaDoCliente = new AreaDoCliente();
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario).get();
 
-
+        //pegando lista de contratos do cliente
         List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
+        //pegando o contrato mais recente (último da lista)
         ContratoEntity contratoEntity = contratoEntities.get(contratoEntities.size() - 1);
 
+        //pegando o plano que está no último contrato
         PlanosEntity planosEntity = contratoEntity.getPlanosEntity();
         Planos plano = new Planos();
+        //criando a DTO do meu plano e guardando
         plano = planosService.conversaoPlanoDTO(planosEntity, plano);
 
         areaDoCliente.setIdPaciente(usuarioEntity.getIdUsuario());
@@ -280,15 +291,18 @@ public class ClienteService {
 
     public InputCliente getInputClienteDTO(BigInteger id) {
 
+        //procurando no banco o usuário com esse id
         UsuarioEntity usuarioEntity = usuarioRepository.findById(id).get();
 
         InputCliente inputCliente = new InputCliente();
 
+        //procurando no banco todas as informações relativas ao meu usuário
         LoginUsuarioEntity loginUsuarioEntity = loginUsuarioRepository.findOneByIdUsuario(id);
         List<ContatoEntity> contatoEntities = contatoRepository.findByIdUsuario(id);
         List<ContratoEntity> contratoEntities = contratoRepository.findByUsuario(usuarioEntity);
         List<CartaoEntity> cartaoEntities = cartaoRepository.findByUsuario(usuarioEntity);
 
+        //passando as informações que eu achei para DTO (para devolver para a página)
         Usuario usuario = new Usuario();
         usuario = usuarioService.conversaoUsuarioDTO(usuarioEntity, usuario);
 
