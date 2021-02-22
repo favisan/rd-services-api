@@ -15,11 +15,6 @@ public interface AgServicoRepository extends JpaRepository<AgServicoEntity, BigI
 
     List<AgServicoEntity> findByIdLojaAndDtDataHoraBetweenAndIdStatus(LojaEntity loja, Date fromDate, Date toDate, StatusEntity status);
 
-    //SELECT * FROM TB_AG_SERVICO WHERE ID_LOJA = ?? AND DT_DATA_HORA BETWEEN ??
-    //                                              AND ??
-    //                                              AND STATUS = 'AGENDADA'
-    //SELECT HORA FROM TB_AG_SERVICO WHERE ID_LOJA = ?? AND DATA = ??: LISTA COM HORÁRIOS INDISPONÍVEIS
-
     @Modifying
     @Query("UPDATE AgServicoEntity c SET c.idStatus = :status WHERE c.idAgendamento = :id")
     int updateIdStatus(BigInteger id, StatusEntity status);

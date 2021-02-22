@@ -99,7 +99,7 @@ public class AgServicoService {
             String dt = ag.getDtDataHora().toString().split(" ")[1];
             String dt1 = dt.split(":")[0];
             Integer d= Integer.parseInt(dt1);
-            d +=2;
+            d +=3;
             dt = String.valueOf(d)+":"+ dt.split(":")[1] ;
             datas.add(dt);
         }

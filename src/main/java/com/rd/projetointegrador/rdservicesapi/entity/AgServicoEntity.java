@@ -29,6 +29,7 @@ public class AgServicoEntity {
     @JoinColumn(name = "ID_STATUS")
     private StatusEntity idStatus;
 
+
     @Column(name = "DT_DATA_HORA")
     private Date dtDataHora;
 
