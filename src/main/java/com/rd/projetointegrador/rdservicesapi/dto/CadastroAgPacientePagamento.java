@@ -8,7 +8,4 @@ import java.math.BigInteger;
 public class CadastroAgPacientePagamento {
     private BigInteger idAgenda;
     private BigInteger idUsuario;
-    private Integer nrParcelas;
-    private Integer tipoPgto;
-    private Cartao cartao;
 }

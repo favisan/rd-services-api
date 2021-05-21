@@ -25,13 +25,9 @@ import java.util.Optional;
 public class ContratoService {
     //GRUPO1
 
-    @Autowired
-    private ContratoRepository repository;
-    @Autowired
-    private PlanosRepository planosRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
+    @Autowired private ContratoRepository repository;
+    @Autowired private PlanosRepository planosRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
     @Autowired PlanosService planosService;
 
     SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
@@ -117,7 +113,7 @@ public class ContratoService {
         return contrato;
     }
 
-    @Transactional
+        @Transactional
     public String cadastrarContrato(Contrato contrato) {
 
         ContratoEntity contratoEntity = new ContratoEntity();

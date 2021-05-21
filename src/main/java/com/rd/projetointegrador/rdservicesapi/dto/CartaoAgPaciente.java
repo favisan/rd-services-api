@@ -4,19 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AgPaciente {
-
-    private BigInteger idAgPaciente;
+@NoArgsConstructor
+public class CartaoAgPaciente {
     private Paciente paciente;
-    private AgendaAgPcte agenda;
-    private StatusConsulta statusConsulta;
-
+    private String nrCartao;
+    private String codSeguranca;
+    private Date dtValidade;
 }
-

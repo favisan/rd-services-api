@@ -15,5 +15,4 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, BigInteg
     //Grupo4
     UsuarioEntity findOneByNrCpf(String nrCpf);
 
-
 }

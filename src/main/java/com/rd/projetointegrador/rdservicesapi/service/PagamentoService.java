@@ -62,7 +62,8 @@ public class PagamentoService {
 
         Usuario paciente = new Usuario();
         paciente = usuarioService.conversaoUsuarioDTO(pagamentoEntity.getAgPacienteEntity().getPaciente(), paciente);
-        agPaciente.setPaciente(paciente);
+        Paciente pcte = new Paciente();
+        agPaciente.setPaciente(pcte);
 
         pagamento.setAgPaciente(agPaciente);
         pagamento.setIdNF(pagamentoEntity.getIdNF());
@@ -159,35 +160,29 @@ public class PagamentoService {
 
     //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Cartao
     @Transactional
-    public Pagamento setPagamentoComCartao(Integer parcelas, Cartao cartao, BigInteger idAgPaciente){
+    public boolean setPagamentoAgPaciente(BigInteger idAgPaciente){
         PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        pagamentoEntity.setIdCartao(cartao.getIdCartao());
         pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(idAgPaciente).get());
-        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
-        formaPgto.setIdFormaPagamento(BigInteger.valueOf(1));
-        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
         pagamentoEntity.setVlPagamento(agPacienteRepository.findById(idAgPaciente).get().getAgenda().getMedico().getPreco().getVlConsulta());
-        pagamentoEntity.setNrParcela(parcelas);
-        repository.save(pagamentoEntity);
-        Pagamento pagamento = new Pagamento();
-        conversaoPagamentoDTO(pagamentoEntity, pagamento);
-        return pagamento;
-    }
-    //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
-
-    @Transactional
-    public Pagamento setPagamentoComPlano(BigInteger idAgPaciente){
-        PagamentoEntity pagamentoEntity = new PagamentoEntity();
-        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(idAgPaciente).get());
-        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
-        formaPgto.setIdFormaPagamento(BigInteger.valueOf(3));
-        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
         ContratoEntity contrato = contratoRepository.findOneByUsuario(pagamentoEntity.getAgPacienteEntity().getPaciente());
         pagamentoEntity.setIdContrato(contrato.getIdContrato());
         repository.save(pagamentoEntity);
-        Pagamento pagamento = new Pagamento();
-        conversaoPagamentoDTO(pagamentoEntity, pagamento);
-        return pagamento;
+
+        return true;
     }
+    //Grupo2 - Cadastrando Pagamento de agendamento de consulta com Plano
+
+//    @Transactional
+//    public boolean setPagamentoComPlano(BigInteger idAgPaciente){
+//        PagamentoEntity pagamentoEntity = new PagamentoEntity();
+//        pagamentoEntity.setAgPacienteEntity(agPacienteRepository.findById(idAgPaciente).get());
+//        TipoPagamentoEntity formaPgto = new TipoPagamentoEntity();
+//        formaPgto.setIdFormaPagamento(BigInteger.valueOf(3));
+//        pagamentoEntity.setTipoPagamentoEntity(formaPgto);
+//
+//        repository.save(pagamentoEntity);
+//
+//        return true;
+//    }
 
 }

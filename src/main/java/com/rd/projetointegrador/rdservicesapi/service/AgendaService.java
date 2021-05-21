@@ -72,7 +72,7 @@ public class AgendaService {
             agendaDto.setMedico(medicoDto);
             Periodo periodoDto = new Periodo();
             periodoDto.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
-            periodoDto.setDsPerido(agendaEntity.getPeriodo().getDsPeriodo());
+            periodoDto.setDsPeriodo(agendaEntity.getPeriodo().getDsPeriodo());
             agendaDto.setPeriodo(periodoDto);
             agendaDto.setData(agendaEntity.getData());
             agendasDto.add(agendaDto);
@@ -249,7 +249,7 @@ public class AgendaService {
         //PEGAR A DTO Periodo
         Periodo periodo = new Periodo();
         periodo.setIdPeriodo(agendaEntity.getPeriodo().getIdPeriodo());
-        periodo.setDsPerido(agendaEntity.getPeriodo().getDsPeriodo());
+        periodo.setDsPeriodo(agendaEntity.getPeriodo().getDsPeriodo());
         periodo.setHoraInicial(agendaEntity.getPeriodo().getHoraInicial());
         //SETANDO OS VALORES NA DTO Agenda
         agenda.setIdAgenda(agendaEntity.getIdAgenda());
